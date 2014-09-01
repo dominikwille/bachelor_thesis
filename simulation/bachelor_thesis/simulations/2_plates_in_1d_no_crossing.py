@@ -8,16 +8,16 @@ def P():
 def plate_position(r_0, r_1):
     plate_0 = 5.0
     plate_1 = -5.0
-    if (r_1 > plate_0):
+    if (r_1 >= plate_0):
         plate = plate_0
-    elif (r_1 < plate_1):
+    elif (r_1 <= plate_1):
         plate = plate_1
     else:
         plate = 0
     return numpy.array([plate])
 
 def plate_boundary(r_0, r_1):
-    return numpy.linalg.norm(r_1) > 5
+    return numpy.linalg.norm(r_1) >= 5
 
 def first_component(r):
     return r[0]
