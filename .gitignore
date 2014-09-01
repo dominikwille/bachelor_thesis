@@ -1,1 +1,2 @@
-*.idea
+simulation/bachelor_thesis/.idea/*
+*.pyc
