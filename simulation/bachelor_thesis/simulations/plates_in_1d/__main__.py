@@ -1,4 +1,5 @@
-from langevin_simulation import *
+import matplotlib.pyplot as plt
+from core.langevin_simulation import *
 
 def P():
     tao = 0.03

@@ -1,12 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
-#
-# @author Dominik Wille
 
 import numpy
-import os
-import csv
-import matplotlib.pyplot as plt
 import random
 
 # This defines the dimension of the simulation
