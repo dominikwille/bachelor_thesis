@@ -19,7 +19,7 @@ class Plates1dNoCrossing(Langevin):
     d = 1
     # Plate distance
     plate_distance = 1.0
-    # Difusion constant
+    # Diffusion constant
     D = 1.0
 
     # Size of on step / resolution (δt)
@@ -27,10 +27,6 @@ class Plates1dNoCrossing(Langevin):
 
     # Size of step  (variance ε)
     variance = (2 * d * D * step_size)**0.5
-
-
-
-
 
     def boundary_condition(self, r_0, r_1):
         return numpy.linalg.norm(r_1) >= 5
