@@ -1,32 +1,48 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
 from core.langevin_simulation import *
 import matplotlib.pyplot as plt
 
-def boundary(a, b):
-    return False
 
-def position(a, b):
-    return False
+class MeanSquare(Langevin):
+    def boundary_condition(self, r_0, r_1):
+        return False
 
-def time():
-    return False
+    def step(self):
+        mean = 0
+        variance = 2
 
-def square(r):
-    return r[0]**2
+        r = []
+        i = 0
+        while i < self.D:
+            i += 1
+            r.append(random.gauss(mean, variance))
 
-def step():
-    return numpy.array([random.choice([1.0, -1.0])])
+        return numpy.array(r)
+        # return numpy.array([random.choice([1.0, -1.0])])
 
-r_0 = numpy.array([0.0])
-max_steps = 250
+    def coordinate(self, r):
+        return r[0]**2
+
+test = MeanSquare()
+test.step_size = 1
+test.max_steps = 1000
 num = 1000
 
-Y = numpy.array([0]*(max_steps + 1))
+Y = numpy.array([0]*(test.max_steps + 1))
 for i in range(num):
-    x, y = info_walk(numpy.array([0.0]), max_steps, boundary, position, simple_step, time, square)
+    test.r = numpy.array([0.0])
+    x, y = test.info_walk()
     Y = numpy.array(y) + Y
 
+Y /= num
 
-plt.plot(range(max_steps + 1), Y)
+x_a = numpy.arange(0, test.max_steps, 1)
+y_a = x_a * 4
+
+plt.plot(range(test.max_steps + 1), Y)
+plt.plot(x_a, y_a)
 plt.xlabel('Step')
 plt.ylabel('$\left<x^2 \\right>$')
 plt.show()

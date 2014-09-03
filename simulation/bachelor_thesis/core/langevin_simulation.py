@@ -4,70 +4,72 @@
 import numpy
 import random
 
-# This defines the dimension of the simulation
-D = 1
-# TODO: Think over this....
-step_size = 1
 
-# This function simulates a radom walk of the defined number of steps.
-def info_walk(
-        r_0,
-        max_steps,
-        boundary_condition_callback,
-        boundary_position_callback,
-        step_callback,
-        keep_absorbed_callback,
-        coordinate_callback):
+class Langevin(object):
+    # This defines the dimension of the simulation
+    d = 1
+    # Size of on step (δt)
+    step_size = 1
+    # start position
+    r = 0
+    # number of steps
+    max_steps = 100
+    # list of performed steps
+    steps = []
+    # list of positions
+    distances = []
 
-    steps = [0]
-    distances = [coordinate_callback(r_0)]
-    r = r_0
-    step = 0
-    absorbed = boundary_condition_callback(r_0, r_0)
-    while step < max_steps:
-        step += 1
-        r_old = numpy.copy(r)
-        if not absorbed:
 
-            r += step_callback()
-            absorbed = boundary_condition_callback(r_old, r)
-            if not absorbed:
-                steps.append(step)
-                distances.append(coordinate_callback(r))
-        if absorbed:
-            r = boundary_position_callback(r_old, r)
-            keep_absorbed = int(keep_absorbed_callback() / step_size)
+    def boundary_condition(self, r_0, r_1):
+        raise NotImplementedError("Should have implemented this")
 
-            # Add start and end point of absorbed period.
-            steps.append(step)
-            distances.append(coordinate_callback(r))
-            step += keep_absorbed
-            steps.append(step)
-            distances.append(coordinate_callback(r))
+    def boundary_position(self, r_0, r_1):
+        raise NotImplementedError("Should have implemented this")
 
-            # Now desorb
-            r_old = boundary_position_callback(r_old, r)
+    def step(self):
+        raise NotImplementedError("Should have implemented this")
+
+    def keep_absorbed(self):
+        raise NotImplementedError("Should have implemented this")
+
+    def coordinate(self, r):
+        raise NotImplementedError("Should have implemented this")
+
+    def info_walk(self):
+        self.steps = [0]
+        self.distances = [self.coordinate(self.r)]
+        step = 0
+        absorbed = self.boundary_condition(self.r, self.r)
+        while step < self.max_steps:
             step += 1
-            while boundary_condition_callback(r_old, r):
-                r = numpy.copy(r_old)
-                r += step_callback()
+            r_old = numpy.copy(self.r)
+            if not absorbed:
 
-            distances.append(coordinate_callback(r))
-            steps.append(step)
-            absorbed = False
+                self.r += self.step()
+                absorbed = self.boundary_condition(r_old, self.r)
+                if not absorbed:
+                    self.steps.append(step)
+                    self.distances.append(self.coordinate(self.r))
+            if absorbed:
+                self.r = self.boundary_position(r_old, self.r)
+                keep_absorbed = int(self.keep_absorbed() / self.step_size)
 
-    return steps, distances
+                # Add start and end point of absorbed period.
+                self.steps.append(step)
+                self.distances.append(self.coordinate(self.r))
+                step += keep_absorbed
+                self.steps.append(step)
+                self.distances.append(self.coordinate(self.r))
 
-def simple_step():
-    mean = 0
-    variance = 1
+                # Now desorb
+                r_old = self.boundary_position(r_old, self.r)
+                step += 1
+                while self.boundary_condition(r_old, self.r):
+                    self.r = numpy.copy(r_old)
+                    self.r += self.step()
 
-    r = []
-    i = 0
-    while i < D:
-        i += 1
-        r.append(random.gauss(mean, variance))
+                self.distances.append(self.coordinate(self.r))
+                self.steps.append(step)
+                absorbed = False
 
-    return numpy.array(r)
-
-
+        return self.steps, self.distances

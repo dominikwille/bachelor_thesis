@@ -1,37 +1,75 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
 import matplotlib.pyplot as plt
-import numpy
-import random
 from core.langevin_simulation import *
 
-def P():
-    tao = 0.03
-    t = random.expovariate(tao)
-    return t
 
-def plate_position(r_0, r_1):
-    plate_0 = 5.0
-    plate_1 = -5.0
-    if (r_1 >= plate_0):
-        plate = plate_0
-    elif (r_1 <= plate_1):
-        plate = plate_1
-    else:
-        plate = 0
-    return numpy.array([plate])
+class Plates1dNoCrossing(Langevin):
+    # start position
+    r = numpy.array([5])
+    # number of steps
+    max_steps = 100000
+    # list of performed steps
+    steps = []
+    # list of positions
+    distances = []
 
-def plate_boundary(r_0, r_1):
-    return numpy.linalg.norm(r_1) >= 5
+    # This defines the dimension of the simulation
+    d = 1
+    # Plate distance
+    plate_distance = 1.0
+    # Difusion constant
+    D = 1.0
 
-def first_component(r):
-    return r[0]
+    # Size of on step / resolution (δt)
+    step_size = 1
 
-def square(r):
-    return r[0]**2
+    # Size of step  (variance ε)
+    variance = (2 * d * D * step_size)**0.5
 
-r_0 = numpy.array([5.0])
-max_steps = 10000
 
-x, y = info_walk(r_0, max_steps, plate_boundary, plate_position, simple_step, P, first_component)
+
+
+
+    def boundary_condition(self, r_0, r_1):
+        return numpy.linalg.norm(r_1) >= 5
+
+    def boundary_position(self, r_0, r_1):
+        plate_0 = 5.0
+        plate_1 = -5.0
+        if (r_1 >= plate_0):
+            plate = plate_0
+        elif (r_1 <= plate_1):
+            plate = plate_1
+        else:
+            plate = 0
+        return numpy.array([plate])
+
+    def step(self):
+        mean = 0
+
+        r = []
+        i = 0
+        while i < self.d:
+            i += 1
+            r.append(random.gauss(mean, self.variance))
+
+        return numpy.array(r)
+        # return numpy.array([random.choice([1.0, -1.0])])
+
+    def keep_absorbed(self):
+        tao = 0.03
+        t = random.expovariate(tao)
+        return t
+
+    def coordinate(self, r):
+        return r[0]
+
+
+test = Plates1dNoCrossing()
+
+x, y = test.info_walk()
 
 Y = []
 last_item = 0
