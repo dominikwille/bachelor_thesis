@@ -1,0 +1,83 @@
+%\documentclass[a4paper, parskip=half]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% \usepackage[english, ngerman]{babel}
+\usepackage{libertine}
+\usepackage{xstring}
+\usepackage{amssymb,amstext,amsmath}
+\usepackage{graphicx}
+\usepackage{sectsty}
+\usepackage{multirow}
+%% \usepackage{dsfont}
+\usepackage{amsfonts}
+\usepackage{graphics}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{ifthen}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+
+\newcommand{\myMail}[1]{\href{mailto:#1}{#1}}
+
+\newcommand{\myImage}[3][\textwidth]{
+  \begin{center}
+    \begin{minipage}{\linewidth}
+      \centering 
+      \makebox[0cm]{\includegraphics[width=#1]{#2}}
+      \ifthenelse{ \equal{#3}{}} {
+      
+      } {
+        \captionof{figure}{#3}
+        %% \label{#3}
+      }
+    \end{minipage}
+   
+  \end{center}
+}
+
+\newcommand{\myTitlepage}{%
+\begin{titlepage}
+  \begin{center}
+    \vspace{5cm}
+    \huge\bfseries
+    \myTitle
+    \vspace{1cm}
+
+    \large\normalfont von
+
+    \bigskip
+    \textbf{\myAuthor}
+
+    \myDate
+
+    \vspace{1cm}
+    
+    \large\normalfont
+    Versuchsdurchführung am
+
+    \textbf{\exDate}
+    \vspace{1cm}
+    
+    Dozent
+
+    \textbf{\exDoc}
+    
+    
+    %\myImage[9cm]{\myTitleImage}{}
+  \end{center}
+  \vfill
+  \enlargethispage{2cm}
+  \parbox[t]{0.55\textwidth}{%
+   \myTitleLeft
+  }
+  \parbox[t]{0.45\textwidth}{\raggedleft%
+    \myTitleRight
+  }
+\end{titlepage}
+}
+
+\newcommand{\mySecRef}[1]{%
+  \hyperref[sec:#1]{Punkt-}\ref{sec:#1}%
+}

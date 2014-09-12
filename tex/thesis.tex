@@ -1,0 +1,77 @@
+\documentclass[a4paper, parskip=half]{scrartcl}
+%\usepackage{libertine}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+
+\title{Proton Dynamics in Cavities}
+\author{Dominik Wille}
+
+\newcommand{\person}[1]{%
+	\textsc{#1}%
+}
+
+\newcommand{\effect}[1]{%
+	\textbf{#1}%
+}
+
+\newcommand{\myImage}[3]{
+	\includegraphics[width = 0.8\textwidth]{img/#1}
+	{\centering Figure 1: #2}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+\section{Introduction}
+
+
+\section{Brownian Dynamics}
+The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}.
+\subsection{Langevin Symulation}
+\subsubsection{Priciple}
+The principle of a Langevin simulation generally is to consider collisions with other particles as a random force. And propergate the position of a particle over small time steps $\Delta t$.
+\subsubsection{Physical background}
+An approach to describe situations with brownian motion was suggested by \person{Paul Langevin} who added the random force $\mathbf{Z}(t)$ in newtons equation of motion. This stochastic term represents the collision driven force. His equation, the Langevin equation reads:
+
+\begin{align}
+m \ddot{\mathbf{r}} = -\lambda\dot{\mathbf{r}} + \mathbf{Z}(t)
+\end{align}
+
+where $m$ is the mass of the particle, $\mathbf{r}$ the position of the particle and $\lambda$ The friction constant.
+
+Brownian dynamics can be represented with the so called \effect{overdamped langevin equation} where the $m \ddot{\mathbf{r}}$ term is neglected. The equation for the prevailing situation therefore is:
+
+\begin{align}
+\lambda\dot{\mathbf{r}} = \mathbf{Z}(t)
+\end{align}
+
+In order to get an iterable expression this expression is discretesated in time intervals $\Delta t$:
+
+\begin{align}
+\int_t^{t+ \Delta t} \dot{\mathbf{r}}(t')\, dt' &= \int_t^{t+ \Delta t} \frac{\mathbf{Z}(t')}{\lambda}\, dt' \\
+\mathbf{r}(t + \Delta t) - \mathbf{r}(t) &= \frac{1}{\lambda} \int_t^{t+ \Delta t} \mathbf{Z}(t)\, dt'\\
+\mathbf{r}(t + \Delta t) - \mathbf{r}(t) &\cong \boldsymbol{\zeta}(t, \varepsilon)
+\end{align}
+
+Where $\varepsilon$ is the mean step distance and $\boldsymbol{\zeta}(t, \varepsilon)$ random vector with mean norm $\varepsilon$.
+Both will be discussed later on.
+
+The position of a particle at time $t + \Delta t$ can easily derived from its position at time $t$.
+
+\begin{align}
+\mathbf{r}(t + \Delta t) = \mathbf{r}(t) + \boldsymbol{\zeta}(t, \varepsilon)
+\end{align}
+
+
+ 
+\section{Conclusion}
+Bar
+\end{document}

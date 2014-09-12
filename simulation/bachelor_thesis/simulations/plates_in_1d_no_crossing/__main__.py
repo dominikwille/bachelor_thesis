@@ -9,11 +9,13 @@ class Plates1dNoCrossing(Langevin):
     # start position
     r = numpy.array([5])
     # number of steps
-    max_steps = 100000
+    max_steps = 1000
     # list of performed steps
     steps = []
     # list of positions
     distances = []
+    # Absorbed state
+    absorbed = True
 
     # This defines the dimension of the simulation
     d = 1
@@ -21,9 +23,8 @@ class Plates1dNoCrossing(Langevin):
     plate_distance = 1.0
     # Diffusion constant
     D = 1.0
-
     # Size of on step / resolution (δt)
-    step_size = 1
+    step_size = 1.0
 
     # Size of step  (variance ε)
     variance = (2 * d * D * step_size)**0.5
@@ -60,12 +61,21 @@ class Plates1dNoCrossing(Langevin):
         return t
 
     def coordinate(self, r):
-        return r[0]
+        if self.absorbed:
+            c = 1
+        else:
+            c = 0
+        return [r[0], c]
 
+
+num = 100
 
 test = Plates1dNoCrossing()
+x, data = test.info_walk()
+data = numpy.matrix(data)
+y = numpy.array(data[:,0])
 
-x, y = test.info_walk()
+cortellation = numpy.array(data[:,1])
 
 Y = []
 last_item = 0
