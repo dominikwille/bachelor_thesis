@@ -126,21 +126,24 @@ with open('data/test.csv', 'rb') as csvfile:
 
 from scipy.optimize import curve_fit
 
-def func(x_, a, b, c, d, e, f, g):
+def func0(x_, a, b, c, d, e, f, g):
     y = a * numpy.exp(-b * x_) + c * numpy.exp(-d * x_) + e * numpy.exp(-f * x_) + g
     return y
 
-def func2(x_, a, b, c):
+def func1(x_, a, b, c):
     return c * (1-numpy.exp(-a * (x_ + b)))
 
-popt, pcov = curve_fit(func2, xdata, c_ab)
+popt1, pcov1 = curve_fit(func1, xdata, c_ab)
+popt0, pcov0 = curve_fit(func0, xdata, c_aa)
 
+print popt0
 
 
 plt.plot(xdata, c_aa)
 plt.plot(xdata, c_ab)
-plt.plot(xdata, func2(numpy.array(xdata), *popt))
+plt.plot(xdata, func0(numpy.array(xdata), *popt0))
+plt.plot(xdata, func1(numpy.array(xdata), *popt1))
 plt.xlabel('Step')
-plt.ylabel('Posibilty to be absorbed')
+plt.ylabel('Probability to be absorbed')
 plt.ylim([0, 1])
 plt.show()

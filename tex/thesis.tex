@@ -4,6 +4,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usetikzlibrary{matrix}
+\usepackage{amssymb}
+\usepackage{xfrac}
 
 \title{Proton Dynamics in Cavities}
 \author{Dominik Wille}
@@ -37,7 +42,7 @@
 The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}.
 \subsection{Langevin Symulation}
 \subsubsection{Priciple}
-The principle of a Langevin simulation generally is to consider collisions with other particles as a random force. And propergate the position of a particle over small time steps $\Delta t$.
+The principle of a Langevin simulation generally is to consider collisions with other particles as a random force. And propergate the position of a particle over small time steps $\delta t$.
 \subsubsection{Physical background}
 An approach to describe situations with brownian motion was suggested by \person{Paul Langevin} who added the random force $\mathbf{Z}(t)$ in newtons equation of motion. This stochastic term represents the collision driven force. His equation, the Langevin equation reads:
 
@@ -56,22 +61,105 @@ Brownian dynamics can be represented with the so called \effect{overdamped lange
 In order to get an iterable expression this expression is discretesated in time intervals $\Delta t$:
 
 \begin{align}
-\int_t^{t+ \Delta t} \dot{\mathbf{r}}(t')\, dt' &= \int_t^{t+ \Delta t} \frac{\mathbf{Z}(t')}{\lambda}\, dt' \\
-\mathbf{r}(t + \Delta t) - \mathbf{r}(t) &= \frac{1}{\lambda} \int_t^{t+ \Delta t} \mathbf{Z}(t)\, dt'\\
-\mathbf{r}(t + \Delta t) - \mathbf{r}(t) &\cong \boldsymbol{\zeta}(t, \varepsilon)
+\int_t^{t+ \delta t} \dot{\mathbf{r}}(t')\, dt' &= \int_t^{t+ \Delta t} \frac{\mathbf{Z}(t')}{\lambda}\, dt' \\
+\mathbf{r}(t + \delta t) - \mathbf{r}(t) &= \frac{1}{\lambda} \int_t^{t+ \Delta t} \mathbf{Z}(t)\, dt'\\
+\mathbf{r}(t + \delta t) - \mathbf{r}(t) &\cong \boldsymbol{\zeta}(t, \varepsilon)
 \end{align}
 
-Where $\varepsilon$ is the mean step distance and $\boldsymbol{\zeta}(t, \varepsilon)$ random vector with mean norm $\varepsilon$.
-Both will be discussed later on.
+In the discussed 1--dimensional case $\varepsilon$ is the step size and $\boldsymbol{\zeta}(t, \varepsilon)$ will be $\varepsilon$ or $-\varepsilon$ with a chance of $50\%$ each.
 
 The position of a particle at time $t + \Delta t$ can easily derived from its position at time $t$.
 
 \begin{align}
-\mathbf{r}(t + \Delta t) = \mathbf{r}(t) + \boldsymbol{\zeta}(t, \varepsilon)
+\mathbf{r}(t + \delta t) = \mathbf{r}(t) + \boldsymbol{\zeta}(t, \varepsilon)
 \end{align}
 
+\subsection{Connection to diffusion}
+The motion which is performed in the langevin simulation is widely known as a \effect{random walk}. The probability $p(x, n)$ that a random walk comes to a position $x$ after $n$ steps. Is given by:
 
- 
-\section{Conclusion}
-Bar
+\begin{align}
+p(x, n) = \frac{\mathrm{Number\, of\, ways\, to\, position\,} x}{\mathrm{Total\, number\, of\, ways}} = \frac{N_x}{N}
+\end{align}
+
+Since there are 2 possible successors for every position the total number of ways  doubles every step.
+
+\begin{align}
+N = 2^n
+\end{align}
+
+The number of ways to the position $x$ after n steps can be obtained by \effect{Pascal's triangle}.
+
+\begin{figure}[ht!]
+\centering
+\begin{tikzpicture}[description/.style={fill=white,inner sep=2pt}]
+\matrix (m) [matrix of math nodes, row sep=1.5em,
+column sep=0.3em, text height=1.5ex, text depth=0.25ex,
+nodes={
+        minimum width=1.0cm
+    },
+]
+{%
+\mathrm{Step/Position} &-3\varepsilon &-2\varepsilon & -1\varepsilon & 0 & \varepsilon & 2\varepsilon &3\varepsilon \\
+0 & & & & 1 & & & \\
+1 & & & 1 & & 1 & & \\
+2 & & 1 & & 2 & & 1 &\\
+3 & 1 & & 3 & & 3 & & 1\\};
+\path[-] (m-2-5) edge (m-3-4)
+		 (m-2-5) edge (m-3-6)
+		 (m-3-4) edge (m-4-5)
+		 (m-3-4) edge (m-4-3)
+		 (m-3-6) edge (m-4-7)
+		 (m-3-6) edge (m-4-5)
+		 (m-5-6) edge (m-4-5)
+		 (m-5-4) edge (m-4-3)
+		 (m-5-8) edge (m-4-7)
+		 (m-5-6) edge (m-4-5)
+		 (m-5-6) edge (m-4-5)
+		 (m-5-2) edge (m-4-3)
+		 (m-5-6) edge (m-4-7)
+		 (m-5-4) edge (m-4-5);
+\end{tikzpicture}
+\caption{Number of ways to different distances}
+\end{figure}
+
+\begin{align}
+N_x &= \binom{n}{k}\\
+\mathrm{with} \, \, \,\, k &= \frac{1}{2}\left(\frac{x}{\varepsilon} + n \right)
+\end{align}
+
+Therefore $p(x,n)$ follows as:
+
+\begin{align}
+p(x,n) = \binom{n}{k} \cdot 2^{-n}
+\end{align}
+A consequence of the \effect{de Moivre–Laplace theorem} is that for large numbers of steps $(n\rightarrow\infty)$ this expression can be approximated with the following gaussian curve:
+
+\begin{align}
+p(x,n) \cong \sqrt{\frac{2}{n \pi}} \exp\left(\frac{-x^2}{2\varepsilon^2 n} \right)
+\end{align}
+
+The probability function $p(x,n)$ has valid values only for values 
+\begin{align}
+x \in \{x\; |\; x = z \cdot 2 \varepsilon + \varepsilon\, (n\,\mathrm{mod}\, 2),\, z \in \mathbb{Z} \wedge |x| \leq n \varepsilon\} 
+\end{align}
+For other values $x$ the probability is $0$. This means that there is only one value per $2\epsilon$ interval, therefore the probability density function $\rho(x,n)$ is:
+\begin{align}
+\rho(x,n) = \frac{1}{2\varepsilon}\; p(x,n) = \frac{1}{\varepsilon\sqrt{2\pi n}} \exp\left(\frac{-x^2}{2\varepsilon^2 n} \right)
+\end{align}
+The probability density function of a \effect{random walk} fulfills the diffusion equation (\textit{Note: }$n = \sfrac{t}{\delta t}$):
+\begin{align}
+\frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t) \\
+\mathrm{with} \, \, \,\, D &= \frac{\varepsilon^2}{2 \delta t}
+\end{align}
+What means that a random walk can also be seen as a diffusion process.
+\subsection{Mean square distance}
+Obviously the expectation value after $n$ steps $\langle x_n\rangle = 0$. What can be derived from:
+\begin{align}
+\langle x_n\rangle = \int_{-\infty}^\infty x \cdot \rho(x,t)\; dx = 0
+\end{align}
+But the \effect{mean square distance} (MSD) is:
+\begin{align}
+\langle x_n^2\rangle = \int_{-\infty}^\infty x^2 \cdot \rho(x,t)\; dx = 2 D t
+\end{align}
+
 \end{document}
