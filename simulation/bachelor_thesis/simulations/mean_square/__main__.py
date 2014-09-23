@@ -17,7 +17,7 @@ class MeanSquare(Langevin):
     # Absorbed state
     absorbed = False
     # This defines the dimension of the simulation
-    d = 3
+    d = 1
 
     # Diffusion constant
     D = 0.1
@@ -34,16 +34,16 @@ class MeanSquare(Langevin):
         mean = 0
         r = [0] * self.d
         component = random.choice(range(self.d))
-        r[component] = random.gauss(mean, self.e)
+        r[component] = random.choice([-self.e, self.e])
         return numpy.array(r)
 
     def coordinate(self, r):
         return numpy.linalg.norm(r)**2
 
 test = MeanSquare()
-test.max_steps = 1000
+# test.max_steps = 1000
 num = 5001
-nums = [50, 500, 5000]
+nums = [5, 50, 5000]
 Y_e = []
 Y = numpy.array([0]*(test.max_steps + 1))
 for i in range(num):

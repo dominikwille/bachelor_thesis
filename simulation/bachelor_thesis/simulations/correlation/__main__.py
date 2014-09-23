@@ -126,24 +126,25 @@ with open('data/test.csv', 'rb') as csvfile:
 
 from scipy.optimize import curve_fit
 
-def func0(x_, a, b, c, d, e, f, g):
-    y = a * numpy.exp(-b * x_) + c * numpy.exp(-d * x_) + e * numpy.exp(-f * x_) + g
-    return y
+def func0(x_, a, b, c, d, f, g, h):
+    return a * numpy.exp(- x_ * b) + c * numpy.exp(-x_ * d) + f * numpy.exp(-x_ * g) + h
 
-def func1(x_, a, b, c):
-    return c * (1-numpy.exp(-a * (x_ + b)))
+def func1(x_, j, k, l):
+    return j * numpy.exp(- x_ / k) + l
+popt0 = [ 0.07712867,  0.00204063,  0.55760507,  0.10309138,  0.30010113,  0.01889753,  0.02938739]
 
+# popt0, pcov0 = curve_fit(func0, xdata, c_aa)
 popt1, pcov1 = curve_fit(func1, xdata, c_ab)
-popt0, pcov0 = curve_fit(func0, xdata, c_aa)
 
 print popt0
+print popt1
 
-
-plt.plot(xdata, c_aa)
-plt.plot(xdata, c_ab)
-plt.plot(xdata, func0(numpy.array(xdata), *popt0))
-plt.plot(xdata, func1(numpy.array(xdata), *popt1))
+p0, = plt.plot(xdata, c_aa)
+p1, = plt.plot(xdata, c_ab)
+p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
+p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
+plt.legend([p0, p1, p2, p3], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit'], loc=2)
 plt.xlabel('Step')
-plt.ylabel('Probability to be absorbed')
+plt.ylabel('Probability')
 plt.ylim([0, 1])
 plt.show()

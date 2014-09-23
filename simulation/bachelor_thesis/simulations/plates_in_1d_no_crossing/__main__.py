@@ -7,34 +7,38 @@ from core.langevin_simulation import *
 
 class Plates1dNoCrossing(Langevin):
     # start position
-    r = numpy.array([5])
+    r = numpy.array([-1.0])
     # number of steps
-    max_steps = 1000
+    max_steps = 4000000
     # list of performed steps
     steps = []
     # list of positions
     distances = []
     # Absorbed state
     absorbed = True
-
     # This defines the dimension of the simulation
     d = 1
+
     # Plate distance
-    plate_distance = 1.0
+    half_plate_distance = 1.0
     # Diffusion constant
     D = 1.0
-    # Size of on step / resolution (δt)
-    step_size = 1.0
+    # Size of on step - 1/resolution (δt)
+    step_size = 0.001
+    # Parameter of the exponential decaying desorbtion probability
+    tao = 30
+    # The probability that the particle absorbs if it fulfills the boundary condition
+    p = 0.3
 
     # Size of step  (variance ε)
-    variance = (2 * d * D * step_size)**0.5
+    variance = 2 * d * D * step_size
 
     def boundary_condition(self, r_0, r_1):
-        return numpy.linalg.norm(r_1) >= 5
+        return abs(r_1[0]) >= self.half_plate_distance
 
     def boundary_position(self, r_0, r_1):
-        plate_0 = 5.0
-        plate_1 = -5.0
+        plate_0 = self.half_plate_distance
+        plate_1 = -self.half_plate_distance
         if (r_1 >= plate_0):
             plate = plate_0
         elif (r_1 <= plate_1):
@@ -43,7 +47,8 @@ class Plates1dNoCrossing(Langevin):
             plate = 0
         return numpy.array([plate])
 
-    def step(self):
+    def next(self):
+        return numpy.array([random.choice([-self.variance, self.variance])])
         mean = 0
 
         r = []
@@ -53,41 +58,21 @@ class Plates1dNoCrossing(Langevin):
             r.append(random.gauss(mean, self.variance))
 
         return numpy.array(r)
-        # return numpy.array([random.choice([1.0, -1.0])])
+        #
 
     def keep_absorbed(self):
-        tao = 0.03
-        t = random.expovariate(tao)
+        t = random.expovariate(1.0 / self.tao)
         return t
 
     def coordinate(self, r):
-        if self.absorbed:
-            c = 1
-        else:
-            c = 0
-        return [r[0], c]
+        return r[0]
 
-
-num = 100
 
 test = Plates1dNoCrossing()
-x, data = test.info_walk()
-data = numpy.matrix(data)
-y = numpy.array(data[:,0])
+x, y = test.info_walk()
 
-cortellation = numpy.array(data[:,1])
-
-Y = []
-last_item = 0
-step = 0
-for i in y:
-    step += 1
-    last_item = i**2 + last_item
-    Y.append(last_item / step)
-
-plt.plot(x, Y)
 plt.plot(x, y)
 plt.xlabel('Step')
 plt.ylabel('Position')
-plt.ylim([-6, 36])
+plt.ylim([-1.1, 1.1])
 plt.show()
