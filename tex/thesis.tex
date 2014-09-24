@@ -37,6 +37,8 @@
 
 \newcommand{\myEqLabel}[1]{\label{eq:#1}}
 
+\newcommand{\myEqAnnex}[1]{\;\;\;\ast \myEqLabel{#1}}
+
 \begin{document}
 \maketitle
 \thispagestyle{empty}
@@ -92,7 +94,7 @@ The position of a particle at time $t + \Delta t$ can easily derived from its po
 \subsection{Connection to diffusion}
 The probability density function for both mentioned types of \effect{random walks} fulfill the diffusion equation (\textit{Note: }$n = \sfrac{t}{\delta t}$):
 \begin{align}
-\frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t) \\
+\frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t) \myEqAnnex{diffusion_PDE} \\
 \mathrm{with} \, \, \,\, D &= \frac{\varepsilon^2}{2 \delta t} \myEqLabel{def:D}
 \end{align}
 What means that a random walk can also be seen as a diffusion process. The exact form of the probability density functions is discussed below.
@@ -189,7 +191,7 @@ Which is exactly the expression of a gaussian distributed 1--dimensional random 
 \textbf{Inductive step:}
 \begin{align}
 p(x,n+1) &= \int_{-\infty}^\infty \frac{1}{\varepsilon\sqrt{2n\pi}}\, e^{-\sfrac{x'^2}{2n\varepsilon^2}} \cdot \frac{1}{\varepsilon\sqrt{2\pi}}\, e^{-\sfrac{(x - x')^2}{2\varepsilon^2}} \, dx'\\
-&= \frac{1}{\varepsilon\sqrt{2(n+1)\pi}}\, e^{-\sfrac{x^2}{2(n+1)\varepsilon^2}}
+&= \frac{1}{\varepsilon\sqrt{2(n+1)\pi}}\, e^{-\sfrac{x^2}{2(n+1)\varepsilon^2}} \myEqAnnex{gauss_random_walk}
 \end{align}
 
 and since the calculated $p(x,n+1)$ is the same as $\rho(x,n+1)$ in \myEqRef{rho_gauss} the expression is proofed. $\checkmark$
@@ -200,7 +202,7 @@ Obviously the expectation value for $x$ after $n$ steps $\langle x_n\rangle = 0$
 \end{align}
 But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the following expression:
 \begin{align}
-\langle x_n^2\rangle = \int_{-\infty}^\infty x^2 \cdot \rho(x,t)\; dx = 2 D t \myEqLabel{MSD}
+\langle x_n^2\rangle = \int_{-\infty}^\infty x^2 \cdot \rho(x,t)\; dx = 2 D t \myEqAnnex{MSD}
 \end{align}
 
 \section{Implementation of the langevin simulation}
@@ -317,5 +319,44 @@ The Laplace transformed correlation functions are:
 \widetilde{C}_{AA}(\omega) &= \frac{a}{b + \omega} + \frac{c}{d + \omega} + \frac{f}{g + \omega} + \frac{h}{\omega} \\
 \widetilde{C}_{AB}(\omega) &= \frac{j}{k + \omega} + \frac{l}{\omega}
 \end{align}
-\section{Conclusion}
+\section{Annex}
+\myEqRef{diffusion_PDE}
+\begin{align}
+\rho(x,t) &= \frac{1}{\varepsilon\sqrt{2\pi\sfrac{t}{\delta t}}}\; e^{-\frac{x^2 \delta t}{2 \varepsilon^2 t}} \\
+\frac{\partial}{\partial t} \rho(x,t) &= - \frac{1}{2t} \rho(x,t) + \frac{x^2 \delta t}{\varepsilon^2t^2} \rho(x,t) \\
+&= \frac{1}{2} \left(\frac{x^2 \delta t}{\varepsilon^2t^2} - \frac{1}{t} \right)\rho(x,t) \\
+\frac{\partial^2}{\partial x^2} \rho(x,t) &= \frac{\partial}{\partial x} \left(-\frac{x\delta t}{\varepsilon^2t} \right) \rho(x,t) \\
+&= -\frac{\delta t}{\varepsilon^2t} \rho(x,t) + \frac{x^2\delta t^2}{\varepsilon^4 t^2} \rho(x,t) \\
+&= \frac{\delta t}{\varepsilon^2}\left(\frac{x^2 \delta t}{\varepsilon^2 t^2} - \frac{1}{t}\right) \rho(x,t) \\
+\frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t)\\
+\Rightarrow \frac{1}{2} &= D \cdot \frac{\delta t}{\varepsilon^2}\\
+\Leftrightarrow D &= \frac{\varepsilon^2}{2\delta t}
+\end{align}
+
+\myEqRef{gauss_random_walk}
+\begin{align}
+p(x,n+1) &= \int_{-\infty}^\infty \frac{1}{\varepsilon\sqrt{2n\pi}}\, e^{-\sfrac{x'^2}{2n\varepsilon^2}} \cdot \frac{1}{\varepsilon\sqrt{2\pi}}\, e^{-\sfrac{(x - x')^2}{2\varepsilon^2}} \, dx'\\
+&= \frac{1}{\varepsilon^2\sqrt{4\pi^2n}} \, \int_{-\infty}^\infty e^{-\frac{x'^2 + x^2n - 2xx'n +x'^2n}{2n\varepsilon^2}}\, dx' \\
+&= \frac{1}{\varepsilon^2\sqrt{4\pi^2n}} \, \int_{-\infty}^\infty e^{-\frac{(n+1)x'^2 - 2xx'n + \sfrac{x^2n^2}{(n+1)} + x^2n - \sfrac{x^2n^2}{(n+1)}}{2n\varepsilon^2}}\, dx' \\
+&= \frac{1}{\varepsilon^2\sqrt{4\pi^2n}} \, \int_{-\infty}^\infty e^{-\frac{(\sqrt{n+1}x - \sfrac{xn}{\sqrt{n+1}}')^2}{2n\varepsilon^2}} \cdot e^{- \frac{x^2 - \sfrac{x^2n}{(n+1)}}{2\varepsilon^2}}\, dx' \\
+\mathrm{let}\;\;\; \alpha &= \frac{\sqrt{n+1}x' - \sfrac{xn}{\sqrt{n+1}}}{\sqrt{2n}\varepsilon}
+\;\;\; \Rightarrow \;\;\; d\alpha = \sqrt{\frac{n+1}{2n\varepsilon^2}}\; dx'\\
+p(x,n+1) &= \frac{1}{\varepsilon^2\sqrt{4\pi^2n}} \sqrt{\frac{2n\varepsilon^2}{n+1}}\;\cdot\, e^{-\frac{(n+1)x^2 - x^2n}{2(n+1)\varepsilon^2}}\, \int_{-\infty}^\infty e^{-\alpha^2}\, d\alpha\\
+&= \frac{1}{\varepsilon\sqrt{2(n+1)\pi}}\;\cdot\, e^{-\frac{x^2}{2(n+1)\varepsilon^2}}
+\end{align}
+
+\myEqRef{MSD}
+\begin{align}
+\langle x_n^2\rangle &= \int_{-\infty}^\infty x^2 \cdot \frac{1}{\varepsilon\sqrt{2\pi n}}\; e^{-\sfrac{x^2}{2\varepsilon^2 n}}\; dx\\
+&= \frac{1}{\varepsilon\sqrt{2\pi n}} \; \int_{-\infty}^\infty x^2 \cdot e^{-\sfrac{x^2}{2\varepsilon^2 n}}\; dx \\
+\mathrm{let}\;\;\; \alpha &= \frac{x}{\sqrt{2\varepsilon^2n}} \;\;\; \Rightarrow \;\;\; dx = \sqrt{2\varepsilon^2n}\;d\alpha\\
+\langle x_n^2\rangle &= \frac{\sqrt{2\varepsilon^2n}}{\varepsilon\sqrt{2\pi n}} \; \int_{-\infty}^\infty 2 \varepsilon^2n\alpha^2\; e^{-\alpha^2}\; d\alpha\\
+&= \frac{2\varepsilon^2n}{\sqrt{\pi}} \; \int_{-\infty}^\infty \alpha^2\; e^{-\alpha^2}\; d\alpha\\
+&= \frac{\varepsilon^2n}{\sqrt{\pi}} \; \int_{-\infty}^\infty \alpha \cdot 2\alpha\; e^{-\alpha^2}\; d\alpha\\
+&= \frac{\varepsilon^2n}{\sqrt{\pi}} \; \left(-\alpha e^{-\alpha^2}\;\; \bigg\vert_{-\infty}^\infty \;\;\; - \int_{-\infty}^\infty 1 \cdot \left(-e^{-\alpha^2} \right)\; d\alpha\right) \\
+&= \frac{\varepsilon^2n}{\sqrt{\pi}} \; \left(0 + \sqrt{\pi} \right)\\
+&= \varepsilon^2 n \\
+&= 2 D \delta t n \\
+&= 2 D t
+\end{align}
 \end{document}
