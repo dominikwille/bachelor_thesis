@@ -25,7 +25,7 @@
 \newcommand{\myImage}[2]{
 	\begin{figure}[ht!]
 	\centering
-	\includegraphics[width = 0.8\textwidth]{img/#1}
+	\includegraphics[width = 0.9\textwidth]{img/#1}
 	\caption{#2}
 	\label{pic:#1}
 	\end{figure}
@@ -77,7 +77,11 @@ In order to get an iterable expression this expression is discretesated in time 
 \mathbf{r}(t + \delta t) - \mathbf{r}(t) &\cong \boldsymbol{\zeta}(t, \varepsilon)
 \end{align}
 
-In the discussed 1--dimensional case $\varepsilon$ is the step size and $\boldsymbol{\zeta}(t, \varepsilon)$ will be $\varepsilon$ or $-\varepsilon$ with a chance of $50\%$ each.
+In the discussed 1--dimensional case $\varepsilon$ is the mean step size and $\boldsymbol{\zeta}(t, \varepsilon)$ is one random vector. For a simple random walk with unique step size this will be $\varepsilon$ or $-\varepsilon$ with a chance of $50\%$ each. For a gaussian random walk this will be some value $s$ with a probability:
+
+\begin{align}
+P(s) = \frac{1}{\varepsilon \sqrt{2\pi}} e^{-\sfrac{s^2}{2\varepsilon^2}}
+\end{align} 
 
 The position of a particle at time $t + \Delta t$ can easily derived from its position at time $t$.
 
@@ -86,7 +90,14 @@ The position of a particle at time $t + \Delta t$ can easily derived from its po
 \end{align}
 
 \subsection{Connection to diffusion}
-The motion which is performed in the langevin simulation is widely known as a \effect{random walk}. The probability $p(x, n)$ that a random walk comes to a position $x$ after $n$ steps. Is given by:
+The probability density function for both mentioned types of \effect{random walks} fulfill the diffusion equation (\textit{Note: }$n = \sfrac{t}{\delta t}$):
+\begin{align}
+\frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t) \\
+\mathrm{with} \, \, \,\, D &= \frac{\varepsilon^2}{2 \delta t} \myEqLabel{def:D}
+\end{align}
+What means that a random walk can also be seen as a diffusion process. The exact form of the probability density functions is discussed below.
+\subsubsection{Fixed step size}
+The motion which is performed in the langevin simulation is widely known as a \effect{random walk}. The simplest variant is as mentioned before to choose $\varepsilon$ or $-\varepsilon$ with a chance of $50\%$ each. The probability $p(x, n)$ that a random walk with discrete steps of length $\varepsilon$ comes to a position $x$ after $n$ steps. Is given by:
 
 \begin{align}
 p(x, n) = \frac{\mathrm{Number\, of\, ways\, to\, position\,} x}{\mathrm{Total\, number\, of\, ways}} = \frac{N_x}{N}
@@ -146,7 +157,7 @@ p(x,n) = \binom{n}{k} \cdot 2^{-n}
 A consequence of the \effect{de Moivre–Laplace theorem} is that for large numbers of steps $(n\rightarrow\infty)$ this expression can be approximated with the following gaussian curve:
 
 \begin{align}
-p(x,n) \cong \sqrt{\frac{2}{n \pi}} \exp\left(\frac{-x^2}{2\varepsilon^2 n} \right)
+p(x,n) \cong \sqrt{\frac{2}{n \pi}} e^{-\sfrac{x^2}{2\varepsilon^2 n}}
 \end{align}
 
 The probability function $p(x,n)$ has valid values only for values 
@@ -155,16 +166,33 @@ x \in \{x\; |\; x = z \cdot 2 \varepsilon + \varepsilon\, (n\,\mathrm{mod}\, 2),
 \end{align}
 For other values $x$ the probability is $0$. This means that there is only one value per $2\epsilon$ interval, therefore the probability density function $\rho(x,n)$ is:
 \begin{align}
-\rho(x,n) = \frac{1}{2\varepsilon}\; p(x,n) = \frac{1}{\varepsilon\sqrt{2\pi n}} \exp\left(\frac{-x^2}{2\varepsilon^2 n} \right)
+\rho(x,n) = \frac{1}{2\varepsilon}\; p(x,n) = \frac{1}{\varepsilon\sqrt{2\pi n}} e^{-\sfrac{x^2}{2\varepsilon^2 n}}
 \end{align}
 Which is the normal distribution with $\mu = 0;\;\; \sigma =  \varepsilon\sqrt{n}$.
 
-The probability density function of a \effect{random walk} fulfills the diffusion equation (\textit{Note: }$n = \sfrac{t}{\delta t}$):
+\subsubsection{Gaussian random walk}
+The probability density function for a gaussian random walk with mean step size $\varepsilon$ has exactly the same form as the for fixed step size $\varepsilon$.
 \begin{align}
-\frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t) \\
-\mathrm{with} \, \, \,\, D &= \frac{\varepsilon^2}{2 \delta t} \myEqLabel{def:D}
+\rho(x,n) = \frac{1}{\varepsilon\sqrt{2\pi n}} e^{-\sfrac{x^2}{2\varepsilon^2 n}} \myEqLabel{rho_gauss}
 \end{align}
-What means that a random walk can also be seen as a diffusion process.
+This can easily be shown with a mathematical induction for $p(x,n)$. Note that because every position is possible the probability $p(x,n)$ is exactly the same as the probability density $\rho(x,n)$ in this case:
+\begin{align}
+\rho(x,n) = p(x,n)
+\end{align} 
+
+\textbf{Base case} ($n = 1$)\textbf{:}
+\begin{align}
+p(x,1) = \frac{1}{\varepsilon\sqrt{2\pi}} e^{-\sfrac{x^2}{2\varepsilon^2}}
+\end{align}
+Which is exactly the expression of a gaussian distributed 1--dimensional random vector with $\varepsilon$ variance. $\checkmark$
+
+\textbf{Inductive step:}
+\begin{align}
+p(x,n+1) &= \int_{-\infty}^\infty \frac{1}{\varepsilon\sqrt{2n\pi}}\, e^{-\sfrac{x'^2}{2n\varepsilon^2}} \cdot \frac{1}{\varepsilon\sqrt{2\pi}}\, e^{-\sfrac{(x - x')^2}{2\varepsilon^2}} \, dx'\\
+&= \frac{1}{\varepsilon\sqrt{2(n+1)\pi}}\, e^{-\sfrac{x^2}{2(n+1)\varepsilon^2}}
+\end{align}
+
+and since the calculated $p(x,n+1)$ is the same as $\rho(x,n+1)$ in \myEqRef{rho_gauss} the expression is proofed. $\checkmark$
 \subsection{Mean square distance}
 Obviously the expectation value for $x$ after $n$ steps $\langle x_n\rangle = 0$. What can be derived from:
 \begin{align}
@@ -176,7 +204,10 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
 \end{align}
 
 \section{Implementation of the langevin simulation}
-
+The system which is simulated consists of two infinite plates A and B with distance $d$. Between the two plates is some fluid which surrounds the simulated ion. The ion absorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
+\begin{align}
+P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}}
+\end{align}
 \begin{figure}[ht!]
 \centering
 \begin{tikzpicture}[scale=.8, z={(-.707,-.3)}]
@@ -193,11 +224,16 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
     \draw[arrows=<->] (0,0.2,0) -- (0,2.8,0);
     \draw (-0.3,1.5,0) node{$d$};
 \end{tikzpicture}
+\caption{Schematic structure of the system}
 \end{figure}
 
-\myImage{position}{Position of an ion}
+\myImage{gauss_pos}{Position of a particle on a gaussian random walk}
 
-\section{Comparision to the analytical Calculation}
+\myImage{fixed_pos}{Position of a particle on a simple random walk}
+
+For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk therefore is just superior the simple random walk.
+
+\section{Comparison to analytic calculations}
 \subsection{Free particle}
 A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD in time steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression. The parameters were:
 \begin{center}
@@ -219,6 +255,7 @@ The expectation is that for large numbers of runs the mean square converges agai
 \myImage{mean_square}{MSD over time for different numbers of runs}
 
 \subsection{Correlation functions}
+\subsubsection{Definition}
 Since there is an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be absorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is absorbed on plate $\mathrm{A}$ at time $t=0$.
 
 These correlation functions can easily be obtained from the langevin simulation by noting if and where the particle is absorbed over the time. 
@@ -227,8 +264,8 @@ Afterwards the values of the correlation function $C_{AA}(t)$ can be calculated 
 
 Similarly the values of the correlation function $C_{AB}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is absorbed on plate $\mathrm{A}$ at the beginning and on plate $\mathrm{B}$ at the end over the total number of intervals.
 
+\subsubsection{Parameters of the simulation}
 The test was performed with the following parameters:
-
 \begin{center}
 \begin{tabular}{c|c}
 Parameter & Value \\\hline
@@ -241,7 +278,7 @@ $s$ & 2.0
 \end{center}
 
 where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorbtion probability, $p$ the probability that a particle at the boundary absorbs and $s$ is the plate distance.
-
+\subsubsection{Comparison}
 In order to compare these correlation functions with its analytic equivalents they need to be Laplace transformed. To obtain easy expressions for the Laplace transformed functions they are fitted with the following functions:
 
 \begin{align}
@@ -280,5 +317,5 @@ The Laplace transformed correlation functions are:
 \widetilde{C}_{AA}(\omega) &= \frac{a}{b + \omega} + \frac{c}{d + \omega} + \frac{f}{g + \omega} + \frac{h}{\omega} \\
 \widetilde{C}_{AB}(\omega) &= \frac{j}{k + \omega} + \frac{l}{\omega}
 \end{align}
-
+\section{Conclusion}
 \end{document}

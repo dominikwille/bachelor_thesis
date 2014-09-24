@@ -9,7 +9,7 @@ class Plates1dNoCrossing(Langevin):
     # start position
     r = numpy.array([-1.0])
     # number of steps
-    max_steps = 4000000
+    max_steps = 400
     # list of performed steps
     steps = []
     # list of positions
@@ -24,7 +24,7 @@ class Plates1dNoCrossing(Langevin):
     # Diffusion constant
     D = 1.0
     # Size of on step - 1/resolution (δt)
-    step_size = 0.001
+    step_size = 0.1
     # Parameter of the exponential decaying desorbtion probability
     tao = 30
     # The probability that the particle absorbs if it fulfills the boundary condition
@@ -48,7 +48,7 @@ class Plates1dNoCrossing(Langevin):
         return numpy.array([plate])
 
     def next(self):
-        return numpy.array([random.choice([-self.variance, self.variance])])
+        #return numpy.array([random.choice([-self.variance, self.variance])])
         mean = 0
 
         r = []

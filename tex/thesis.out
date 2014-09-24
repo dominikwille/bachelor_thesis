@@ -4,8 +4,14 @@
 \BOOKMARK [3][-]{subsubsection.2.1.1}{Priciple}{subsection.2.1}% 4
 \BOOKMARK [3][-]{subsubsection.2.1.2}{Physical background}{subsection.2.1}% 5
 \BOOKMARK [2][-]{subsection.2.2}{Connection to diffusion}{section.2}% 6
-\BOOKMARK [2][-]{subsection.2.3}{Mean square distance}{section.2}% 7
-\BOOKMARK [1][-]{section.3}{Implementation of the langevin simulation}{}% 8
-\BOOKMARK [1][-]{section.4}{Comparision to the analytical Calculation}{}% 9
-\BOOKMARK [2][-]{subsection.4.1}{Free particle}{section.4}% 10
-\BOOKMARK [2][-]{subsection.4.2}{Correlation functions}{section.4}% 11
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Fixed step size}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Gaussian random walk}{subsection.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Mean square distance}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Implementation of the langevin simulation}{}% 10
+\BOOKMARK [1][-]{section.4}{Comparison to analytic calculations}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Free particle}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.2}{Correlation functions}{section.4}% 13
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Definition}{subsection.4.2}% 14
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Parameters of the simulation}{subsection.4.2}% 15
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Comparison}{subsection.4.2}% 16
+\BOOKMARK [1][-]{section.5}{Conclusion}{}% 17
