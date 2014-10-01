@@ -183,7 +183,7 @@ This can easily be shown with a mathematical induction for $p(x,n)$. Note that b
 \begin{align}
 p(x,n) = 0 
 \end{align}
-because this means that the number of possible positions is infinite.
+because that means that the number of possible positions is infinite.
 
 \textbf{Base case} ($n = 1$)\textbf{:}
 \begin{align}
@@ -340,7 +340,7 @@ The Laplace transformed correlation functions are:
 \begin{align}
 p(x,n) &= \binom{n}{k} \cdot 2^{-n}\;\;\;\; \mathrm{with}\;\;\; k = \frac{1}{2}\left(n+\frac{x}{\varepsilon}\right)\\
 &= \frac{n!}{k!(n-k)!}\cdot 2^{-n}\\
-\mathrm{with}\;\;\; n! &\cong \sqrt{2\pi n}\;n^ne^{-n}\;\;\;\mathrm{(Stirling's\;formula)}\\
+\mathrm{with}\;\;\; n! &\cong \sqrt{2\pi n}\;n^ne^{-n}\tag{Stirling's\;formula}\\
 \Rightarrow \;\;\; p(x,n) &\cong \frac{\sqrt{2\pi n}\;n^ne^{-n}}{\sqrt{2\pi k}\;k^ke^{-k} \sqrt{2\pi(n-k)}\;(n-k)^{n-k}e^{k-n}} \cdot 2^{-n}\\
 &= \left(\frac{\sqrt{2\pi n}}{\sqrt{2\pi k}\;\sqrt{2\pi(n-k)}} \right) \underbrace{\left(\frac{e^{-n}}{e^{-k}\;e^{k-n}}\right)}_{=1} \left( \frac{n^n}{k^k(n-k)^{n-k}}\right)\cdot 2^{-n}\\
 &= \sqrt{\frac{2n}{\pi(n+\sfrac{x}{\varepsilon})(n-\sfrac{x}{\varepsilon})}} \cdot \left(\frac{n}{2} \right)^k \cdot \left(\frac{n}{2} \right)^{n-k} \notag\\
@@ -349,14 +349,14 @@ p(x,n) &= \binom{n}{k} \cdot 2^{-n}\;\;\;\; \mathrm{with}\;\;\; k = \frac{1}{2}\
 &= \sqrt{\frac{2n}{\pi \left(n^2 - \left( \sfrac{x}{\varepsilon} \right)^2 \right)}} \cdot \left( 1 + \frac{x}{\varepsilon n}\right)^{-\frac{1}{2}(n+\sfrac{x}{\varepsilon})} \cdot \left( 1 - \frac{x}{\varepsilon n}\right)^{-\frac{1}{2}(n-\sfrac{x}{\varepsilon})} \\
 \mathrm{use} \;\;\; x &= e^{\ln(x)}\\
 \Rightarrow \;\;\; p(x,n) &\cong \sqrt{\frac{2}{\pi n\left(1 - \left( \frac{\sfrac{x}{\varepsilon}}{n} \right)^2 \right)}} \notag\\
-&\;\;\;\;\cdot \exp\!\left(-\frac{n}{2}\left( 1+\frac{\sfrac{x}{\varepsilon}}{n} \right) \, \ln\!\left(1 + \frac{\sfrac{x}{\varepsilon}}{n} \right) -\frac{1}{2}(n-\sfrac{x}{\varepsilon})\, \ln\!\left(1 - \frac{\sfrac{x}{\varepsilon}}{n} \right) \right) \\
+&\;\;\;\;\cdot \exp\!\left\lbrace -\frac{n}{2}\left( 1+\frac{\sfrac{x}{\varepsilon}}{n} \right) \, \ln\!\left(1 + \frac{\sfrac{x}{\varepsilon}}{n} \right) -\frac{1}{2}(n-\sfrac{x}{\varepsilon})\, \ln\!\left(1 - \frac{\sfrac{x}{\varepsilon}}{n} \right) \right\rbrace \\
 \mathrm{for}\;\;\; n &\rightarrow\infty \; \Rightarrow \; \alpha \rightarrow 0 \;\;\; \alpha := \frac{\sfrac{x}{\varepsilon}}{n}\; \\ 
 &\Rightarrow\;\;  1-\alpha^2 \rightarrow 1 + ... \; \\
 &\mathrm{and}\;\,\ln\!\left(1+\alpha\right) \rightarrow \alpha - \frac{1}{2}\alpha^2 + ... \\
-\Rightarrow \;\;\; p(x,n) &\cong \sqrt{\frac{2}{n\pi}} \cdot \exp\!\left(-\frac{n}{2}\left(\left(1+\alpha\right)\left(\alpha - \frac{1}{2} \alpha^2 \right) +\left(1-\alpha\right)\left(-\alpha - \frac{1}{2} \alpha^2 \right)\right) \right)\\
-&= \sqrt{\frac{2}{n\pi}} \cdot \exp\!\left(-\frac{n}{2}\left(\alpha -\frac{1}{2} \alpha^2 + \alpha^2 - \alpha - \frac{1}{2} \alpha^2 + \alpha^2 + \mathcal{O}(\alpha^3)\right) \right) \\
-&\cong \sqrt{\frac{2}{n\pi}} \cdot \exp\!\left(-\frac{n}{2}\left(\alpha^2\right) \right)\\
-&= \sqrt{\frac{2}{n\pi}} \cdot e^{-\sfrac{x^2}{2\varepsilon^2n}}
+\Rightarrow \;\;\; p(x,n) &\cong \sqrt{\frac{2}{n\pi}} \cdot \exp\!\left\lbrace-\frac{n}{2}\left[\left(1+\alpha\right)\left(\alpha - \frac{1}{2} \alpha^2 \right) +\left(1-\alpha\right)\left(-\alpha - \frac{1}{2} \alpha^2 \right)\right] \right\rbrace\\
+&= \sqrt{\frac{2}{n\pi}} \cdot \exp\!\left\lbrace-\frac{n}{2}\left[\alpha -\frac{1}{2} \alpha^2 + \alpha^2 - \alpha - \frac{1}{2} \alpha^2 + \alpha^2 + \mathcal{O}(\alpha^3)\right] \right\rbrace \\
+&\cong \sqrt{\frac{2}{n\pi}} \cdot \exp\!\left\lbrace-\frac{n}{2}\left[\alpha^2\right] \right\rbrace\\
+&= \sqrt{\frac{2}{n\pi}} \cdot e^{-\sfrac{x^2}{2\varepsilon^2n}} 
 \end{align}
 
 \myEqRef{gauss_random_walk}

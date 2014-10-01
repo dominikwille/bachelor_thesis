@@ -58,7 +58,6 @@ class Plates1dNoCrossing(Langevin):
             r.append(random.gauss(mean, self.variance))
 
         return numpy.array(r)
-        #
 
     def keep_absorbed(self):
         t = random.expovariate(1.0 / self.tao)
