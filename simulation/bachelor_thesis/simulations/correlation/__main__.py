@@ -154,7 +154,7 @@ print popt1
 
 step_size = 0.1
 tau = 1.0
-k = p = 100
+k = p = 1000
 D = 0.1
 H = 1.0
 
@@ -222,8 +222,9 @@ p0, = plt.plot(w, laplace2(w, xdata))
 # p1, = plt.plot(w, laplace(w, *popt0))
 p1, = plt.plot(w, roland(w, tau, k, D, H))
 # p2, = plt.plot(w, roland(w+0.09, tau, k, D, H) +0.09)
-p2, = plt.plot(w, lim(w, tau, k, D, H))
-plt.legend([p0, p1, p2], ['laplace', 'roland', 'roland offset'], loc=2)
+# p2, = plt.plot(w, lim(w, tau, k, D, H))
+# plt.legend([p0, p1, p2], ['laplace transformed data', 'analytic', 'analytic limit'], loc=2)
+plt.legend([p0, p1], ['laplace transformed data', 'analytic'], loc=2)
 plt.xlabel('Step')
 plt.ylabel('Probability')
 plt.ylim([0, 10])
