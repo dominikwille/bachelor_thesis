@@ -1,0 +1,62 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{netzpaper}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Netz}{N.}%
+     {Roland}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Bocquet}{B.}%
+     {Lydric}{L.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{NRBL1}
+  \strng{fullhash}{NRBL1}
+  \field{sortinit}{N}
+  \field{title}{Conductivity Fluctuations in Cylindrical Pores}
+  \field{year}{2014}
+\endentry
+
+\entry{pinknoise}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Simon~Gravelle}{S.~G.}%
+     {Roland R.~Netz}{R.~R.~N.}%
+     {}{}%
+     {Laurent~Joly}{L.~J.}}%
+    {{}%
+     {Bocquet}{B.}%
+     {Lyderic}{L.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{SGLJRRNBL1}
+  \strng{fullhash}{SGLJRRNBL1}
+  \field{sortinit}{S}
+  \field{title}{Pink noise of ionic current, theory and modelisation}
+  \field{year}{2014}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
