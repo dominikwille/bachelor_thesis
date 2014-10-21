@@ -126,8 +126,8 @@ with open('data/p1.csv', 'rb') as csvfile:
 
 from scipy.optimize import curve_fit
 
-def func0(x_, a, b, c, d, f, g, h):
-    return a * numpy.exp(x_ * b) + c * numpy.exp(x_ * d) + f * numpy.exp(x_ * g) + h
+def func0(x_, a, b, c, d, f, g, h, j, k):
+    return a * numpy.exp(-x_ * b) + c * numpy.exp(-x_ * d) + f * numpy.exp(-x_ * g) + h * numpy.exp(-x_ * j) + k
 
 def func1(x_, j, k, l):
     return j * numpy.exp(- x_ / k) + l
@@ -139,18 +139,22 @@ def expect(x_):
 popt0, pcov0 = curve_fit(func0, xdata, c_aa)
 popt1, pcov1 = curve_fit(func1, xdata, c_ab)
 
-print popt0
-print popt1
+def func0la(x_, a, b, c, d, f, g, h, j, k):
+    return a / (x_ - b) + c / (x_ - d) + f / (x_ - g) + h / (x_ - j) + k / x_
 
-# p0, = plt.plot(xdata, c_aa)
-# p1, = plt.plot(xdata, c_ab)
-# p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
-# p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
-# plt.legend([p0, p1, p2, p3], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit'], loc=2)
-# plt.xlabel('Step')
-# plt.ylabel('Probability')
-# plt.ylim([0, 1])
-# plt.show()
+print popt0
+print pcov0
+# print popt1
+
+p0, = plt.plot(xdata, c_aa)
+p1, = plt.plot(xdata, c_ab)
+p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
+p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
+plt.legend([p0, p1, p2, p3], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit'], loc=2)
+plt.xlabel('Step')
+plt.ylabel('Probability')
+plt.ylim([0, 1])
+plt.show()
 
 step_size = 0.1
 tau = 1.0
@@ -216,16 +220,20 @@ w = numpy.arange(0.0001, 10.0, 0.01)
 
 popt2, pcov2 = curve_fit(roland, w, laplace2(w, xdata))
 
-print popt2
+# print popt2
+w_part = numpy.arange(max(popt0[1], popt0[3], popt0[5], popt0[7]), 10.0, 0.01)
 
-p0, = plt.plot(w, laplace2(w, xdata))
+# p0, = plt.plot(w, laplace2(w, xdata))
 # p1, = plt.plot(w, laplace(w, *popt0))
 p1, = plt.plot(w, roland(w, tau, k, D, H))
 # p2, = plt.plot(w, roland(w+0.09, tau, k, D, H) +0.09)
 # p2, = plt.plot(w, lim(w, tau, k, D, H))
+p0, = plt.plot(w_part, func0la(w_part, *popt0))
 # plt.legend([p0, p1, p2], ['laplace transformed data', 'analytic', 'analytic limit'], loc=2)
-plt.legend([p0, p1], ['laplace transformed data', 'analytic'], loc=2)
+plt.legend([p0, p1], ['fit', 'analytic'], loc=2)
 plt.xlabel('Step')
 plt.ylabel('Probability')
 plt.ylim([0, 10])
+plt.yscale('log')
+plt.xscale('log')
 plt.show()
