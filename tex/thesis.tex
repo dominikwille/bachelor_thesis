@@ -16,7 +16,6 @@
 \usepackage[backend=bibtex8,style=numeric]{biblatex} 
 \addbibresource{thesis.bib}
 
-
 \title{Proton Dynamics in Cavities}
 \author{Dominik Wille}
 
@@ -74,9 +73,13 @@
 \setcounter{page}{1}
 
 \section{Introduction}
-Proton- or generally ion dynamics in fluids directly imply fluctuations in the potential and conductivity of objects which are surrounded by the fluid. The major processes which influence the motion which are considered here are \effect{absorption} and \effect{desorption} processes. The more ions are absorbed on a surface the more they influence its potential. The more ions are left in the fluid the higher is its conductivity which dues to ionic currents at all.
+Proton- or generally ion dynamics in fluids directly imply fluctuations in the potential and conductivity of surrounded nano--scaled structures. The major processes which influence these measurable properties and which are considered here are \effect{absorption} and \effect{desorption} processes. The amount of mobile ions which are contained in the fluid are proportional to the fluids conductivity. An experimental way to detect this conductivity is by measuring the ionic current. And since ions carry charges, absorption of ions causes changes of the potential.
 
-In this document the motion of one particle is considered as a brownian motion. 
+Since such fluctuations, could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. But today many of these fluctuations are not satisfactorily explained\myCite{pinknoise}. 
+
+In this document the motion of one particle is considered as a brownian motion. Even though ions and especially protons are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the absorption--desorption processes, which can be indirectly measured as conductivity and potential.
+
+The simulations are based on previous analytic calculations by \person{Roland Netz} which obtain these correlation functions for infinite cylindrical and planar geometries\myCite{netzpaper}. To determine the correctness of the \effect{Langevin-Simulation} it is tested for these limiting cases as well as simple simulations for a free particle. Moreover the most important processes which take effect in the correlation functions and methods to describe and implement these in the simulation are briefly summarized and explained.
 
 \newpage
 In this document some properties of the 

@@ -36,6 +36,16 @@
   \field{year}{2014}
 \endentry
 
+\entry{brownian}{inbook}{}
+  \list{publisher}{1}{%
+    {Utrecht University}%
+  }
+  \field{sortinit}{N}
+  \field{chapter}{3}
+  \field{title}{Notes on Brownian Motion}
+  \field{year}{2011}
+\endentry
+
 \entry{pinknoise}{article}{}
   \name{author}{2}{}{%
     {{}%
