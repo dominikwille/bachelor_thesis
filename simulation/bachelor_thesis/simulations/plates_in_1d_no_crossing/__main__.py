@@ -7,15 +7,15 @@ from core.langevin_simulation import *
 
 class Plates1dNoCrossing(Langevin):
     # start position
-    r = numpy.array([-1.0])
+    r = numpy.array([1.0])
     # number of steps
-    max_steps = 400
+    max_steps = 100000
     # list of performed steps
     steps = []
     # list of positions
     distances = []
     # Absorbed state
-    absorbed = True
+    absorbed = False
     # This defines the dimension of the simulation
     d = 1
 
@@ -67,11 +67,23 @@ class Plates1dNoCrossing(Langevin):
         return r[0]
 
 
-test = Plates1dNoCrossing()
-x, y = test.info_walk()
 
-plt.plot(x, y)
-plt.xlabel('Step')
-plt.ylabel('Position')
-plt.ylim([-1.1, 1.1])
+
+dx = 0.01
+n_max = 10000000
+x = numpy.arange(-1, 1 + dx, dx)
+p = [0]*len(x)
+
+test = Plates1dNoCrossing()
+test.max_steps = n_max
+n, y = test.info_walk()
+for y_i in y:
+    i = int(y_i / dx + len(x) / 2)
+    p[i] += 1.0
+
+plt.plot(x, numpy.array(p) / n_max)
+plt.xlabel('Position $x$')
+plt.ylabel('Probability density $\\rho(x)$')
+plt.xlim([-1,1])
+plt.ylim([0,0.01])
 plt.show()

@@ -2,38 +2,44 @@
 \defcounter {refsection}{0}\relax 
 \select@language {english}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Brownian Dynamics}{2}{section.2}
+\contentsline {section}{\numberline {2}Analytic calculations}{4}{section.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Langevin Symulation}{2}{subsection.2.1}
+\contentsline {section}{\numberline {3}Brownian Dynamics}{5}{section.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.1}Priciple}{2}{subsubsection.2.1.1}
+\contentsline {subsection}{\numberline {3.1}Langevin Symulation}{5}{subsection.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.2}Physical background}{2}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {3.1.1}Priciple}{5}{subsubsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}Connection to diffusion}{3}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {3.1.2}Physical background}{5}{subsubsection.3.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.2.1}Fixed step size}{4}{subsubsection.2.2.1}
+\contentsline {subsection}{\numberline {3.2}Connection to diffusion}{6}{subsection.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.2.2}Gaussian random walk}{5}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Fixed step size}{6}{subsubsection.3.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Mean square distance}{6}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {3.2.2}Gaussian random walk}{8}{subsubsection.3.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}2 Plates system}{6}{section.3}
+\contentsline {subsection}{\numberline {3.3}Mean square distance}{9}{subsection.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Comparison to analytic calculations}{7}{section.4}
+\contentsline {section}{\numberline {4}Free particle}{10}{section.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Free particle}{7}{subsection.4.1}
+\contentsline {section}{\numberline {5}Infinite plates}{11}{section.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Correlation functions}{9}{subsection.4.2}
+\contentsline {subsection}{\numberline {5.1}Simple random walk vs. Gaussian random walk}{11}{subsection.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.2.1}Definition}{9}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {5.2}Probability density}{14}{subsection.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.2.2}Parameters of the simulation}{10}{subsubsection.4.2.2}
+\contentsline {subsection}{\numberline {5.3}Correlation functions}{14}{subsection.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.2.3}Comparison}{10}{subsubsection.4.2.3}
+\contentsline {subsection}{\numberline {5.4}Parameters of the simulation}{15}{subsection.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Annex}{12}{section.5}
+\contentsline {subsection}{\numberline {5.5}Interpretation}{15}{subsection.5.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Biblography}{15}{section.6}
+\contentsline {subsection}{\numberline {5.6}Comparison}{15}{subsection.5.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6}Finite plates}{18}{section.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {7}Conclusion}{19}{section.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {8}Annex}{20}{section.8}

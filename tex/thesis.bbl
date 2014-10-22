@@ -36,7 +36,7 @@
   \field{year}{2014}
 \endentry
 
-\entry{brownian}{inbook}{}
+\entry{brownian}{article}{}
   \list{publisher}{1}{%
     {Utrecht University}%
   }
@@ -63,6 +63,16 @@
   \strng{fullhash}{SGLJRRNBL1}
   \field{sortinit}{S}
   \field{title}{Pink noise of ionic current, theory and modelisation}
+  \field{year}{2014}
+\endentry
+
+\entry{curvefit}{online}{}
+  \field{sortinit}{S}
+  \field{title}{scipy.optimize.curve\_fit}
+  \verb{url}
+  \verb http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimi
+  \verb ze.curve_fit.html
+  \endverb
   \field{year}{2014}
 \endentry
 

@@ -11,6 +11,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[super]{nth}
 \usetikzlibrary{matrix,calc,3d}
+\usepackage{float}
 
 \usepackage{csquotes} 
 \usepackage[backend=bibtex8,style=numeric]{biblatex} 
@@ -28,7 +29,7 @@
 }
 
 \newcommand{\myImage}[2]{
-	\begin{figure}[ht!]
+	\begin{figure}[H]
 	\centering
 	\includegraphics[width = 0.9\textwidth]{img/#1}
 	\caption{#2}
@@ -70,7 +71,7 @@
 \tableofcontents
 \thispagestyle{empty}
 \newpage
-\setcounter{page}{1}
+% \setcounter{page}{1}
 
 \section{Introduction}
 Proton- or generally ion dynamics in fluids directly imply fluctuations in the potential and conductivity of surrounded nano--scaled structures. The major processes which influence these measurable properties and which are considered here are \effect{absorption} and \effect{desorption} processes. The amount of mobile ions which are contained in the fluid are proportional to the fluids conductivity. An experimental way to detect this conductivity is by measuring the ionic current. And since ions carry charges, absorption of ions causes changes of the potential.
@@ -81,7 +82,10 @@ In this document the motion of one particle is considered as a brownian motion. 
 
 The simulations are based on previous analytic calculations by \person{Roland Netz} which obtain these correlation functions for infinite cylindrical and planar geometries\myCite{netzpaper}. To determine the correctness of the \effect{Langevin-Simulation} it is tested for these limiting cases as well as simple simulations for a free particle. Moreover the most important processes which take effect in the correlation functions and methods to describe and implement these in the simulation are briefly summarized and explained.
 
+The title image shows one visualized particle on a random walk between two plates in 2-d for different times. The time increases from left to right. 
+
 \newpage
+\section{Analytic calculations}
 In this document some properties of the 
 
 For a single surface this means\myCite{netzpaper}:
@@ -90,6 +94,7 @@ C_{AA}(t) = &\sum_{i,l=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e)
 &\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace
 \end{align}
 
+\newpage
 \section{Brownian Dynamics}
 The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}.
 \subsection{Langevin Symulation}
@@ -245,38 +250,8 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
 \langle x_n^2\rangle = \int_{-\infty}^\infty x^2 \cdot \rho(x,t)\diff x = 2 D t \myEqAnnex{MSD}
 \end{align}
 
-\section{2 Plates system}
-The system which is simulated consists of two infinite plates A and B with distance $d$. Between the two plates is some fluid which surrounds the simulated ion. The ion absorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
-\begin{align}
-P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}}
-\end{align}
-\begin{figure}[ht!]
-\centering
-\begin{tikzpicture}[scale=.8, z={(-.707,-.3)}]
-    \draw (6,0,0) -- (0,0,0);
-    \draw (6,0,0) -- (6,0,-3);
-    \draw (6,3,-3) -- (6,3,0);
-    \draw (6,3,0) -- (0,3,0);
-    \draw (0,3,-3) -- (6,3,-3);
-    \draw (0,0,-3) -- (6,0,-3);
-    \draw (0,0,0) -- (0,0,-3); 
-    \draw (0,3,0) -- (0,3,-3);
-    \draw (3,0,-1.5) node{B};
-    \draw (3,3,-1.5) node{A};
-    \draw[arrows=<->] (0,0.2,0) -- (0,2.8,0);
-    \draw (-0.3,1.5,0) node{$d$};
-\end{tikzpicture}
-\caption{Schematic structure of the system}
-\end{figure}
-
-\myImage{gauss_pos}{Position of a particle on a gaussian random walk}
-
-\myImage{fixed_pos}{Position of a particle on a simple random walk}
-
-For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk therefore is just superior the simple random walk.
-
-\section{Comparison to analytic calculations}
-\subsection{Free particle}
+\newpage
+\section{Free particle}
 A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD in time steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression. The parameters were:
 \begin{center}
 \begin{tabular}{c|c}
@@ -296,9 +271,46 @@ The expectation is that for large numbers of runs the mean square converges agai
 \end{align}
 \myImage{mean_square}{MSD over time for different numbers of runs}
 
+\newpage
+\section{Infinite plates}
+The system which is simulated consists of two infinite plates A and B with distance $H$. Between the two plates is some fluid which surrounds the simulated ion. The ion absorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
+\begin{align}
+P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}}
+\end{align}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=.8, z={(-.707,-.3)}]
+    \draw (6,0,0) -- (0,0,0);
+    \draw (6,0,0) -- (6,0,-3);
+    \draw (6,3,-3) -- (6,3,0);
+    \draw (6,3,0) -- (0,3,0);
+    \draw (0,3,-3) -- (6,3,-3);
+    \draw (0,0,-3) -- (6,0,-3);
+    \draw (0,0,0) -- (0,0,-3); 
+    \draw (0,3,0) -- (0,3,-3);
+    \draw (3,0,-1.5) node{B};
+    \draw (3,3,-1.5) node{A};
+    \draw[arrows=<->] (0,0.2,0) -- (0,2.8,0);
+    \draw (-0.3,1.5,0) node{$H$};
+\end{tikzpicture}
+\caption{Schematic structure of the system}
+\end{figure}
+\subsection{Simple random walk vs. Gaussian random walk}
+
+For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk therefore is just superior the simple random walk.
+
+\myImage{fixed_pos}{Position of a particle on a simple random walk}
+
+\myImage{gauss_pos}{Position of a particle on a gaussian random walk}
+
+
+
+
+\subsection{Probability density}
+\myImage{probability_density}{Probability density}
+
 \subsection{Correlation functions}
-\subsubsection{Definition}
-Since there is an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be absorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is absorbed on plate $\mathrm{A}$ at time $t=0$.
+For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be absorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is absorbed on plate $\mathrm{A}$ at time $t=0$.
 
 These correlation functions can easily be obtained from the langevin simulation by noting if and where the particle is absorbed over the time. 
 
@@ -306,60 +318,69 @@ Afterwards the values of the correlation function $C_{AA}(t)$ can be calculated 
 
 Similarly the values of the correlation function $C_{AB}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is absorbed on plate $\mathrm{A}$ at the beginning and on plate $\mathrm{B}$ at the end over the total number of intervals.
 
-\subsubsection{Parameters of the simulation}
-The test was performed with the following parameters:
+The correlation functions were obtained out of $1$ simulation. For all correlation functions the values of the correlation function $C(t)$ for different times $t$ were calculated as:
+
+\begin{align}
+  C_{ij}(t) = \frac{\int_0^{t_{max}-t} S_i(t') \cdot S_j(t' + t) \diff t'}{\int_0^{t_{max}-t} S_i(t') \diff t'}
+\end{align}
+
+Where $S_{i/j}(t) = 1$ if the particle has the state of interest at the beginning/end of an interval and $S_{i/j}(t) = 0$ otherwise.
+
+\subsection{Parameters of the simulation}
+The run for the comparison was performed with the following parameters:
 \begin{center}
 \begin{tabular}{c|c}
 Parameter & Value \\\hline
-$D$ & 0.2 \\
+$D$ & 0.1 \\
 $\delta t$ & 0.1 \\
-$\tau$ & 1 \\
-$p$ & 0.3 \\
-$s$ & 2.0
+$\tau$ & 1.0 \\
+$p$ & 1.0 \\
+$H$ & 1.0
 \end{tabular}
 \end{center}
 
-where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorbtion probability, $p$ the probability that a particle at the boundary absorbs and $s$ is the plate distance.
-\subsubsection{Comparison}
-In order to compare these correlation functions with its analytic equivalents they need to be Laplace transformed. To obtain easy expressions for the Laplace transformed functions they are fitted with the following functions:
+where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary absorbs and $s$ is the plate distance. The start position for this lagevin--simulation is not relevant for the correlation functions. 
+
+\subsection{Interpretation}
+
+Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. Obviously $C_{AA}(t)$ starts from $1$ because after its definition it is definitely absorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is absorbed on plate $A$ it is neither possible that it is absorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the absorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on some finite probability. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ as well.
+
+\subsection{Comparison}
+In order to compare these correlation functions with its analytic equivalents they need to be Laplace transformed. To obtain easy expressions for the Laplace transformed functions they are fitted with the functions of the following type:
 
 \begin{align}
-C_{AA}(n) &= a \cdot e^{- n \cdot b} + c \cdot e^{- n \cdot d} + f \cdot e^{-n \cdot g} + h\\
-C_{AB}(n) &= j \cdot e^{- n \cdot k} + l
+C(t) &= \sum_{i=0}^{n} c_i \cdot e^{b_i \cdot t} \myEqLabel{fit}
 \end{align}
+
+To determine the constants $c_i$ and $b_i$ the \verb+scipy.optimize.curve_fit+ in Phython was used which uses non-linear least squares to fit a function\myCite{curvefit}. For $C_{AA}$ 4 terms of the and for $C_{AB}$ 2 terms of \myEqRef{fit} function were used.
 
 \myImage{caa_cab}{Correlation Functions and its fits}
 
-The parameters were determined as:
-\begin{center}
-\begin{tabular}{c|c}
-Parameter & Value \\\hline
-$a$ & 0.07712867\\
-$b$ & 0.00204063\\
-$c$ & 0.55760507\\
-$d$ & 0.10309138\\
-$f$ & 0.30010113\\
-$g$ & 0.01889753\\
-$h$ & 0.02938739\\
-$j$ & -3.83406062e-02\\
-$k$ & 1.078311976e-03\\
-$l$ & 3.11126910e-02
-\end{tabular}
-\end{center}
-
-Since for a simple exponential expression the Laplace transformed expression is given by:
+For the simple exponential expression in \myEqRef{fit} the Laplace transformed can be obtained via:
 \begin{align}
 F(t) &= c_i \cdot e^{b_i \cdot t} \\
 \widetilde{F}(\omega) &= \int_0^\infty c_i \cdot e^{b_i\cdot x} \cdot e^{-\omega\cdot t}\diff t \\
-&= \frac{ci}{\omega - b_i}
+&= \frac{ci}{\omega - b_i}\;\;\;\; \mathrm{(only\; for\,\,\,\, } b_i > \omega \mathrm{)} \myEqLabel{laplace}
 \end{align}
 
-The Laplace transformed correlation functions are:
+The Laplace transform correlation functions follow as:
 \begin{align}
-\widetilde{C}_{AA}(\omega) &= \frac{a}{b + \omega} + \frac{c}{d + \omega} + \frac{f}{g + \omega} + \frac{h}{\omega} \\
-\widetilde{C}_{AB}(\omega) &= \frac{j}{k + \omega} + \frac{l}{\omega}
+\widetilde{C}(\omega) &= \sum_{i=0}^n \frac{c_i}{\omega - b_i}
 \end{align}
 
+The comparision between that and the analytic result for $\widetilde{C}_{AA}(\omega)$ is shown on the log--log--plot below:
+
+\myImage{compare_lac}{Comparsion of the laplace transform correlation function $\widetilde{C}_{AA}(\omega)$}
+
+The errorbars in the figure above are obtained from the variance of the fitting parameters $c_i$ and $b_i$. It makes clear that in the uncertainty of the fitting curve the result is identical. Note that for $\omega \rightarrow b_i$ The fitting function is not properly defined (See \myEqRef{laplace}). That means that the divergence at these values is only caused by the fitting method.
+
+\newpage
+\section{Finite plates}
+
+\newpage
+\section{Conclusion}
+
+\newpage
 \section{Annex}
 \myEqRef{diffusion_PDE}
 \begin{align}
@@ -424,6 +445,6 @@ p(x,n+1) &= \frac{1}{\varepsilon^2\sqrt{4\pi^2n}} \sqrt{\frac{2n\varepsilon^2}{n
 &= 2 D t
 \end{align}
 
-\section{Biblography}
+\newpage
 \printbibliography 
 \end{document}

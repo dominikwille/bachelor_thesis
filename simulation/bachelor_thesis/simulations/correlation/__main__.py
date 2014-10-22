@@ -126,21 +126,52 @@ with open('data/p1.csv', 'rb') as csvfile:
 
 from scipy.optimize import curve_fit
 
-def func0(x_, a, b, c, d, f, g, h, j, k):
-    return a * numpy.exp(-x_ * b) + c * numpy.exp(-x_ * d) + f * numpy.exp(-x_ * g) + h * numpy.exp(-x_ * j) + k
+def func0(x_, a, b, c, d, f, g, h):
+    return a * numpy.exp(-x_ * b) + c * numpy.exp(-x_ * d) + f * numpy.exp(-x_ * g) + h
 
 def func1(x_, j, k, l):
     return j * numpy.exp(- x_ / k) + l
-# popt0 = [ 0.07712867,  0.00204063,  0.55760507,  0.10309138,  0.30010113,  0.01889753,  0.02938739]
-# popt0 = [ 0.25477613,  0.10796093,  0.28181761,  0.01268437,  0.28845823,  0.001656, 0.1156842 ]
+
 def expect(x_):
     return numpy.exp(-x_)
 
 popt0, pcov0 = curve_fit(func0, xdata, c_aa)
 popt1, pcov1 = curve_fit(func1, xdata, c_ab)
 
-def func0la(x_, a, b, c, d, f, g, h, j, k):
-    return a / (x_ - b) + c / (x_ - d) + f / (x_ - g) + h / (x_ - j) + k / x_
+def func0la(x_, a, b, c, d, f, g, h):
+    return a / (x_ - b) + c / (x_ - d) + f / (x_ - g) + h / x_
+
+def func1la(x_, j, k, l):
+    return j / (x_ - k) + l / x_
+
+def func0laerr(x_, popt, pcov):
+    y = func0la(x_, *popt0)
+    b0 = popt0[1]
+    b1 = popt0[3]
+    b2 = popt0[5]
+    c0 = popt0[0]
+    c1 = popt0[2]
+    c2 = popt0[4]
+    c3 = popt0[6]
+    db0 = pcov0[1][1]**0.5
+    db1 = pcov0[3][3]**0.5
+    db2 = pcov0[5][5]**0.5
+    dc0 = pcov0[0][0]**0.5
+    dc1 = pcov0[1][1]**0.5
+    dc2 = pcov0[2][2]**0.5
+    dc3 = pcov0[3][3]**0.5
+
+    err = (
+              (y * db0 / (x_ - b0)**2)**2 +
+              (y * db1 / (x_ - b1)**2)**2 +
+              (y * db2 / (x_ - b2)**2)**2 +
+              (dc0 / c0)**2 +
+              (dc1 / c1)**2 +
+              (dc2 / c2)**2 +
+              (dc3 / c3)**2
+          )**0.5
+
+    return err
 
 print popt0
 print pcov0
@@ -150,10 +181,11 @@ p0, = plt.plot(xdata, c_aa)
 p1, = plt.plot(xdata, c_ab)
 p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
 p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
-plt.legend([p0, p1, p2, p3], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit'], loc=2)
-plt.xlabel('Step')
-plt.ylabel('Probability')
+p4, = plt.plot(xdata, 1 - numpy.array(c_aa) - numpy.array(c_ab))
+plt.xlabel('$t$ in $\delta t$')
+plt.ylabel('$C(t)$')
 plt.ylim([0, 1])
+plt.legend([p0, p1, p2, p3, p4], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit', '$C_{AD}$'], bbox_to_anchor=(0.75, 0.7), loc=2, borderaxespad=0)
 plt.show()
 
 step_size = 0.1
@@ -221,7 +253,8 @@ w = numpy.arange(0.0001, 10.0, 0.01)
 popt2, pcov2 = curve_fit(roland, w, laplace2(w, xdata))
 
 # print popt2
-w_part = numpy.arange(max(popt0[1], popt0[3], popt0[5], popt0[7]), 10.0, 0.01)
+w_part = numpy.arange(max(popt0[1], popt0[3], popt0[5]), 10.0, 0.01)
+w_err = numpy.exp(numpy.arange(numpy.log10(max(popt0[1], popt0[3], popt0[5]) / 10), 10, 0.2))
 
 # p0, = plt.plot(w, laplace2(w, xdata))
 # p1, = plt.plot(w, laplace(w, *popt0))
@@ -229,11 +262,13 @@ p1, = plt.plot(w, roland(w, tau, k, D, H))
 # p2, = plt.plot(w, roland(w+0.09, tau, k, D, H) +0.09)
 # p2, = plt.plot(w, lim(w, tau, k, D, H))
 p0, = plt.plot(w_part, func0la(w_part, *popt0))
+plt.errorbar(w_err, func0la(w_err, *popt0), yerr=func0laerr(w_err, popt0, pcov0), fmt=' ', ecolor='g')
 # plt.legend([p0, p1, p2], ['laplace transformed data', 'analytic', 'analytic limit'], loc=2)
-plt.legend([p0, p1], ['fit', 'analytic'], loc=2)
-plt.xlabel('Step')
-plt.ylabel('Probability')
-plt.ylim([0, 10])
+plt.legend([p0, p1], ['$\widetilde{C}_{AA}(\omega)$ fit', '$\widetilde{C}_{AA}(\omega)$ analytic'], loc=1)
+plt.xlabel('$\omega$ in $1/\delta t$')
+plt.ylabel('$\widetilde{C}_{AA}(\omega)$')
+plt.ylim([0.1, 10])
+plt.xlim([0.1, 10])
 plt.yscale('log')
 plt.xscale('log')
 plt.show()
