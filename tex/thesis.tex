@@ -100,8 +100,6 @@ N_A(t) = \sum_{i=1}^N n_A^i(t)
 
 Since experimental investigation measure fluctuations in the potential of nano--structures, especially the auto--correlation function of $N_A(t)$, is of essential importance.
 
-
-
 \begin{align}
 \langle N_A(0) N_A(t)\rangle &= \sum_{i,j = 1}^N \langle n_A^i(0) n_A^j(t)\rangle\\
 &= \sum_{i \neq j}^N \langle n_A^i(0) n_A^j(t)\rangle + \sum_{i =1}^N \langle n_A^i(0) n_A^j(t)\rangle
@@ -122,7 +120,7 @@ C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
 \end{align}
 
 \subsection{Constructing the single--ion correlation function}
-
+\subsubsection{One surface}
 For a single surface $A$, one particle that is absorbed at time $t=0$ can basically keep absorbed until time $t$ or desorb $n$--times before it is absorbed again, if it should be absorbed at time $t$. 
 \begin{figure}[H]
 \centering
@@ -166,12 +164,66 @@ For a single surface $A$, one particle that is absorbed at time $t=0$ can basica
 
 \end{tikzpicture}
 \caption{Illustrated construction of $C_{AA}(t)$}
+\label{fig:ways}
 \end{figure}
+As illustrated in the figure above $C_{AA}(t)$ as the sum of different paths. The distribution $P(t)$ is the Probability for an absorbed ion to desorb at time $t$ for the first time. $Q_A(t)$ is the survival distribution for an ion to be absorbed on the surface $A$ over the time span $t=0$ to $t$. Note that this equals the probability that ion desorbes at some time $> t$.It is given by:
+\begin{align}
+Q_A(t) = \int_t^\infty P(t') \diff t'
+\end{align}
+$J_{AA}(t)$ is the probability for an ion to desorb at time $t=0$ and to return to the surface $A$ at time $t$.
+
+The probability that a particle is absorbed at time $t$ given it is absorbed at time $t=0$ is the sum over the probabilities of all ways on which a particle is absorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$.
+
+Generally all that stages in $C_{AA}(t)$ of particles could have every time $<t$. Therefore it is necessary to vary all these times. 
+
+The construct of $C_{AA}$ below sums up all variations illustrated in \myFigRef{fig:ways} with general times $t_e$ for $Q(t)$, $t_j$ for $P_A(t)$ and $t_j'$ for $J_{AA}(t)$. In order to obtain the probability at time $t$ the \effect{Dirac-Delta-Function} pics out variants with $\sum_{j} (t_j+t_j') + t_e = t$.
 
 \begin{align}
-C_{AA}(t) = &\sum_{i,l=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, P_A(t_j) \int_0^\infty \diff t_j'\, J_{AA}(t_j')\right]\notag\\ 
-&\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace
+C_{AA}(t) = &\sum_{i=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, P_A(t_j) \int_0^\infty \diff t_j'\, J_{AA}(t_j')\right]\notag\\ 
+&\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace \myEqLabel{def_Caa}
 \end{align}
+
+This construct itself is very though to analyze. But there is common trick to derive the \effect{Laplace-transform} $\widetilde{C}_{AA}(\omega)$ of $C_{AA}(t)$.
+
+\begin{align}
+\widetilde{C}_{AA}(\omega) &= \int_0^\infty e^{-\omega t'} \cdot C_{AA}(t') \diff t'
+\end{align}
+
+Remember that the integrand in \myEqRef{def_Caa} has only non--zero values for $\sum_{j} (t_j+t_j') + t_e = t$. Therefore it is possible to split the $e^{-\omega t'}$--term.
+
+\begin{align}
+e^{-\omega t'} &= e^{-\omega t_e} \cdot \prod_{j=1}^i e^{-\omega t_j} \cdot e^{-\omega t_j'}\\
+\Rightarrow  \widetilde{C}_{AA}(\omega) &= \sum_{i=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, e^{-\omega t_e} Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, e^{-\omega t_j} P_A(t_j) \int_0^\infty \diff t_j'\, e^{-\omega t_j'} J_{AA}(t_j')\right]\notag\\ 
+&\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace\\
+&= \sum_{i=0}^\infty \Bigg\lbrace \widetilde{Q}_A(\omega) \prod_{j=1}^i \left[\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega) \right]  \Bigg\rbrace \\
+&= \sum_{i=0}^\infty \widetilde{Q}_A(\omega) \left[\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega) \right]^i
+\end{align}
+With the formula for geometric series 
+\begin{align}
+\sum_{i=0}^{n-1}q^i = \frac{1-q^n}{1-q} 
+\end{align}
+this becomes the following expression:
+\begin{align}
+\widetilde{C}_{AA}(\omega) &= \frac{\widetilde{Q}_A(\omega)}{1-\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega)}
+\end{align}
+\subsubsection{Two surfaces}
+The calculation of $\widetilde{C}_{AA}(\omega)$ for one surface should give a general idea how the laplace-transform of The correlation functions look like.
+
+For instance $\overline{C}_{AA}(\omega)$, $\overline{C}_{BB}(\omega)$ which omit the $\widetilde{Q}_{A/B}(\omega)$ terms, represent ways where the particle is absorbed at time $t=0$ and exactly absorbs at time $t$. 
+\begin{align}
+\overline{C}_{AA}(\omega) &= \frac{1}{1-\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega)} \\
+\overline{C}_{BB}(\omega) &= \frac{1}{1-\widetilde{P}_B(\omega) \cdot \widetilde{J}_{BB}(\omega)} 
+\end{align}
+
+Parts which are performed one time are in the nominator, parts which are performed $n$--times are in the denominator. Parts which are performed equal times can be just multiplied in the laplace-transform.
+
+$\widetilde{C}_{AA}(\omega)$ can be constructed as:
+
+\begin{align}
+&\widetilde{C}_{AA}(\omega) = \frac{\overline{C}_{AA}(\omega) \, \widetilde{Q}_{A}(\omega)}{1-\overline{C}_{AA}(\omega)\, \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \overline{C}_{BB}(\omega)\, \widetilde{P}_B(\omega)\,\widetilde{J}_{BA}(\omega)}\\
+&= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right) - \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \widetilde{P}_B(\omega)\, \widetilde{J}_{BA}(\omega)}
+\end{align}
+\subsection{Limiting case}
 
 \newpage
 \section{Brownian Dynamics}
@@ -464,8 +516,6 @@ The comparison between that and the analytic result for $\widetilde{C}_{AA}(\ome
 \Delta\widetilde{C}_{AA}(\omega) = \sfrac{1}{\omega}
 \end{align}
 
-
-
 \myImage{compare_lac}{Comparsion of the laplace transform correlation function $\widetilde{C}_{AA}(\omega)$}
 
 The errorbars in the figure above are obtained from the variance of the fitting parameters $c_i$ and $b_i$ which are defined for every time $t$ so there generally has to be an error bar for every time $t$. The ones which are considered here, stand only exemplary for these other errorbars. The positions of the errorbars is just chosen to get a nice plot they are not the only data points. 
@@ -530,7 +580,7 @@ The figure above makes clear that in the uncertainty of the fitting curve the re
 \end{figure}
 
 \newpage
-\section{Conclusion}
+\section{Conclusion and Outlook}
 
 \newpage
 \section{Annex}
