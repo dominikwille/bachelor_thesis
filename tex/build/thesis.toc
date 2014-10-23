@@ -6,6 +6,8 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2}Analytic calculations}{4}{section.2}
 \defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.1}Constructing the single--ion correlation function}{5}{subsection.2.1}
+\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3}Brownian Dynamics}{6}{section.3}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.1}Langevin Symulation}{6}{subsection.3.1}

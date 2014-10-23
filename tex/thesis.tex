@@ -11,6 +11,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[super]{nth}
 \usetikzlibrary{matrix,calc,3d}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
 \usepackage{float}
 
 \usepackage{csquotes} 
@@ -119,8 +121,53 @@ C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2
 \end{align}
 
+\subsection{Constructing the single--ion correlation function}
 
-For a single surface this means:
+For a single surface $A$, one particle that is absorbed at time $t=0$ can basically keep absorbed until time $t$ or desorb $n$--times before it is absorbed again, if it should be absorbed at time $t$. 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.2cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\bfseries}]
+
+  \node[main node] (5) {};
+  \node[main node] (6) [right of=5] {};
+  \node (7) [right=0.0cm of 6] {$+$};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (5) edge node [above] {$Q_A$} node [below] {$t_e$} (6);
+
+
+  \node[main node] (1) [right=0.0cm of 7] {};
+  \node[main node] (2) [right of=1] {};
+  \node[main node] (3) [right of=2] {};
+  \node[main node] (4) [right of=3] {};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (1) edge node [above] {$P_A$} node [below] {$t_1$} (2)
+    (2) edge[bend left] node[above] {$J_{AA}$} node [below] {$t_1'$} (3)
+    (3) edge node [above] {$Q_A$} node [below] {$t_e$} (4);
+    
+  \node (8) [right=0.0cm of 4] {$+$};
+  \node[main node] (9) [right=0.0cm of 8] {};
+  \node[main node] (10) [right of=9] {};
+  \node[main node] (11) [right of=10] {};
+  \node[main node] (12) [right of=11] {};
+  \node[main node] (13) [right of=12] {};
+  \node[main node] (14) [right of=13] {};
+  
+  \path[every node/.style={font=\sffamily\small}]
+    (9) edge node [above] {$P_A$} node [below] {$t_1$} (10)
+    (10) edge[bend left] node[above] {$J_{AA}$} node [below] {$t_1'$} (11)
+    (11) edge node [above] {$P_A$} node [below] {$t_2$} (12)
+    (12) edge[bend left] node[above] {$J_{AA}$} node [below] {$t_2'$} (13)
+    (13) edge node [above] {$Q_A$} node [below] {$t_e$} (14);
+    
+  \node (15) [right=0.0cm of 14] {$+$ ...};
+
+\end{tikzpicture}
+\caption{Illustrated construction of $C_{AA}(t)$}
+\end{figure}
+
 \begin{align}
 C_{AA}(t) = &\sum_{i,l=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, P_A(t_j) \int_0^\infty \diff t_j'\, J_{AA}(t_j')\right]\notag\\ 
 &\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace
@@ -161,7 +208,7 @@ In the discussed 1--dimensional case $\varepsilon$ is the mean step size and $\b
 P(s) = \frac{1}{\varepsilon \sqrt{2\pi}} e^{-\sfrac{s^2}{2\varepsilon^2}}
 \end{align} 
 
-The position of a particle at time $t + \Delta t$ can easily derived from its position\myCite{pinknoise} at time $t$.
+The position of a particle at time $t + \Delta t$ can easily derived from its position at time $t$.
 
 \begin{align}
 \mathbf{r}(t + \delta t) = \mathbf{r}(t) + \boldsymbol{\zeta}(t, \varepsilon)
