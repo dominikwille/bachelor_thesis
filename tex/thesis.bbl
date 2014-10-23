@@ -16,6 +16,31 @@
   {}
 \endgroup
 
+\entry{curvefit}{online}{}
+  \field{sortinit}{D}
+  \field{title}{Doc: scipy.optimize.curve\_fit}
+  \verb{url}
+  \verb http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimi
+  \verb ze.curve_fit.html
+  \endverb
+  \field{year}{2014}
+\endentry
+
+\entry{netzpaper2}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Netz}{N.}%
+     {Roland}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{NR1}
+  \strng{fullhash}{NR1}
+  \field{sortinit}{N}
+  \field{title}{N/A}
+  \field{year}{2014}
+\endentry
+
 \entry{netzpaper}{article}{}
   \name{author}{2}{}{%
     {{}%
@@ -63,16 +88,6 @@
   \strng{fullhash}{SGLJRRNBL1}
   \field{sortinit}{S}
   \field{title}{Pink noise of ionic current, theory and modelisation}
-  \field{year}{2014}
-\endentry
-
-\entry{curvefit}{online}{}
-  \field{sortinit}{S}
-  \field{title}{scipy.optimize.curve\_fit}
-  \verb{url}
-  \verb http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimi
-  \verb ze.curve_fit.html
-  \endverb
   \field{year}{2014}
 \endentry
 

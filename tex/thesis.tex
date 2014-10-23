@@ -76,7 +76,7 @@
 \section{Introduction}
 Proton- or generally ion dynamics in fluids directly imply fluctuations in the potential and conductivity of surrounded nano--scaled structures. The major processes which influence these measurable properties and which are considered here are \effect{absorption} and \effect{desorption} processes. The amount of mobile ions which are contained in the fluid are proportional to the fluids conductivity. An experimental way to detect this conductivity is by measuring the ionic current. And since ions carry charges, absorption of ions causes changes of the potential.
 
-Since such fluctuations, could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. But today many of these fluctuations are not satisfactorily explained\myCite{pinknoise}. 
+Since such fluctuations, could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. Just now some of these fluctuations are the topic of current research\myCite{pinknoise}. 
 
 In this document the motion of one particle is considered as a brownian motion. Even though ions and especially protons are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the absorption--desorption processes, which can be indirectly measured as conductivity and potential.
 
@@ -86,9 +86,41 @@ The title image shows one visualized particle on a random walk between two plate
 
 \newpage
 \section{Analytic calculations}
-In this document some properties of the 
+The analytic calculations are mostly inherited from \cite{netzpaper} and \cite{netzpaper2}. To understand the used properties in the simulation later on, the key principles should be explained briefly.
 
-For a single surface this means\myCite{netzpaper}:
+Considered should be $N$ charges carriers such as ions or protons. For every particle $i\in\left\lbrace 1,2,...,N \right\rbrace$ the binary function $n_j^i(t)$ should stand for the absorption state of the particle on the surface $j$. $n_A^i(t) = 1$ if the particle is absorbed on Plate $A$ and $n_A^i(t) = 0$ if it is not.
+
+Of course the number of particles absorbed on plate $A$ is given by:
+
+\begin{align}
+N_A(t) = \sum_{i=1}^N n_A^i(t)
+\end{align}
+
+Since experimental investigation measure fluctuations in the potential of nano--structures, especially the auto--correlation function of $N_A(t)$, is of essential importance.
+
+
+
+\begin{align}
+\langle N_A(0) N_A(t)\rangle &= \sum_{i,j = 1}^N \langle n_A^i(0) n_A^j(t)\rangle\\
+&= \sum_{i \neq j}^N \langle n_A^i(0) n_A^j(t)\rangle + \sum_{i =1}^N \langle n_A^i(0) n_A^j(t)\rangle
+\end{align}
+The particles are usually uncorrelated among each other 
+\begin{align}
+\langle n_A^i(0) n_A^j(t)\rangle = \langle n_A(0) \rangle\langle n_A(t) \rangle
+\end{align}
+so let the expectation value of the absorption state for an single particle be:
+\begin{align}
+\langle n_A^i(t) \rangle &= \langle n_A^i(0) \rangle = p_A \\
+\Rightarrow \langle N_A(0) N_A(t)\rangle &= N(N-1)p_a^2 + N\langle n_A(0) n_A(t)\rangle
+\end{align}
+The only non--trivial quantity to calculate can be defined via the singe--ion correlation function $C_{AA}(t)$ which is the probability that a particle is absorbed at time $t$ given it is absorbed at time $t=0$.
+\begin{align}
+C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
+\Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2
+\end{align}
+
+
+For a single surface this means:
 \begin{align}
 C_{AA}(t) = &\sum_{i,l=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, P_A(t_j) \int_0^\infty \diff t_j'\, J_{AA}(t_j')\right]\notag\\ 
 &\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace
@@ -251,7 +283,7 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
 \end{align}
 
 \newpage
-\section{Free particle}
+\section{Free particle - MSD}
 A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD in time steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression. The parameters were:
 \begin{center}
 \begin{tabular}{c|c}
@@ -275,7 +307,7 @@ The expectation is that for large numbers of runs the mean square converges agai
 \section{Infinite plates}
 The system which is simulated consists of two infinite plates A and B with distance $H$. Between the two plates is some fluid which surrounds the simulated ion. The ion absorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
 \begin{align}
-P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}}
+P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}} \myEqLabel{absorb_dist}
 \end{align}
 \begin{figure}[H]
 \centering
@@ -297,17 +329,22 @@ P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}}
 \end{figure}
 \subsection{Simple random walk vs. Gaussian random walk}
 
-For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk therefore is just superior the simple random walk.
+For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
 
 \myImage{fixed_pos}{Position of a particle on a simple random walk}
 
 \myImage{gauss_pos}{Position of a particle on a gaussian random walk}
 
-
-
-
 \subsection{Probability density}
-\myImage{probability_density}{Probability density}
+The probability density for two infinite plates where the particle can absorb looks for $t\rightarrow \infty$ is shown in the figure below. The plates are again at $x = \pm 1$.
+\myImage{probability_density}{Probability density for two plates}
+The exception for a reflecting plate would be a constant probability density function. The given probability density function shows some important differences which may due to the implementation of the surface reaction boundary condition. 
+
+It was implemented that the particle absorbs when it crosses one plate with the probability $p$ which was chosen as $0.3$ here. 
+If the particle absorbs it keeps absorbed for an exponential distributed time as \myEqRef{absorb_dist}. After the time the particle keeps absorbed the langevin simulation continues from the point on the plate. If the first step goes through the plate again the particle absorbs again in the next step.
+
+This directly implies that there will be significant probability that the particle is at the position of a plate what causes the very high values at $x = \pm 1$. On the other hand the probability that the particle is next to a plate but not absorbed is significant smaller than that it is somewhere else between the plates. This may due to the implementation of the boundary condition as well because all movements that would crosses a plate end up on the position of the plate here. So ways that would include a reflection process at the boundaries drop out for absorbing plates. 
+
 
 \subsection{Correlation functions}
 For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be absorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is absorbed on plate $\mathrm{A}$ at time $t=0$.
@@ -365,14 +402,28 @@ F(t) &= c_i \cdot e^{b_i \cdot t} \\
 
 The Laplace transform correlation functions follow as:
 \begin{align}
-\widetilde{C}(\omega) &= \sum_{i=0}^n \frac{c_i}{\omega - b_i}
+\widetilde{C}(\omega) = \sum_{i=0}^n \frac{c_i}{\omega - b_i}
 \end{align}
 
-The comparision between that and the analytic result for $\widetilde{C}_{AA}(\omega)$ is shown on the log--log--plot below:
+To get an idea of the accuracy of the Laplace transform of the fitted correlation functions also the error of the determined parameters $c_i$ and $b_i$ should considered here.
+
+\begin{align}
+\Delta\widetilde{C}(\omega) = \sqrt{\sum_{i=0}^\infty \left(\frac{\Delta c_i}{c_i} \right)^2 + \left( \frac{\Delta b_i}{(\omega - b_i)^2}\right)^2} \cdot \widetilde{C}(\omega)
+\end{align}
+
+The comparison between that and the analytic result for $\widetilde{C}_{AA}(\omega)$ is shown on the log--log--plot below. The analytic laplace transform correlation function is given by:
+
+\begin{align}
+\Delta\widetilde{C}_{AA}(\omega) = \sfrac{1}{\omega}
+\end{align}
+
+
 
 \myImage{compare_lac}{Comparsion of the laplace transform correlation function $\widetilde{C}_{AA}(\omega)$}
 
-The errorbars in the figure above are obtained from the variance of the fitting parameters $c_i$ and $b_i$. It makes clear that in the uncertainty of the fitting curve the result is identical. Note that for $\omega \rightarrow b_i$ The fitting function is not properly defined (See \myEqRef{laplace}). That means that the divergence at these values is only caused by the fitting method.
+The errorbars in the figure above are obtained from the variance of the fitting parameters $c_i$ and $b_i$ which are defined for every time $t$ so there generally has to be an error bar for every time $t$. The ones which are considered here, stand only exemplary for these other errorbars. The positions of the errorbars is just chosen to get a nice plot they are not the only data points. 
+
+The figure above makes clear that in the uncertainty of the fitting curve the results are identical. Note that for $\omega \rightarrow b_i$ The fitting function is not properly defined (See \myEqRef{laplace}). That means that the divergence at these values may only be caused by the fitting method.
 
 \newpage
 \section{Finite plates}

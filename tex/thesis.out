@@ -1,17 +1,21 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Brownian Dynamics}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Langevin Symulation}{section.2}% 3
-\BOOKMARK [3][-]{subsubsection.2.1.1}{Priciple}{subsection.2.1}% 4
-\BOOKMARK [3][-]{subsubsection.2.1.2}{Physical background}{subsection.2.1}% 5
-\BOOKMARK [2][-]{subsection.2.2}{Connection to diffusion}{section.2}% 6
-\BOOKMARK [3][-]{subsubsection.2.2.1}{Fixed step size}{subsection.2.2}% 7
-\BOOKMARK [3][-]{subsubsection.2.2.2}{Gaussian random walk}{subsection.2.2}% 8
-\BOOKMARK [2][-]{subsection.2.3}{Mean square distance}{section.2}% 9
-\BOOKMARK [1][-]{section.3}{2 Plates system}{}% 10
-\BOOKMARK [1][-]{section.4}{Comparison to analytic calculations}{}% 11
-\BOOKMARK [2][-]{subsection.4.1}{Free particle}{section.4}% 12
-\BOOKMARK [2][-]{subsection.4.2}{Correlation functions}{section.4}% 13
-\BOOKMARK [3][-]{subsubsection.4.2.1}{Definition}{subsection.4.2}% 14
-\BOOKMARK [3][-]{subsubsection.4.2.2}{Parameters of the simulation}{subsection.4.2}% 15
-\BOOKMARK [3][-]{subsubsection.4.2.3}{Comparison}{subsection.4.2}% 16
-\BOOKMARK [1][-]{section.5}{Annex}{}% 17
+\BOOKMARK [1][-]{section.2}{Analytic calculations}{}% 2
+\BOOKMARK [1][-]{section.3}{Brownian Dynamics}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Langevin Symulation}{section.3}% 4
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Priciple}{subsection.3.1}% 5
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Physical background}{subsection.3.1}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Connection to diffusion}{section.3}% 7
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Fixed step size}{subsection.3.2}% 8
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Gaussian random walk}{subsection.3.2}% 9
+\BOOKMARK [2][-]{subsection.3.3}{Mean square distance}{section.3}% 10
+\BOOKMARK [1][-]{section.4}{Free particle}{}% 11
+\BOOKMARK [1][-]{section.5}{Infinite plates}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{Simple random walk vs. Gaussian random walk}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.2}{Probability density}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.3}{Correlation functions}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.4}{Parameters of the simulation}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.5}{Interpretation}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.6}{Comparison}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{Finite plates}{}% 19
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 20
+\BOOKMARK [1][-]{section.8}{Annex}{}% 21

@@ -70,7 +70,7 @@ class Plates1dNoCrossing(Langevin):
 
 
 dx = 0.01
-n_max = 10000000
+n_max = 10000
 x = numpy.arange(-1, 1 + dx, dx)
 p = [0]*len(x)
 

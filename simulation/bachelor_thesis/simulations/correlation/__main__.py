@@ -177,16 +177,16 @@ print popt0
 print pcov0
 # print popt1
 
-p0, = plt.plot(xdata, c_aa)
-p1, = plt.plot(xdata, c_ab)
-p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
-p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
-p4, = plt.plot(xdata, 1 - numpy.array(c_aa) - numpy.array(c_ab))
-plt.xlabel('$t$ in $\delta t$')
-plt.ylabel('$C(t)$')
-plt.ylim([0, 1])
-plt.legend([p0, p1, p2, p3, p4], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit', '$C_{AD}$'], bbox_to_anchor=(0.75, 0.7), loc=2, borderaxespad=0)
-plt.show()
+# p0, = plt.plot(xdata, c_aa)
+# p1, = plt.plot(xdata, c_ab)
+# p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
+# p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
+# p4, = plt.plot(xdata, 1 - numpy.array(c_aa) - numpy.array(c_ab))
+# plt.xlabel('$t$ in $\delta t$')
+# plt.ylabel('$C(t)$')
+# plt.ylim([0, 1])
+# plt.legend([p0, p1, p2, p3, p4], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit', '$C_{AD}$'], bbox_to_anchor=(0.75, 0.7), loc=2, borderaxespad=0)
+# plt.show()
 
 step_size = 0.1
 tau = 1.0
@@ -213,6 +213,9 @@ def roland(w_, tau, k, D, H):
     return Q(w_, data) * (1-P(w_, data)) * J_BB(w_, data) / (
         (1-P(w_, data) * J_AA(w_, data)) * (1- P(w_, data) * J_BB(w_, data)) - P(w_, data) * J_AB(w_, data) * J_BA(w_, data)
     )
+
+def roland_(w_, tau, k, D, H):
+    return 1 / w_
 
 def Q(w_, data):
     tau = data[0]
@@ -258,7 +261,7 @@ w_err = numpy.exp(numpy.arange(numpy.log10(max(popt0[1], popt0[3], popt0[5]) / 1
 
 # p0, = plt.plot(w, laplace2(w, xdata))
 # p1, = plt.plot(w, laplace(w, *popt0))
-p1, = plt.plot(w, roland(w, tau, k, D, H))
+p1, = plt.plot(w, roland_(w, tau, k, D, H))
 # p2, = plt.plot(w, roland(w+0.09, tau, k, D, H) +0.09)
 # p2, = plt.plot(w, lim(w, tau, k, D, H))
 p0, = plt.plot(w_part, func0la(w_part, *popt0))
