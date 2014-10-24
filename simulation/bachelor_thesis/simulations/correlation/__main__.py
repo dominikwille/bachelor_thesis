@@ -250,7 +250,6 @@ def J_AB(w_, data):
 def lim(w_, tau, k, D, H):
     return 1 / (w_ - 1 / (tau**2 * w_**2 * k**2 * numpy.sinh(H * (w_ / D)**0.5)))
 
-
 w = numpy.arange(0.0001, 10.0, 0.01)
 
 popt2, pcov2 = curve_fit(roland, w, laplace2(w, xdata))
