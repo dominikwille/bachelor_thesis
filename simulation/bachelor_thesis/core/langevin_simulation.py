@@ -54,7 +54,13 @@ class Langevin(object):
         self.distances = [self.coordinate(self.r)]
         # self.step += 1
 
+        p = 0
+
         while self.step < self.max_steps:
+            if p < self.step * 100 / self.max_steps:
+                print p
+                p += 1
+
             self.step += 1
             r_old = numpy.copy(self.r)
             if not self.absorbed:
