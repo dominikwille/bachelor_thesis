@@ -145,7 +145,7 @@ def func2(x_, a, b, c, d, h):
 def expect(x_):
     return numpy.exp(-x_)
 
-popt0, pcov0 = curve_fit(func1, xdata, c_aa)
+popt0, pcov0 = curve_fit(func0, xdata, c_aa)
 # popt1, pcov1 = curve_fit(func1, xdata, c_ab)
 
 def func0la(x_, a, b, c, d, f, g, h):
@@ -189,7 +189,7 @@ def func0laerr(x_, popt, pcov):
 
 p0, = plt.plot(xdata, c_aa)
 p1, = plt.plot(xdata, c_ab)
-p2, = plt.plot(xdata, func1(numpy.array(xdata), *popt0))
+p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
 # p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
 # p4, = plt.plot(xdata, 1 - numpy.array(c_aa) - numpy.array(c_ab))
 plt.xlabel('$t$ in $\delta t$')
