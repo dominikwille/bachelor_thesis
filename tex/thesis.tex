@@ -45,6 +45,8 @@
 
 \newcommand{\myEqRef}[1]{\textit{\hyperref[eq:#1]{Equation \ref*{eq:#1}}}}
 
+\newcommand{\mySecRef}[1]{\textit{\hyperref[#1]{Section \ref*{#1}}}}
+
 \newcommand{\myEqLabel}[1]{\label{eq:#1}}
 
 \newcommand{\myEqAnnex}[1]{\;\;\;\mathrm{(Calculation\;In\;Annex)} \myEqLabel{#1}}
@@ -85,7 +87,7 @@
 \section{Introduction}%
 Recent research on low--frequency ionic currents in nanocavities show fluctuations with $\sfrac{1}{f}$--power spectrums which is also known as pinknoise\myCite{pinknoise}. Smeets et al. made the hypothesis of a link between low-frequency noise and surface charge fluctuations\myCite{paper0}. The assumption in the \effect{absorption-desorption}-model is that charge carriers such as protons can adsorb on surfaces and therefore change the surface's potential. In this thesis, a \effect{Langevin-Simulation} for a proton combined with the absorption-desorption-model is used to demonstrate the probable origin of the widely observed $\sfrac{1}{f}$-fluctuations of ionic--currents.
 
-The simulations continue previous analytic calculations by \person{Roland Netz} which obtain correlation functions of the assorbtion-desorbtion-state for infinite cylindrical and infinite planar geometries\myCite{netzpaper}. To determine the correctness of the Langevin-Simulation they are compared to the analytic results for these limiting cases as well as for simple cases such as free particles. Afterwards the simulation is applied to an finite plate geometry which is similar to an nano--pore.
+No interaction between the ion and the two plates such as a coulomb-potential is taken to account. The particle is moreover simulated for the over-damped case. The simulations continue previous analytic calculations by \person{Roland Netz} which obtain correlation functions of the assorbtion-desorbtion-state for infinite cylindrical and infinite planar geometries\myCite{netzpaper}. To determine the correctness of the Langevin-Simulation they are compared to the analytic results for these limiting cases as well as for simple cases such as free particles. Afterwards the simulation is applied to an finite plate geometry which is similar to an nano--pore.
 
 Investigations of the cause of the ionic--current fluctuations could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. Just now some of these fluctuations are the topic of current research\myCite{paper2}. 
 
@@ -95,9 +97,6 @@ The title image shows the visualized position trajectory of a particle on a rand
 \newpage
 
 \section{Model}
-\subsection{Analytic calculations}
-The analytic calculations are mostly inherited from \cite{netzpaper} and \cite{netzpaper2}. To understand the used properties in the simulation later on, the key principles should be explained briefly.
-
 Considered are be $N$ charge carriers such as ions or protons. between to Plates $A$ and $B$. For every particle $i\in\left\lbrace 1,2,...,N \right\rbrace$ the binary function $n_j^i(t)$ stands for the absorption state of the particle on the surface $j$. $n_A^i(t) = 1$ if the particle is adsorbed on Plate $A$ and $n_A^i(t) = 0$ if it is not.
 
 \begin{figure}[H]
@@ -118,7 +117,7 @@ Considered are be $N$ charge carriers such as ions or protons. between to Plates
 \end{tikzpicture}
 \caption{Schematic structure of the system -- The particles which are considered are between these two plates}
 \end{figure}
-
+\subsection{Properties}
 The number of particles adsorbed on plate $A$ is given by:
 
 \begin{align}
@@ -137,7 +136,7 @@ The particles are usually uncorrelated among each other
 \end{align}
 so let the expectation value of the absorption state for a single particle be:
 \begin{align}
-\langle n_A^i(t) \rangle &= \langle n_A^i(0) \rangle = p_A \\
+\langle n_A^i(t) \rangle &= \langle n_A^i(0) \rangle = p_A \myEqLabel{p_A}\\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N(N-1)p_a^2 + N\langle n_A(0) n_A(t)\rangle
 \end{align}
 The only non--trivial quantity to calculate can be defined via the single--ion correlation function $C_{AA}(t)$ which is the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$.
@@ -145,7 +144,8 @@ The only non--trivial quantity to calculate can be defined via the single--ion c
 C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2
 \end{align}
-
+\subsection{Analytic calculations}
+The analytic calculations are mostly inherited from \cite{netzpaper} and \cite{netzpaper2}. To understand the used properties in the simulation later on, the key principles should be explained briefly.
 \subsubsection{Constructing the single--ion correlation function for a single surface}
 For a single surface $A$, one particle that is adsorbed at time $t=0$ can basically keep adsorbed until time $t$ or desorb $n$--times before it is adsorbs again.
 \begin{figure}[H]
@@ -262,7 +262,7 @@ D \frac{\partial}{\partial x}\widetilde{G}(x, \omega| x_0) \big\vert_{x=x_B} = -
 \end{align}
 and a $P_A(t)$ which is given by
 \begin{align}
-P_A(t) &= \frac{1}{\tau_A} e^{-\sfrac{t}{\tau_A}}
+P_A(t) &= \frac{1}{\tau_A} e^{-\sfrac{t}{\tau_A}} \myEqLabel{P_t}
 \end{align}
 the laplace-transform functions read as: 
 
@@ -290,11 +290,11 @@ If the limits of factors exist, the limit of products is the product of the limi
 &= \frac{1}{\omega} \myEqLabel{analytic_caa}
 \end{align}
 \newpage
-\subsection{Brownian Dynamics Simulation}
-The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}.
+\subsection{Simulation Methods}
+The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}. Simulations for these situations are known as \effect{Brownian-Dynamics-Simulations}.
 \subsubsection{Langevin Equation}
-The principle of a Langevin simulation generally is to consider collisions with other particles as a random force. And propergate the position of a particle over small time steps $\delta t$.
-\subsubsection{Physical background}
+The principle of a Brownian-Dynamics-Simulation generally is to consider collisions with other particles as a random forces. And propergate the position of a particle over small time steps $\delta t$.\myCite{book}
+
 Although ions and especially protons, which should be described in the simulation, are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the adsorption--desorption processes, which can be indirectly measured as conductivity and potential.
  
 An approach to describe situations with brownian motion was suggested by \person{Paul Langevin} who added the random force $\mathbf{Z}(t)$ in newtons equation of motion. This stochastic term represents the collision driven force. His equation, the Langevin equation reads:
@@ -303,7 +303,7 @@ An approach to describe situations with brownian motion was suggested by \person
 m \ddot{\mathbf{r}} = -\lambda\dot{\mathbf{r}} + \mathbf{Z}(t)
 \end{align}
 
-where $m$ is the mass of the particle, $\mathbf{r}$ the position of the particle and $\lambda$ The friction constant.
+where $m$ is the mass of the particle, $\mathbf{r}$ the position of the particle and $\lambda$ the friction constant.
 
 Brownian dynamics can be represented with the so called \effect{overdamped langevin equation} where the $m \ddot{\mathbf{r}}$ term is neglected. The equation for the prevailing situation therefore is:
 
@@ -311,7 +311,7 @@ Brownian dynamics can be represented with the so called \effect{overdamped lange
 \lambda\dot{\mathbf{r}} = \mathbf{Z}(t)
 \end{align}
 
-In order to get an iterable expression this expression is discretesated in time intervals $\Delta t$:
+In order to get an iterable expression this expression is discretizised in time intervals $\Delta t$:
 
 \begin{align}
 \int_t^{t+ \delta t} \dot{\mathbf{r}}(t')\, dt' &= \int_t^{t+ \Delta t} \frac{\mathbf{Z}(t')}{\lambda}\, dt' \\
@@ -319,7 +319,7 @@ In order to get an iterable expression this expression is discretesated in time 
 \mathbf{r}(t + \delta t) - \mathbf{r}(t) &\cong \boldsymbol{\zeta}(t, \varepsilon)
 \end{align}
 
-In the discussed 1--dimensional case $\varepsilon$ is the mean step size and $\boldsymbol{\zeta}(t, \varepsilon)$ is one random vector. For a simple random walk with unique step size this will be $\varepsilon$ or $-\varepsilon$ with a chance of $50\%$ each. For a gaussian random walk this will be some value $s$ with a probability:
+In the discussed 1--dimensional case $\varepsilon$ is the mean step size and $\boldsymbol{\zeta}(t, \varepsilon)$ is one random vector. For a simple random walk with fixed step size this will be $\varepsilon$ or $-\varepsilon$ with a chance of $50\%$ each. For a gaussian random walk this will be some value $s$ with a probability:
 
 \begin{align}
 P(s) = \frac{1}{\varepsilon \sqrt{2\pi}} e^{-\sfrac{s^2}{2\varepsilon^2}}
@@ -383,7 +383,7 @@ nodes={
 		 (m-5-6) edge (m-4-7)
 		 (m-5-4) edge (m-4-5);
 \end{tikzpicture}
-\caption{Number of ways to different distances}
+\caption{Pascal's triangle -- The numbers stand for the number of ways to its position. the distance from the initial position of every point is scaled on top.}
 \end{figure}
 
 \begin{align}
@@ -408,7 +408,7 @@ x \in \{x\; |\; x = z \cdot 2 \varepsilon + \varepsilon\, (n\,\mathrm{mod}\, 2),
 \end{align}
 For other values $x$ the probability is $0$. This means that there is only one value per $2\epsilon$ interval, therefore the probability density function $\rho(x,n)$ is:
 \begin{align}
-\rho(x,n) = \frac{1}{2\varepsilon}\; p(x,n) = \frac{1}{\varepsilon\sqrt{2\pi n}} e^{-\sfrac{x^2}{2\varepsilon^2 n}}
+\rho(x,n) = \frac{1}{2\varepsilon}\; p(x,n) = \frac{1}{\varepsilon\sqrt{2\pi n}} e^{-\sfrac{x^2}{2\varepsilon^2 n}} \myEqLabel{rho_binom}
 \end{align}
 Which is the normal distribution with $\mu = 0;\;\; \sigma =  \varepsilon\sqrt{n}$.
 
@@ -435,9 +435,17 @@ Which is exactly the expression of a gaussian distributed 1--dimensional random 
 &= \frac{1}{\varepsilon\sqrt{2(n+1)\pi}}\, e^{-\sfrac{x^2}{2(n+1)\varepsilon^2}} \myEqAnnex{gauss_random_walk}
 \end{align}
 
+\subsubsection{Simple random walk vs. Gaussian random walk}
+
+For all relevant simulations a gaussian random walk was used. Even if the distribution density in \myEqRef{rho_binom} and \myEqRef{rho_gauss} becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
+
+\myImage{fixed_pos}{Position of a particle performing a simple random walk -- The fixed step size causes a discretizised position of the particle}
+
+\myImage{gauss_pos}{Position of a particle perfoming a gaussian random walk -- The position of the particle is not discretizised as like in the nature}
+
 and since the calculated $\rho(x,n+1)$ is the same as $\rho(x,n)$ in \myEqRef{rho_gauss} the expression is proofed. $\checkmark$
-\subsection{Mean square distance}
-Obviously the expectation value for $x$ after $n$ steps $\langle x_n\rangle = 0$. What can be derived from:
+\subsubsection{Mean square distance}
+The expectation value for $x$ after $n$ steps $\langle x_n\rangle = 0$. What can be derived from:
 \begin{align}
 \langle x_n\rangle = \int_{-\infty}^\infty x \cdot \rho(x,t)\diff x = 0
 \end{align}
@@ -447,16 +455,10 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
 \end{align}
 
 \newpage
-\section{Investigations}
-\subsection{Simple random walk vs. Gaussian random walk}
-
-For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
-
-\myImage{fixed_pos}{Position of a particle on a simple random walk}
-
-\myImage{gauss_pos}{Position of a particle on a gaussian random walk}
+\section{Investigation}
 \subsection{Tests of the simulation}
-A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD in time steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression. The parameters were:
+\subsubsection{MSD}
+A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD as a function of performed steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression \myEqRef{MSD_n}. The parameters were:
 \begin{center}
 \begin{tabular}{c|c}
 Parameter & Value \\\hline
@@ -471,47 +473,46 @@ Note that $\varepsilon$ is determined by \myEqRef{def:D}.
 The expectation is that for large numbers of runs the mean square converges against the following analytic expression derived from \myEqRef{MSD}:
 \begin{align}
 \langle x_n^2\rangle (t) &= 2 D t \\
-\Rightarrow\langle x_n^2\rangle (n) &= 2 D \delta t \cdot n
+\Rightarrow\langle x_n^2\rangle (n) &= 2 D \delta t \cdot n \myEqLabel{MSD_n}
 \end{align}
-\myImage{mean_square}{MSD over time for different numbers of runs}
+\myImage{mean_square}{MSD over time -- The more values are taken into account to calculate the MSD the closer it gets to the analytic expression in \myEqRef{MSD_n}}
 
 \newpage
 \subsubsection{Infinite plates}
-The system which is simulated consists of two infinite plates A and B with distance $H$. Between the two plates is some fluid which surrounds the simulated ion. The ion adsorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
+The system which is simulated consists of two infinite plates A and B with distance $H$. Between the two plates there is fluid which surrounds the simulated ion. In the model the ion adsorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
 \begin{align}
 P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}} \myEqLabel{adsorb_dist}
 \end{align}
 
-\subsubsection{Probability density}
 The probability density for two infinite plates where the particle can adsorb looks for $t\rightarrow \infty$ is shown in the figure below. The plates are again at $x = \pm 1$.
-\myImage{probability_density}{Probability density for two plates}
-The exception for a reflecting plate would be a constant probability density function. The given probability density function shows some important differences which may due to the implementation of the surface reaction boundary condition. 
+\myImage{probability_density}{Probability density for two plates located at $x = \pm 1$ -- The implementation of the boundary causes a reduced density near the plates}
+The expectation for a reflecting plate would be a constant probability density function. The given probability in \myFigRef{pic:probability_density} density function has some important differences which maybe dues to the implementation of the surface reaction boundary condition. 
 
 It was implemented that the particle adsorbs when it crosses one plate with the probability $p$ which was chosen as $0.3$ here. 
-If the particle adsorbs it keeps adsorbed for an exponential distributed time as \myEqRef{adsorb_dist}. After the time the particle keeps adsorbed the langevin simulation continues from the point on the plate. If the first step goes through the plate again the particle adsorbs again in the next step.
+If the particle adsorbs it keeps adsorbed for an exponential distributed time as \myEqRef{adsorb_dist}. After the time the particle keeps adsorbed the langevin simulation continues from that position on the plate. If the first step goes through the plate again the particle adsorbs again in the next step.
 
-This directly implies that there will be significant probability that the particle is at the position of a plate what causes the very high values at $x = \pm 1$. On the other hand the probability that the particle is next to a plate but not adsorbed is significant smaller than that it is somewhere else between the plates. This may due to the implementation of the boundary condition as well because all movements that would crosses a plate end up on the position of the plate here. So ways that would include a reflection process at the boundaries drop out for adsorbing plates. 
+This directly implies that there will be high probability that the particle is at the position of a plate, which causes the very high values of $\rho(x)$ at $x = \pm 1$, see in \myFigRef{pic:probability_density}. On the other hand the probability that the particle is close to a plate but not adsorbed is significant smaller than that it is somewhere else between the plates. This maybe dues to the implementation of the boundary condition as well, because all movements that would crosses a plate end up on the position of the plate here. So trajectories that would include a reflection process at the boundaries drop out for adsorbing plates. 
 
 
 \subsubsection{Correlation functions}
-For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be adsorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is adsorbed on plate $\mathrm{A}$ at time $t=0$.
+For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be adsorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it was adsorbed on plate $\mathrm{A}$ at time $t=0$.
 
-These correlation functions can easily be obtained from the langevin simulation by noting if and where the particle is adsorbed over the time. 
+These correlation functions can easily be obtained from the langevin simulation by analyzing the trajectories of the particle. 
 
 Afterwards the values of the correlation function $C_{AA}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is adsorbed on plate $\mathrm{A}$ at the beginning and at the end over the total number of intervals.
 
-Similarly the values of the correlation function $C_{AB}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is adsorbed on plate $\mathrm{A}$ at the beginning and on plate $\mathrm{B}$ at the end over the total number of intervals.
+Similarly the values of the correlation function $C_{AB}(t)$ can be calculated as the intervals with length $t$ where the ion is adsorbed on plate $\mathrm{A}$ at the beginning and on plate $\mathrm{B}$ at the end over the total number of intervals.
 
-The correlation functions were obtained out of $1$ simulation. For all correlation functions the values of the correlation function $C(t)$ for different times $t$ were calculated as:
+The correlation functions were obtained from a single simulation. For all correlation functions the values of the correlation function $C(t)$ for different times $t$ were calculated as:
 
 \begin{align}
   C_{ij}(t) = \frac{\int_0^{t_{max}-t} S_i(t') \cdot S_j(t' + t) \diff t'}{\int_0^{t_{max}-t} S_i(t') \diff t'}
 \end{align}
 
-Where $S_{i/j}(t) = 1$ if the particle has the state of interest at the beginning/end of an interval and $S_{i/j}(t) = 0$ otherwise.
+Where $S_{i/j}(t) = 1$ if the particle has the state at the beginning/end of an interval and $S_{i/j}(t) = 0$ otherwise.
 
 \subsubsection{Parameters of the simulation}
-The run for the comparison was performed with the following parameters:
+The run for the comparison with the analytic calculations was performed with the following parameters:
 \begin{center}
 \begin{tabular}{c|c}
 Parameter & Value \\\hline
@@ -523,11 +524,11 @@ $H$ & 1.0
 \end{tabular}
 \end{center}
 
-where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary adsorbs and $s$ is the plate distance. The start position for this lagevin--simulation is not relevant for the correlation functions. 
+where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary adsorbs and $s$ is the plate distance. The initial position for this lagevin--simulation is not relevant for the correlation functions. 
 
-\subsubsection{Interpretation}
+\subsubsection{Interpretation}\label{interpretation}
 
-Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. Obviously $C_{AA}(t)$ starts from $1$ because after its definition it is definitely adsorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is adsorbed on plate $A$ it is neither possible that it is adsorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the adsorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on some finite probability. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ as well.
+Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. Obviously $C_{AA}(t)$ starts from $1$ because by definition it is definitely adsorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is adsorbed on plate $A$ it is neither possible that it is adsorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the adsorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on a finite probability. This probability was called $p_A$ in \myEqRef{p_A}. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ at a finite probability as well. It is $1 - p_A - p_B$.
 
 \subsubsection{Comparison}
 In order to compare these correlation functions with its analytic equivalents they need to be Laplace transformed. To obtain easy expressions for the Laplace transformed functions they are fitted with the functions of the following type:
@@ -536,9 +537,9 @@ In order to compare these correlation functions with its analytic equivalents th
 C(t) &= \sum_{i=0}^{n} c_i \cdot e^{b_i \cdot t} \myEqLabel{fit}
 \end{align}
 
-To determine the constants $c_i$ and $b_i$ the \verb+scipy.optimize.curve_fit+ in Phython was used which uses non-linear least squares to fit a function\myCite{curvefit}. For $C_{AA}$ 4 terms of the and for $C_{AB}$ 2 terms of \myEqRef{fit} function were used.
+To determine the constants $c_i$ and $b_i$ the \verb+scipy.optimize.curve_fit+ in Phython was used which uses non-linear least squares to fit a function\myCite{curvefit}. For $C_{AA}$ and $C_{AB}$ \myEqRef{fit} was used as a fitting curve with $n=4$ and $n = 4$.
 
-\myImage{caa_cab}{Correlation Functions and its fits}
+\myImage{caa_cab}{Correlation Functions and its fits -- The behavior of the Correlation functions can be explained very well See \mySecRef{interpretation}}
 
 For the simple exponential expression in \myEqRef{fit} the Laplace transformed can be obtained via:
 \begin{align}
@@ -564,9 +565,9 @@ The comparison between that and the analytic result for $\widetilde{C}_{AA}(\ome
 \Delta\widetilde{C}_{AA}(\omega) = \frac{1}{\omega}
 \end{align}
 
-\myImage{compare_lac}{Comparsion of the laplace transform correlation function $\widetilde{C}_{AA}(\omega)$}
+\myImage{compare_lac}{Comparsion of the laplace transform correlation function $\widetilde{C}_{AA}(\omega)$ -- The result of the Langevin--Simulation is identical to the analytical result}
 
-The errorbars in the figure above are obtained from the variance of the fitting parameters $c_i$ and $b_i$ which are defined for every time $t$ so there generally has to be an error bar for every time $t$. The ones which are considered here, stand only exemplary for these other errorbars. The positions of the errorbars is just chosen to get a nice plot they are not the only data points. 
+The errorbars in the figure above are obtained from the variance of the fitting parameters $c_i$ and $b_i$ which are defined for every time $t$ so there generally has to be an error bar for every time $t$. Those considered here, stand only exemplary for these other errorbars. The positions of the errorbars is chosen to get a nice plot they are not the only data points. 
 
 The figure above makes clear that in the uncertainty of the fitting curve the results are identical. Note that for $\omega \rightarrow b_i$ The fitting function is not properly defined (See \myEqRef{laplace}). That means that the divergence at these values may only be caused by the fitting method.
 

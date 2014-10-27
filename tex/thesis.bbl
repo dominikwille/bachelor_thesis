@@ -133,6 +133,21 @@
   \field{year}{2014}
 \endentry
 
+\entry{book}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Tildesley}{T.}%
+     {Allen}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{TA1}
+  \strng{fullhash}{TA1}
+  \field{sortinit}{T}
+  \field{title}{Computer Simulation of Liquids}
+  \field{year}{1991}
+\endentry
+
 \lossort
 \endlossort
 
