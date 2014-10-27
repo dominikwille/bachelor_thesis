@@ -10,7 +10,7 @@ class FinitePlates(Langevin):
     # start position
     r = numpy.array([0.0, 0.0])
     # number of steps
-    max_steps = 100000000
+    max_steps = 2000000
     # list of performed steps
     steps = []
     # list of positions
@@ -144,14 +144,15 @@ y = test.c_aa
 
 with open('test.csv', 'w') as fp:
     a = csv.writer(fp, delimiter=',')
-    data = [x, test.c_aa, test.c_ab, test.c_ad, test.c_dd]
+    data = [x, test.c_aa, test.c_ab, test.c_ad, test.c_dd, [test.num_a], [test.num_d]]
     a.writerows(data)
 
 test.c_aa = numpy.array(test.c_aa) / float(test.num_a)
 test.c_ab = numpy.array(test.c_ab) / float(test.num_a)
 test.c_ad = numpy.array(test.c_ad) / float(test.num_a)
 test.c_dd = numpy.array(test.c_dd) / float(test.num_d)
-# y = numpy.array(y) / float(num)
+print test.num_a
+print test.num_d
 
 p0, = plt.plot(x, test.c_aa)
 p1, = plt.plot(x, test.c_ab)

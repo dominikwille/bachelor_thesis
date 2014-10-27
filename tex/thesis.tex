@@ -47,7 +47,7 @@
 
 \newcommand{\myEqLabel}[1]{\label{eq:#1}}
 
-\newcommand{\myEqAnnex}[1]{\;\;\;\ast \myEqLabel{#1}}
+\newcommand{\myEqAnnex}[1]{\;\;\;\mathrm{(Calculation\;In\;Annex)} \myEqLabel{#1}}
 
 \newcommand{\myCite}[1]{\footnote{\cite{#1} \citeauthor{#1} \citetitle{#1} \citeyear{#1}}}
 
@@ -80,19 +80,19 @@ Proton- or generally ion dynamics in fluids directly imply fluctuations in the p
 
 Since such fluctuations, could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. Just now some of these fluctuations are the topic of current research\myCite{pinknoise}. 
 
-In this document the motion of one particle is considered as a brownian motion. Even though ions and especially protons are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the absorption--desorption processes, which can be indirectly measured as conductivity and potential.
+In this document the motion of one particle is considered as a brownian motion. Even though ions and especially protons are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the adsorption--desorption processes, which can be indirectly measured as conductivity and potential.
 
 The simulations are based on previous analytic calculations by \person{Roland Netz} which obtain these correlation functions for infinite cylindrical and planar geometries\myCite{netzpaper}. To determine the correctness of the \effect{Langevin-Simulation} it is tested for these limiting cases as well as simple simulations for a free particle. Moreover the most important processes which take effect in the correlation functions and methods to describe and implement these in the simulation are briefly summarized and explained.
 
 The title image shows one visualized particle on a random walk between two plates in 2-d for different times. The time increases from left to right. 
 
 \newpage
-\section{Analytic calculations}
+\subsection{Analytic calculations}
 The analytic calculations are mostly inherited from \cite{netzpaper} and \cite{netzpaper2}. To understand the used properties in the simulation later on, the key principles should be explained briefly.
 
-Considered should be $N$ charges carriers such as ions or protons. For every particle $i\in\left\lbrace 1,2,...,N \right\rbrace$ the binary function $n_j^i(t)$ should stand for the absorption state of the particle on the surface $j$. $n_A^i(t) = 1$ if the particle is absorbed on Plate $A$ and $n_A^i(t) = 0$ if it is not.
+Considered should be $N$ charges carriers such as ions or protons. For every particle $i\in\left\lbrace 1,2,...,N \right\rbrace$ the binary function $n_j^i(t)$ should stand for the absorption state of the particle on the surface $j$. $n_A^i(t) = 1$ if the particle is adsorbed on Plate $A$ and $n_A^i(t) = 0$ if it is not.
 
-Of course the number of particles absorbed on plate $A$ is given by:
+Of course the number of particles adsorbed on plate $A$ is given by:
 
 \begin{align}
 N_A(t) = \sum_{i=1}^N n_A^i(t)
@@ -113,15 +113,15 @@ so let the expectation value of the absorption state for an single particle be:
 \langle n_A^i(t) \rangle &= \langle n_A^i(0) \rangle = p_A \\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N(N-1)p_a^2 + N\langle n_A(0) n_A(t)\rangle
 \end{align}
-The only non--trivial quantity to calculate can be defined via the singe--ion correlation function $C_{AA}(t)$ which is the probability that a particle is absorbed at time $t$ given it is absorbed at time $t=0$.
+The only non--trivial quantity to calculate can be defined via the singe--ion correlation function $C_{AA}(t)$ which is the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$.
 \begin{align}
 C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2
 \end{align}
 
-\subsection{Constructing the single--ion correlation function}
-\subsubsection{One surface}
-For a single surface $A$, one particle that is absorbed at time $t=0$ can basically keep absorbed until time $t$ or desorb $n$--times before it is absorbed again, if it should be absorbed at time $t$. 
+\subsubsection{Constructing the single--ion correlation function}
+\subsubsection{Single surface}
+For a single surface $A$, one particle that is adsorbed at time $t=0$ can basically keep adsorbed until time $t$ or desorb $n$--times before it is adsorbed again, if it should be adsorbed at time $t$. 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.2cm,
@@ -166,13 +166,13 @@ For a single surface $A$, one particle that is absorbed at time $t=0$ can basica
 \caption{Illustrated construction of $C_{AA}(t)$}
 \label{fig:ways}
 \end{figure}
-As illustrated in the figure above $C_{AA}(t)$ as the sum of different paths. The distribution $P(t)$ is the Probability for an absorbed ion to desorb at time $t$ for the first time. $Q_A(t)$ is the survival distribution for an ion to be absorbed on the surface $A$ over the time span $t=0$ to $t$. Note that this equals the probability that ion desorbes at some time $> t$.It is given by:
+As illustrated in the figure above $C_{AA}(t)$ as the sum of different paths. The distribution $P(t)$ is the Probability for an adsorbed ion to desorb at time $t$ for the first time. $Q_A(t)$ is the survival distribution for an ion to be adsorbed on the surface $A$ over the time span $t=0$ to $t$. Note that this equals the probability that ion desorbes at some time $> t$.It is given by:
 \begin{align}
 Q_A(t) = \int_t^\infty P(t') \diff t'
 \end{align}
 $J_{AA}(t)$ is the probability for an ion to desorb at time $t=0$ and to return to the surface $A$ at time $t$.
 
-The probability that a particle is absorbed at time $t$ given it is absorbed at time $t=0$ is the sum over the probabilities of all ways on which a particle is absorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$.
+The probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$ is the sum over the probabilities of all ways on which a particle is adsorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$.
 
 Generally all that stages in $C_{AA}(t)$ of particles could have every time $<t$. Therefore it is necessary to vary all these times. 
 
@@ -209,7 +209,7 @@ this becomes the following expression:
 \subsubsection{Two surfaces}
 The calculation of $\widetilde{C}_{AA}(\omega)$ for one surface should give a general idea how the laplace-transform of The correlation functions look like.
 
-For instance $\overline{C}_{AA}(\omega)$, $\overline{C}_{BB}(\omega)$ which omit the $\widetilde{Q}_{A/B}(\omega)$ terms, represent ways where the particle is absorbed at time $t=0$ and exactly absorbs at time $t$. 
+For instance $\overline{C}_{AA}(\omega)$, $\overline{C}_{BB}(\omega)$ which omit the $\widetilde{Q}_{A/B}(\omega)$ terms, represent ways where the particle is adsorbed at time $t=0$ and exactly adsorbs at time $t$. 
 \begin{align}
 \overline{C}_{AA}(\omega) &= \frac{1}{1-\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega)} \\
 \overline{C}_{BB}(\omega) &= \frac{1}{1-\widetilde{P}_B(\omega) \cdot \widetilde{J}_{BB}(\omega)} 
@@ -223,13 +223,32 @@ $\widetilde{C}_{AA}(\omega)$ can be constructed as:
 &\widetilde{C}_{AA}(\omega) = \frac{\overline{C}_{AA}(\omega) \, \widetilde{Q}_{A}(\omega)}{1-\overline{C}_{AA}(\omega)\, \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \overline{C}_{BB}(\omega)\, \widetilde{P}_B(\omega)\,\widetilde{J}_{BA}(\omega)}\\
 &= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right) - \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \widetilde{P}_B(\omega)\, \widetilde{J}_{BA}(\omega)}
 \end{align}
-\subsection{Limiting case}
 
+\begin{align}
+\widetilde{P}_A(\omega) &= \frac{1}{1+\tau_A\omega} \\
+\widetilde{P}_B(\omega) &= \frac{1}{1+\tau_B\omega} \\
+\widetilde{Q}_A(\omega) &= \frac{\tau_A}{1+\tau_A\omega} \\
+\widetilde{J}_{AA}(\omega) &= \frac{\widetilde{k}_A \left(1 - \widetilde{k}_B + e^{2\widetilde{H}} (1 + \widetilde{k}_B)\right)}{e^{2\widetilde{H}}(1 + \widetilde{k}_B)(1 + \widetilde{k}_A) - (1 -  \widetilde{k}_B)(1-\widetilde{k}_A)} \\
+\widetilde{J}_{AB}(\omega) &= \frac{2e^{\widetilde{H}} \widetilde{k}_A}{e^{2\widetilde{H}}(1 + \widetilde{k}_B)(1 + \widetilde{k}_A) - (1 -  \widetilde{k}_B)(1-\widetilde{k}_A)} \\
+\widetilde{J}_{BB}(\omega) &= \frac{\widetilde{k}_B \left(1 - \widetilde{k}_A + e^{2\widetilde{H}} (1 + \widetilde{k}_A)\right)}{e^{2\widetilde{H}}(1 + \widetilde{k}_A)(1 + \widetilde{k}_A) - (1 -  \widetilde{k}_A)(1-\widetilde{k}_B)}
+\end{align}
+\subsubsection{Limiting case}
+The limiting case for $k_A = k_B = k \rightarrow \infty$ is of special interest. This case descriptively means that an ion adsorbs in every time if it reaches the boundary condition. To simplify the situation even more, the desorption probability on both surfaces should be the same $\tau_A = \tau_B = \tau$.
+\begin{align}
+\widetilde{J}_{AA}(\omega) &= \frac{\widetilde{k}^2 \left(e^{2\widetilde{H}} - 1\right) + \widetilde{k}(...)}{\widetilde{k}^2 \left(e^{2\widetilde{H}} - 1\right) + \widetilde{k}(...) + (...)} \rightarrow 1\\
+\widetilde{J}_{AA}(\omega) &= \frac{\widetilde{k}(...) + (...)}{\widetilde{k}^2(...) + \widetilde{k}(...) + (...)} \rightarrow 0\\
+\end{align}
+If the limits of factors exist, the limit of products is the product of the limits. Therefore the limits of $\widetilde{J}_{AA}(\omega)/\widetilde{J}_{AB}(\omega)$ can be used as:
+\begin{align}
+\Rightarrow \lim_{k\rightarrow\infty} \widetilde{C}_{AA}(\omega) &= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right)}\\
+&= \frac{\widetilde{Q}_A(\omega)}{\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right)}\\
+&= \frac{\frac{\tau}{1+\tau\omega}}{1-\frac{1}{1+\tau\omega}} = \frac{\tau}{1+\tau\omega - 1}\\
+&= \frac{1}{\omega} \myEqLabel{analytic_caa}
+\end{align}
 \newpage
-\section{Brownian Dynamics}
+\subsection{Brownian Dynamics}
 The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}.
-\subsection{Langevin Symulation}
-\subsubsection{Priciple}
+\subsubsection{Langevin Equation}
 The principle of a Langevin simulation generally is to consider collisions with other particles as a random force. And propergate the position of a particle over small time steps $\delta t$.
 \subsubsection{Physical background}
 An approach to describe situations with brownian motion was suggested by \person{Paul Langevin} who added the random force $\mathbf{Z}(t)$ in newtons equation of motion. This stochastic term represents the collision driven force. His equation, the Langevin equation reads:
@@ -266,7 +285,7 @@ The position of a particle at time $t + \Delta t$ can easily derived from its po
 \mathbf{r}(t + \delta t) = \mathbf{r}(t) + \boldsymbol{\zeta}(t, \varepsilon)
 \end{align}
 
-\subsection{Connection to diffusion}
+\subsubsection{Connection to diffusion}
 The probability density function for both mentioned types of \effect{random walks} fulfill the diffusion equation (\textit{Note: }$n = \sfrac{t}{\delta t}$):
 \begin{align}
 \frac{\partial}{\partial t} \rho(x,t) &= D \frac{\partial^2}{\partial x^2 } \rho(x,t) \myEqAnnex{diffusion_PDE} \\
@@ -382,7 +401,15 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
 \end{align}
 
 \newpage
-\section{Free particle - MSD}
+\section{Investigations}
+\subsection{Simple random walk vs. Gaussian random walk}
+
+For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
+
+\myImage{fixed_pos}{Position of a particle on a simple random walk}
+
+\myImage{gauss_pos}{Position of a particle on a gaussian random walk}
+\subsection{Tests of the simulation}
 A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD in time steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression. The parameters were:
 \begin{center}
 \begin{tabular}{c|c}
@@ -403,10 +430,10 @@ The expectation is that for large numbers of runs the mean square converges agai
 \myImage{mean_square}{MSD over time for different numbers of runs}
 
 \newpage
-\section{Infinite plates}
-The system which is simulated consists of two infinite plates A and B with distance $H$. Between the two plates is some fluid which surrounds the simulated ion. The ion absorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
+\subsubsection{Infinite plates}
+The system which is simulated consists of two infinite plates A and B with distance $H$. Between the two plates is some fluid which surrounds the simulated ion. The ion adsorbs at the surface of the two plates with the probability $p$ and desorbs with an exponential decaying probability $P(t)$ given by:
 \begin{align}
-P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}} \myEqLabel{absorb_dist}
+P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}} \myEqLabel{adsorb_dist}
 \end{align}
 \begin{figure}[H]
 \centering
@@ -426,33 +453,26 @@ P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}} \myEqLabel{absorb_dist}
 \end{tikzpicture}
 \caption{Schematic structure of the system}
 \end{figure}
-\subsection{Simple random walk vs. Gaussian random walk}
 
-For all relevant simulations a gaussian random walk was used. Even if the distribution becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
-
-\myImage{fixed_pos}{Position of a particle on a simple random walk}
-
-\myImage{gauss_pos}{Position of a particle on a gaussian random walk}
-
-\subsection{Probability density}
-The probability density for two infinite plates where the particle can absorb looks for $t\rightarrow \infty$ is shown in the figure below. The plates are again at $x = \pm 1$.
+\subsubsection{Probability density}
+The probability density for two infinite plates where the particle can adsorb looks for $t\rightarrow \infty$ is shown in the figure below. The plates are again at $x = \pm 1$.
 \myImage{probability_density}{Probability density for two plates}
 The exception for a reflecting plate would be a constant probability density function. The given probability density function shows some important differences which may due to the implementation of the surface reaction boundary condition. 
 
-It was implemented that the particle absorbs when it crosses one plate with the probability $p$ which was chosen as $0.3$ here. 
-If the particle absorbs it keeps absorbed for an exponential distributed time as \myEqRef{absorb_dist}. After the time the particle keeps absorbed the langevin simulation continues from the point on the plate. If the first step goes through the plate again the particle absorbs again in the next step.
+It was implemented that the particle adsorbs when it crosses one plate with the probability $p$ which was chosen as $0.3$ here. 
+If the particle adsorbs it keeps adsorbed for an exponential distributed time as \myEqRef{adsorb_dist}. After the time the particle keeps adsorbed the langevin simulation continues from the point on the plate. If the first step goes through the plate again the particle adsorbs again in the next step.
 
-This directly implies that there will be significant probability that the particle is at the position of a plate what causes the very high values at $x = \pm 1$. On the other hand the probability that the particle is next to a plate but not absorbed is significant smaller than that it is somewhere else between the plates. This may due to the implementation of the boundary condition as well because all movements that would crosses a plate end up on the position of the plate here. So ways that would include a reflection process at the boundaries drop out for absorbing plates. 
+This directly implies that there will be significant probability that the particle is at the position of a plate what causes the very high values at $x = \pm 1$. On the other hand the probability that the particle is next to a plate but not adsorbed is significant smaller than that it is somewhere else between the plates. This may due to the implementation of the boundary condition as well because all movements that would crosses a plate end up on the position of the plate here. So ways that would include a reflection process at the boundaries drop out for adsorbing plates. 
 
 
-\subsection{Correlation functions}
-For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be absorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is absorbed on plate $\mathrm{A}$ at time $t=0$.
+\subsubsection{Correlation functions}
+For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be adsorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it is adsorbed on plate $\mathrm{A}$ at time $t=0$.
 
-These correlation functions can easily be obtained from the langevin simulation by noting if and where the particle is absorbed over the time. 
+These correlation functions can easily be obtained from the langevin simulation by noting if and where the particle is adsorbed over the time. 
 
-Afterwards the values of the correlation function $C_{AA}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is absorbed on plate $\mathrm{A}$ at the beginning and at the end over the total number of intervals.
+Afterwards the values of the correlation function $C_{AA}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is adsorbed on plate $\mathrm{A}$ at the beginning and at the end over the total number of intervals.
 
-Similarly the values of the correlation function $C_{AB}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is absorbed on plate $\mathrm{A}$ at the beginning and on plate $\mathrm{B}$ at the end over the total number of intervals.
+Similarly the values of the correlation function $C_{AB}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is adsorbed on plate $\mathrm{A}$ at the beginning and on plate $\mathrm{B}$ at the end over the total number of intervals.
 
 The correlation functions were obtained out of $1$ simulation. For all correlation functions the values of the correlation function $C(t)$ for different times $t$ were calculated as:
 
@@ -462,7 +482,7 @@ The correlation functions were obtained out of $1$ simulation. For all correlati
 
 Where $S_{i/j}(t) = 1$ if the particle has the state of interest at the beginning/end of an interval and $S_{i/j}(t) = 0$ otherwise.
 
-\subsection{Parameters of the simulation}
+\subsubsection{Parameters of the simulation}
 The run for the comparison was performed with the following parameters:
 \begin{center}
 \begin{tabular}{c|c}
@@ -475,13 +495,13 @@ $H$ & 1.0
 \end{tabular}
 \end{center}
 
-where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary absorbs and $s$ is the plate distance. The start position for this lagevin--simulation is not relevant for the correlation functions. 
+where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary adsorbs and $s$ is the plate distance. The start position for this lagevin--simulation is not relevant for the correlation functions. 
 
-\subsection{Interpretation}
+\subsubsection{Interpretation}
 
-Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. Obviously $C_{AA}(t)$ starts from $1$ because after its definition it is definitely absorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is absorbed on plate $A$ it is neither possible that it is absorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the absorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on some finite probability. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ as well.
+Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. Obviously $C_{AA}(t)$ starts from $1$ because after its definition it is definitely adsorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is adsorbed on plate $A$ it is neither possible that it is adsorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the adsorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on some finite probability. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ as well.
 
-\subsection{Comparison}
+\subsubsection{Comparison}
 In order to compare these correlation functions with its analytic equivalents they need to be Laplace transformed. To obtain easy expressions for the Laplace transformed functions they are fitted with the functions of the following type:
 
 \begin{align}
@@ -510,10 +530,10 @@ To get an idea of the accuracy of the Laplace transform of the fitted correlatio
 \Delta\widetilde{C}(\omega) = \sqrt{\sum_{i=0}^\infty \left(\frac{\Delta c_i}{c_i} \right)^2 + \left( \frac{\Delta b_i}{(\omega - b_i)^2}\right)^2} \cdot \widetilde{C}(\omega)
 \end{align}
 
-The comparison between that and the analytic result for $\widetilde{C}_{AA}(\omega)$ is shown on the log--log--plot below. The analytic laplace transform correlation function is given by:
+The comparison between that and the analytic result for $\widetilde{C}_{AA}(\omega)$ is shown on the log--log--plot below. The analytic laplace transform correlation function is given by \myEqRef{analytic_caa}:
 
 \begin{align}
-\Delta\widetilde{C}_{AA}(\omega) = \sfrac{1}{\omega}
+\Delta\widetilde{C}_{AA}(\omega) = \frac{1}{\omega}
 \end{align}
 
 \myImage{compare_lac}{Comparsion of the laplace transform correlation function $\widetilde{C}_{AA}(\omega)$}
@@ -523,31 +543,29 @@ The errorbars in the figure above are obtained from the variance of the fitting 
 The figure above makes clear that in the uncertainty of the fitting curve the results are identical. Note that for $\omega \rightarrow b_i$ The fitting function is not properly defined (See \myEqRef{laplace}). That means that the divergence at these values may only be caused by the fitting method.
 
 \newpage
-\section{Finite plates}
+\subsection{Finite plates}
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=.4, z={(-.707,-.3)}]
-    \draw (6,0,0) -- (0,0,0);
-    \draw (6,0,0) -- (6,0,-3);
-    \draw (6,3,-3) -- (6,3,0);
-    \draw (6,3,0) -- (0,3,0);
-    \draw (0,0,-3) -- (6,0,-3);
-    \draw (0,0,0) -- (0,0,-3); 
-    \draw[dashed] (0,3,-3) -- (6,3,-3);
-    \draw[dashed] (0,3,0) -- (0,3,-3);
+    \draw (6,0,2.5) -- (0,0,2.5);
+    \draw (6,0,2.5) -- (6,0,-5.5);
+    \draw (6,3,-5.5) -- (6,3,2.5);
+    \draw (6,3,2.5) -- (0,3,2.5);
+    \draw (0,0,-5.5) -- (6,0,-5.5);
+    \draw (0,0,2.5) -- (0,0,-5.5); 
+    \draw[dashed] (0,3,-5.5) -- (6,3,-5.5);
+    \draw[dashed] (0,3,2.5) -- (0,3,-5.5);
     
-    \draw (0,3,0) -- (0,10,0);
-    \draw[dashed] (0,3,-3) -- (0,10,-3);
-    \draw[dashed] (6,3,-3) -- (6,10,-3);
-    \draw (6,3,0) -- (6,10,0);
-    \draw (0,0,0) -- (0,-7,0);
-    \draw[dashed] (0,0,-3) -- (0,-7,-3);
-    \draw (6,0,-3) -- (6,-7,-3);
-    \draw (6,0,0) -- (6,-7,0);
+    \draw (0,3,2.5) -- (0,10,2.5);
+    \draw[dashed] (0,3,-5.5) -- (0,10,-5.5);
+    \draw[dashed] (6,3,-5.5) -- (6,10,-5.5);
+    \draw (6,3,2.5) -- (6,10,2.5);
+    \draw (0,0,2.5) -- (0,-7,2.5);
+    \draw[dashed] (0,0,-5.5) -- (0,-7,-5.5);
+    \draw (6,0,-5.5) -- (6,-7,-5.5);
+    \draw (6,0,2.5) -- (6,-7,2.5);
     
-%    \draw (0,-7,0) -- (6,-7,0);
-%    \draw (6,-7,0) -- (6,-7,-3);
     
     \draw[thick] (-5,10,2.5) -- (11,10,2.5);
     \draw[thick] (-5,10,-5.5) -- (11,10,-5.5);
@@ -562,25 +580,26 @@ The figure above makes clear that in the uncertainty of the fitting curve the re
     \draw[thick] (11,-7,-5.5) -- (11,10,-5.5);
     \draw[thick,dashed] (-5,-7,-5.5) -- (-5,10,-5.5);
     
-    \draw[arrows=<->] (0.1,-0.3,0) -- (5.9,-0.3,0);
-    \draw[] (3,-0.9,0) node{$l$};
-    \draw[arrows=<->] (6,-0.3,-0.1) -- (6,-0.3,-2.9);
-    \draw[] (6,-0.9,-1.5) node{$l$};
+    \draw[arrows=<->] (0.1,-0.3,2.5) -- (5.9,-0.3,2.5);
+    \draw[] (3,-0.9,2.5) node{$l$};
     \draw[arrows=<->] (-4.9,-7.3,2.5) -- (10.9,-7.3,2.5);
     \draw[] (3,-8.0,2.5) node{$L$};
     \draw[arrows=<->] (11,-7.3,2.4) -- (11,-7.3,-5.4);
-    \draw[] (11,-8,-1.5) node{$L$};
+    \draw[] (11,-8,-1.5) node{$\infty$};
     
-    \draw (3,0,-1.5) node{B};
-    \draw (3,3,-1.5) node{A};
-    \draw[arrows=<->] (-0.4,0.2,0) -- (-0.4,2.8,0);
-    \draw (0.2,1.5,0) node{$H$};
+    \draw (3.5,0,-1.5) node{B};
+    \draw (3.5,3,-1.5) node{A};
+    \draw[arrows=<->] (-0.4,0.2,2.5) -- (-0.4,2.8,2.5);
+    \draw (0.2,1.5,2.5) node{$H$};
 \end{tikzpicture}
 \caption{Schematic structure of the finite plate system}
 \end{figure}
 
+\myImage{limited_correlation}{Correlation functions for a finite plate system}
+
 \newpage
-\section{Conclusion and Outlook}
+\section{Conclusion}
+
 
 \newpage
 \section{Annex}
