@@ -10,7 +10,7 @@ class FinitePlates(Langevin):
     # start position
     r = numpy.array([0.0, 0.0])
     # number of steps
-    max_steps = 2000000
+    max_steps = 20000000
     # list of performed steps
     steps = []
     # list of positions

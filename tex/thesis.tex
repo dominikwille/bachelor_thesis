@@ -51,6 +51,13 @@
 
 \newcommand{\myCite}[1]{\footnote{\cite{#1} \citeauthor{#1} \citetitle{#1} \citeyear{#1}}}
 
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
 \begin{document}
 \maketitle
 
@@ -75,30 +82,50 @@
 \newpage
 % \setcounter{page}{1}
 
-\section{Introduction}
-Proton- or generally ion dynamics in fluids directly imply fluctuations in the potential and conductivity of surrounded nano--scaled structures. The major processes which influence these measurable properties and which are considered here are \effect{absorption} and \effect{desorption} processes. The amount of mobile ions which are contained in the fluid are proportional to the fluids conductivity. An experimental way to detect this conductivity is by measuring the ionic current. And since ions carry charges, absorption of ions causes changes of the potential.
+\section{Introduction}%
+Recent research on low--frequency ionic currents in nanocavities show fluctuations with $\sfrac{1}{f}$--power spectrums which is also known as pinknoise\myCite{pinknoise}. Smeets et al. made the hypothesis of a link between low-frequency noise and surface charge fluctuations\myCite{paper0}. The assumption in the \effect{absorption-desorption}-model is that charge carriers such as protons can adsorb on surfaces and therefore change the surface's potential. In this thesis, a \effect{Langevin-Simulation} for a proton combined with the absorption-desorption-model is used to demonstrate the probable origin of the widely observed $\sfrac{1}{f}$-fluctuations of ionic--currents.
 
-Since such fluctuations, could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. Just now some of these fluctuations are the topic of current research\myCite{pinknoise}. 
+The simulations continue previous analytic calculations by \person{Roland Netz} which obtain correlation functions of the assorbtion-desorbtion-state for infinite cylindrical and infinite planar geometries\myCite{netzpaper}. To determine the correctness of the Langevin-Simulation they are compared to the analytic results for these limiting cases as well as for simple cases such as free particles. Afterwards the simulation is applied to an finite plate geometry which is similar to an nano--pore.
 
-In this document the motion of one particle is considered as a brownian motion. Even though ions and especially protons are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the adsorption--desorption processes, which can be indirectly measured as conductivity and potential.
+Investigations of the cause of the ionic--current fluctuations could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. Just now some of these fluctuations are the topic of current research\myCite{paper2}. 
 
-The simulations are based on previous analytic calculations by \person{Roland Netz} which obtain these correlation functions for infinite cylindrical and planar geometries\myCite{netzpaper}. To determine the correctness of the \effect{Langevin-Simulation} it is tested for these limiting cases as well as simple simulations for a free particle. Moreover the most important processes which take effect in the correlation functions and methods to describe and implement these in the simulation are briefly summarized and explained.
+The title image shows the visualized position trajectory of a particle on a random walk between two plates in 2-d for different times (The time increases from left to right).
 
-The title image shows one visualized particle on a random walk between two plates in 2-d for different times. The time increases from left to right. 
 
 \newpage
+
+\section{Model}
 \subsection{Analytic calculations}
 The analytic calculations are mostly inherited from \cite{netzpaper} and \cite{netzpaper2}. To understand the used properties in the simulation later on, the key principles should be explained briefly.
 
-Considered should be $N$ charges carriers such as ions or protons. For every particle $i\in\left\lbrace 1,2,...,N \right\rbrace$ the binary function $n_j^i(t)$ should stand for the absorption state of the particle on the surface $j$. $n_A^i(t) = 1$ if the particle is adsorbed on Plate $A$ and $n_A^i(t) = 0$ if it is not.
+Considered are be $N$ charge carriers such as ions or protons. between to Plates $A$ and $B$. For every particle $i\in\left\lbrace 1,2,...,N \right\rbrace$ the binary function $n_j^i(t)$ stands for the absorption state of the particle on the surface $j$. $n_A^i(t) = 1$ if the particle is adsorbed on Plate $A$ and $n_A^i(t) = 0$ if it is not.
 
-Of course the number of particles adsorbed on plate $A$ is given by:
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=.8, z={(-.707,-.3)}]
+    \draw (6,0,0) -- (0,0,0);
+    \draw (6,0,0) -- (6,0,-3);
+    \draw (6,3,-3) -- (6,3,0);
+    \draw (6,3,0) -- (0,3,0);
+    \draw (0,3,-3) -- (6,3,-3);
+    \draw (0,0,-3) -- (6,0,-3);
+    \draw (0,0,0) -- (0,0,-3); 
+    \draw (0,3,0) -- (0,3,-3);
+    \draw (3,0,-1.5) node{B};
+    \draw (3,3,-1.5) node{A};
+    \draw[arrows=<->] (0,0.2,0) -- (0,2.8,0);
+    \draw (-0.3,1.5,0) node{$H$};
+\end{tikzpicture}
+\caption{Schematic structure of the system -- The particles which are considered are between these two plates}
+\end{figure}
+
+The number of particles adsorbed on plate $A$ is given by:
 
 \begin{align}
 N_A(t) = \sum_{i=1}^N n_A^i(t)
 \end{align}
 
-Since experimental investigation measure fluctuations in the potential of nano--structures, especially the auto--correlation function of $N_A(t)$, is of essential importance.
+Since experimental investigation measure fluctuations in the potential of nano--structures, especially the auto--correlation function of $N_A(t)$ is of essential importance.
 
 \begin{align}
 \langle N_A(0) N_A(t)\rangle &= \sum_{i,j = 1}^N \langle n_A^i(0) n_A^j(t)\rangle\\
@@ -108,20 +135,19 @@ The particles are usually uncorrelated among each other
 \begin{align}
 \langle n_A^i(0) n_A^j(t)\rangle = \langle n_A(0) \rangle\langle n_A(t) \rangle
 \end{align}
-so let the expectation value of the absorption state for an single particle be:
+so let the expectation value of the absorption state for a single particle be:
 \begin{align}
 \langle n_A^i(t) \rangle &= \langle n_A^i(0) \rangle = p_A \\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N(N-1)p_a^2 + N\langle n_A(0) n_A(t)\rangle
 \end{align}
-The only non--trivial quantity to calculate can be defined via the singe--ion correlation function $C_{AA}(t)$ which is the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$.
+The only non--trivial quantity to calculate can be defined via the single--ion correlation function $C_{AA}(t)$ which is the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$.
 \begin{align}
 C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
 \Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2
 \end{align}
 
-\subsubsection{Constructing the single--ion correlation function}
-\subsubsection{Single surface}
-For a single surface $A$, one particle that is adsorbed at time $t=0$ can basically keep adsorbed until time $t$ or desorb $n$--times before it is adsorbed again, if it should be adsorbed at time $t$. 
+\subsubsection{Constructing the single--ion correlation function for a single surface}
+For a single surface $A$, one particle that is adsorbed at time $t=0$ can basically keep adsorbed until time $t$ or desorb $n$--times before it is adsorbs again.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.2cm,
@@ -163,27 +189,30 @@ For a single surface $A$, one particle that is adsorbed at time $t=0$ can basica
   \node (15) [right=0.0cm of 14] {$+$ ...};
 
 \end{tikzpicture}
-\caption{Illustrated construction of $C_{AA}(t)$}
+\caption{Illustrated construction of $C_{AA}(t)$ -- Shown are the different trajectories in the state--space which produce the Probability that an particle that is adsorbed at time $t=0$ is adsorbed at time $t$}
 \label{fig:ways}
 \end{figure}
-As illustrated in the figure above $C_{AA}(t)$ as the sum of different paths. The distribution $P(t)$ is the Probability for an adsorbed ion to desorb at time $t$ for the first time. $Q_A(t)$ is the survival distribution for an ion to be adsorbed on the surface $A$ over the time span $t=0$ to $t$. Note that this equals the probability that ion desorbes at some time $> t$.It is given by:
+$J_{AA}(t)$ is the probability for an ion to desorb at time $t=0$ and to return to the surface $A$ at time $t$ for the first time.
+
+$P(t)$ is the distribution that gives probability for an adsorbed ion to desorb at time $t$ for the first time.
+
+$Q_A(t)$ is the survival distribution for an ion to be adsorbed on the surface $A$ over the time span $t=0$ to $t$. Note that this equals the probability that ion desorbes after that time $t$. It is given by:
 \begin{align}
 Q_A(t) = \int_t^\infty P(t') \diff t'
 \end{align}
-$J_{AA}(t)$ is the probability for an ion to desorb at time $t=0$ and to return to the surface $A$ at time $t$.
 
-The probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$ is the sum over the probabilities of all ways on which a particle is adsorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$.
+As illustrated in \myFigRef{fig:ways} $C_{AA}(t)$ is the sum of different paths in the space of states. In other words the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$ is the sum over the probabilities of all ways on which a particle is adsorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$.
 
-Generally all that stages in $C_{AA}(t)$ of particles could have every time $<t$. Therefore it is necessary to vary all these times. 
+Generally all that states in $C_{AA}(t)$ of particles could remain for every time smaler than $t$. Therefore it is necessary to vary all these times. 
 
-The construct of $C_{AA}$ below sums up all variations illustrated in \myFigRef{fig:ways} with general times $t_e$ for $Q(t)$, $t_j$ for $P_A(t)$ and $t_j'$ for $J_{AA}(t)$. In order to obtain the probability at time $t$ the \effect{Dirac-Delta-Function} pics out variants with $\sum_{j} (t_j+t_j') + t_e = t$.
+The expression for $C_{AA}$ \myEqRef{def_Caa}  sums up all variations illustrated in \myFigRef{fig:ways} with general times $t_e$ for $Q(t)$, $t_j$ for $P_A(t)$ and $t_j'$ for $J_{AA}(t)$. In order to obtain the probability at time $t$ the \effect{Dirac-Delta-Function} pics out variants with $\sum_{j} (t_j+t_j') + t_e = t$.
 
 \begin{align}
 C_{AA}(t) = &\sum_{i=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, P_A(t_j) \int_0^\infty \diff t_j'\, J_{AA}(t_j')\right]\notag\\ 
 &\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace \myEqLabel{def_Caa}
 \end{align}
 
-This construct itself is very though to analyze. But there is common trick to derive the \effect{Laplace-transform} $\widetilde{C}_{AA}(\omega)$ of $C_{AA}(t)$.
+This expression itself is very though to calculate. But there is common trick to derive the \effect{Laplace-transform} $\widetilde{C}_{AA}(\omega)$ of $C_{AA}(t)$.
 
 \begin{align}
 \widetilde{C}_{AA}(\omega) &= \int_0^\infty e^{-\omega t'} \cdot C_{AA}(t') \diff t'
@@ -206,23 +235,36 @@ this becomes the following expression:
 \begin{align}
 \widetilde{C}_{AA}(\omega) &= \frac{\widetilde{Q}_A(\omega)}{1-\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega)}
 \end{align}
-\subsubsection{Two surfaces}
-The calculation of $\widetilde{C}_{AA}(\omega)$ for one surface should give a general idea how the laplace-transform of The correlation functions look like.
+\subsubsection{Constructing the single--ion correlation function for two surfaces}
+The calculation of $\widetilde{C}_{AA}(\omega)$ for one surface should give a general idea how the laplace-transform of the correlation functions look like.
 
-For instance $\overline{C}_{AA}(\omega)$, $\overline{C}_{BB}(\omega)$ which omit the $\widetilde{Q}_{A/B}(\omega)$ terms, represent ways where the particle is adsorbed at time $t=0$ and exactly adsorbs at time $t$. 
+For instance $\overline{C}_{AA}(\omega)$, $\overline{C}_{BB}(\omega)$, which omit the $\widetilde{Q}_{A/B}(\omega)$ terms, represent trajectories in the state--space where the particle is adsorbed at time $t=0$ and exactly adsorbs at time $t$. 
 \begin{align}
 \overline{C}_{AA}(\omega) &= \frac{1}{1-\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega)} \\
 \overline{C}_{BB}(\omega) &= \frac{1}{1-\widetilde{P}_B(\omega) \cdot \widetilde{J}_{BB}(\omega)} 
 \end{align}
 
-Parts which are performed one time are in the nominator, parts which are performed $n$--times are in the denominator. Parts which are performed equal times can be just multiplied in the laplace-transform.
+States which pass through one time are in the nominator, parts which pass through $n$--times are in the denominator. Parts which are performed equal times can be just multiplied in the laplace-transform.
 
 $\widetilde{C}_{AA}(\omega)$ can be constructed as:
 
 \begin{align}
 &\widetilde{C}_{AA}(\omega) = \frac{\overline{C}_{AA}(\omega) \, \widetilde{Q}_{A}(\omega)}{1-\overline{C}_{AA}(\omega)\, \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \overline{C}_{BB}(\omega)\, \widetilde{P}_B(\omega)\,\widetilde{J}_{BA}(\omega)}\\
-&= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right) - \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \widetilde{P}_B(\omega)\, \widetilde{J}_{BA}(\omega)}
+&= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right) - \widetilde{P}_A(\omega)\, \widetilde{J}_{AB}(\omega)\, \widetilde{P}_B(\omega)\, \widetilde{J}_{BA}(\omega)} \myEqLabel{def_caa}
 \end{align}
+
+The new introduced indies stand for the different surfaces, for example $\widetilde{J}_{BA}(\omega)$ is the laplace--transformed of the probability that an ion adsorbed on plate $A$ at time $t=0$ is adsorbs on Plate $B$ at time $t$. 
+
+\person{Roland Netz} show that for infinite plates with surface reaction boundary conditions which in unrescaled units read 
+\begin{align}
+D \frac{\partial}{\partial x}\widetilde{G}(x, \omega| x_0) \big\vert_{x=x_A} = k_A \widetilde{G}(x, \omega| x_0) \big\vert_{x=x_A} \\
+D \frac{\partial}{\partial x}\widetilde{G}(x, \omega| x_0) \big\vert_{x=x_B} = - k_B \widetilde{G}(x, \omega| x_0) \big\vert_{x=x_B} \\
+\end{align}
+and a $P_A(t)$ which is given by
+\begin{align}
+P_A(t) &= \frac{1}{\tau_A} e^{-\sfrac{t}{\tau_A}}
+\end{align}
+the laplace-transform functions read as: 
 
 \begin{align}
 \widetilde{P}_A(\omega) &= \frac{1}{1+\tau_A\omega} \\
@@ -232,25 +274,29 @@ $\widetilde{C}_{AA}(\omega)$ can be constructed as:
 \widetilde{J}_{AB}(\omega) &= \frac{2e^{\widetilde{H}} \widetilde{k}_A}{e^{2\widetilde{H}}(1 + \widetilde{k}_B)(1 + \widetilde{k}_A) - (1 -  \widetilde{k}_B)(1-\widetilde{k}_A)} \\
 \widetilde{J}_{BB}(\omega) &= \frac{\widetilde{k}_B \left(1 - \widetilde{k}_A + e^{2\widetilde{H}} (1 + \widetilde{k}_A)\right)}{e^{2\widetilde{H}}(1 + \widetilde{k}_A)(1 + \widetilde{k}_A) - (1 -  \widetilde{k}_A)(1-\widetilde{k}_B)}
 \end{align}
+
+$\widetilde{H} = \sqrt{\sfrac{\omega}{D}} H$ is the rescaled distance of the two plates. The resaceled phenomenological constants $\widetilde{k}_A = k_A / \sqrt{\omega D}$ and $\widetilde{k}_B = k_B / \sqrt{\omega D}$ are the constants of proportionality between the ion boundary flux and the ion boundary density.
 \subsubsection{Limiting case}
 The limiting case for $k_A = k_B = k \rightarrow \infty$ is of special interest. This case descriptively means that an ion adsorbs in every time if it reaches the boundary condition. To simplify the situation even more, the desorption probability on both surfaces should be the same $\tau_A = \tau_B = \tau$.
 \begin{align}
 \widetilde{J}_{AA}(\omega) &= \frac{\widetilde{k}^2 \left(e^{2\widetilde{H}} - 1\right) + \widetilde{k}(...)}{\widetilde{k}^2 \left(e^{2\widetilde{H}} - 1\right) + \widetilde{k}(...) + (...)} \rightarrow 1\\
-\widetilde{J}_{AA}(\omega) &= \frac{\widetilde{k}(...) + (...)}{\widetilde{k}^2(...) + \widetilde{k}(...) + (...)} \rightarrow 0\\
+\widetilde{J}_{AB}(\omega) &= \frac{\widetilde{k}(...) + (...)}{\widetilde{k}^2(...) + \widetilde{k}(...) + (...)} \rightarrow 0\\
 \end{align}
-If the limits of factors exist, the limit of products is the product of the limits. Therefore the limits of $\widetilde{J}_{AA}(\omega)/\widetilde{J}_{AB}(\omega)$ can be used as:
+If the limits of factors exist, the limit of products is the product of the limits. Therefore the limits of $\widetilde{J}_{AA}(\omega)/\widetilde{J}_{AB}(\omega)$ can be used in \myEqRef{def_caa}:
 \begin{align}
-\Rightarrow \lim_{k\rightarrow\infty} \widetilde{C}_{AA}(\omega) &= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right)}\\
+\Rightarrow \lim_{k\rightarrow\infty} \widetilde{C}_{AA}(\omega) &= \frac{\widetilde{Q}_A(\omega)\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)}{\left(1 - \widetilde{P}_A(\omega)\, \widetilde{J}_{AA}(\omega) \right)\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right) - 0(...)}\\
 &= \frac{\widetilde{Q}_A(\omega)}{\left(1 - \widetilde{P}_B(\omega)\, \widetilde{J}_{BB}(\omega) \right)}\\
 &= \frac{\frac{\tau}{1+\tau\omega}}{1-\frac{1}{1+\tau\omega}} = \frac{\tau}{1+\tau\omega - 1}\\
 &= \frac{1}{\omega} \myEqLabel{analytic_caa}
 \end{align}
 \newpage
-\subsection{Brownian Dynamics}
+\subsection{Brownian Dynamics Simulation}
 The motion of a particle such as a proton in a fluid is primarily  caused by collisions with other particles. This motion firstly was described by \person{Robert Brown} who observed the motion of minute particles of pollen in water and is widely known as \effect{brownian motion}.
 \subsubsection{Langevin Equation}
 The principle of a Langevin simulation generally is to consider collisions with other particles as a random force. And propergate the position of a particle over small time steps $\delta t$.
 \subsubsection{Physical background}
+Although ions and especially protons, which should be described in the simulation, are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the adsorption--desorption processes, which can be indirectly measured as conductivity and potential.
+ 
 An approach to describe situations with brownian motion was suggested by \person{Paul Langevin} who added the random force $\mathbf{Z}(t)$ in newtons equation of motion. This stochastic term represents the collision driven force. His equation, the Langevin equation reads:
 
 \begin{align}
@@ -435,24 +481,6 @@ The system which is simulated consists of two infinite plates A and B with dista
 \begin{align}
 P(t) = \frac{1}{\tau}e^{- \sfrac{t}{\tau}} \myEqLabel{adsorb_dist}
 \end{align}
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=.8, z={(-.707,-.3)}]
-    \draw (6,0,0) -- (0,0,0);
-    \draw (6,0,0) -- (6,0,-3);
-    \draw (6,3,-3) -- (6,3,0);
-    \draw (6,3,0) -- (0,3,0);
-    \draw (0,3,-3) -- (6,3,-3);
-    \draw (0,0,-3) -- (6,0,-3);
-    \draw (0,0,0) -- (0,0,-3); 
-    \draw (0,3,0) -- (0,3,-3);
-    \draw (3,0,-1.5) node{B};
-    \draw (3,3,-1.5) node{A};
-    \draw[arrows=<->] (0,0.2,0) -- (0,2.8,0);
-    \draw (-0.3,1.5,0) node{$H$};
-\end{tikzpicture}
-\caption{Schematic structure of the system}
-\end{figure}
 
 \subsubsection{Probability density}
 The probability density for two infinite plates where the particle can adsorb looks for $t\rightarrow \infty$ is shown in the figure below. The plates are again at $x = \pm 1$.
@@ -599,6 +627,7 @@ The figure above makes clear that in the uncertainty of the fitting curve the re
 
 \newpage
 \section{Conclusion}
+
 
 
 \newpage
