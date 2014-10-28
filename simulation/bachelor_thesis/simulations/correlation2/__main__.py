@@ -139,20 +139,23 @@ def func0(x_, a, b, c, d, f, g, h):
 def func1(x_, j, k, l):
     return j * numpy.exp(- x_ / k) + l
 
-def func2(x_, a, b, c, d, h):
-    return a * numpy.exp(-x_ * b) + c * numpy.exp(-x_ * d) + h
+def func2(x_, a, b, c, d, f, g, h, j, k):
+    return a * numpy.exp(-x_ / b) + c * numpy.exp(-x_ / d) + f * numpy.exp(-x_ * g) + h * numpy.exp(-x_ * j) + k
 
 def expect(x_):
     return numpy.exp(-x_)
 
 popt0, pcov0 = curve_fit(func0, xdata, c_aa)
-# popt1, pcov1 = curve_fit(func1, xdata, c_ab)
+popt1, pcov1 = curve_fit(func2, xdata, c_ab)
+popt2, pcov2 = curve_fit(func0, xdata, c_ad)
+popt3, pcov3 = curve_fit(func0, xdata, c_dd)
+
 
 def func0la(x_, a, b, c, d, f, g, h):
     return a / (x_ - b) + c / (x_ - d) + f / (x_ - g) + h / x_
 
-def func1la(x_, j, k, l):
-    return j / (x_ - k) + l / x_
+def func2la(x_, a, b, c, d, f, g, h, j, k):
+    return a / (x_ - 1/b) + c / (x_ - 1/d) + f / (x_ - g) + h / (x_ - j) + k / x_
 
 def func0laerr(x_, popt, pcov):
     y = func0la(x_, *popt0)
@@ -189,13 +192,19 @@ def func0laerr(x_, popt, pcov):
 
 p0, = plt.plot(xdata, c_aa)
 p1, = plt.plot(xdata, c_ab)
-p2, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
-# p3, = plt.plot(xdata, func1(numpy.array(xdata), *popt1))
+p2, = plt.plot(xdata, c_ad)
+p3, = plt.plot(xdata, c_dd)
+# p4, = plt.plot(xdata, c_ab)
+
+p4, = plt.plot(xdata, func0(numpy.array(xdata), *popt0))
+p5, = plt.plot(xdata, func2(numpy.array(xdata), *popt1))
+p6, = plt.plot(xdata, func0(numpy.array(xdata), *popt2))
+p7, = plt.plot(xdata, func0(numpy.array(xdata), *popt3))
 # p4, = plt.plot(xdata, 1 - numpy.array(c_aa) - numpy.array(c_ab))
 plt.xlabel('$t$ in $\delta t$')
 plt.ylabel('$C(t)$')
-# plt.ylim([0, 1])
-# plt.legend([p0, p1, p2, p3, p4], ['$C_{AA}$', '$C_{AB}$', '$C_{AA}$ fit', '$C_{AB}$ fit', '$C_{AD}$'], bbox_to_anchor=(0.75, 0.7), loc=2, borderaxespad=0)
+plt.ylim([0, 1])
+plt.legend([p0, p1, p2, p3, p4, p5, p6, p7], ['$C_{AA}$', '$C_{AB}$', '$C_{AD}$', '$C_{DD}$', '$C_{AA}$ fit', '$C_{AB}$ fit', '$C_{AD}$ fit', '$C_{DD}$ fit'], bbox_to_anchor=(0.75, 0.75), loc=2, borderaxespad=0)
 plt.show()
 
 # step_size = 0.1
@@ -260,27 +269,46 @@ plt.show()
 # def lim(w_, tau, k, D, H):
 #     return 1 / (w_ - 1 / (tau**2 * w_**2 * k**2 * numpy.sinh(H * (w_ / D)**0.5)))
 #
-# w = numpy.arange(0.0001, 10.0, 0.01)
-#
-# popt2, pcov2 = curve_fit(roland, w, laplace2(w, xdata))
-#
-# # print popt2
-# w_part = numpy.arange(max(popt0[1], popt0[3], popt0[5]), 10.0, 0.01)
-# w_err = numpy.exp(numpy.arange(numpy.log10(max(popt0[1], popt0[3], popt0[5]) / 10), 10, 0.2))
+w = numpy.arange(0.0001, 10.0, 0.01)
+
+# popt0 = popt2
+# pcov0 = pcov2
+
+# print popt2
+w_part = numpy.arange(max(popt0[1], popt0[3], popt0[5]), 10.0, 0.01)
+w_err = numpy.exp(numpy.arange(numpy.log10(max(popt0[1], popt0[3], popt0[5]) / 10), 10, 0.2))
 
 # p0, = plt.plot(w, laplace2(w, xdata))
 # p1, = plt.plot(w, laplace(w, *popt0))
-# p1, = plt.plot(w, 1 / (w + 0 / tau))
-# p2, = plt.plot(w, roland(w+0.09, tau, k, D, H) +0.09)
-# p2, = plt.plot(w, lim(w, tau, k, D, H))
-# p0, = plt.plot(w_part, func0la(w_part, *popt0))
-# plt.errorbar(w_err, func0la(w_err, *popt0), yerr=func0laerr(w_err, popt0, pcov0), fmt=' ', ecolor='g')
+p0, = plt.plot(w, 1 / w)
+p1, = plt.plot(w_part, func0la(w_part, *popt0))
+
+w_part1 = numpy.arange(max(popt2[1], popt2[3], popt2[5]), 10.0, 0.01)
+w_err1 = numpy.exp(numpy.arange(-1, 10, 0.2))
+
+# p0, = plt.plot(w, laplace2(w, xdata))
+# p1, = plt.plot(w, laplace(w, *popt2))
+p2, = plt.plot(w_part1, func0la(w_part1, *popt2))
+
+w_part2 = numpy.arange(max(popt3[1], popt3[3], popt3[5]), 10.0, 0.01)
+w_err2 = numpy.exp(numpy.arange(-1, 10, 0.2))
+
+# p0, = plt.plot(w, laplace2(w, xdata))
+# p1, = plt.plot(w, laplace(w, *popt2))
+p3, = plt.plot(w_part2, func0la(w_part2, *popt3))
+
+w4 = numpy.arange(0.001, 0.02, 0.0001)
+p4, = plt.plot(w4, func2la(w4, *popt1))
+
+plt.errorbar(w_err, func0la(w_err, *popt0), yerr=func0laerr(w_err, popt0, pcov0), fmt=' ', ecolor='g')
+plt.errorbar(w_err1, func0la(w_err1, *popt2), yerr=func0laerr(w_err1, popt2, pcov2), fmt=' ', ecolor='r')
+plt.errorbar(w4, func2la(w4, *popt1), yerr=10, fmt=' ', ecolor='purple')
 # plt.legend([p0, p1, p2], ['laplace transformed data', 'analytic', 'analytic limit'], loc=2)
-# plt.legend([p0, p1], ['$\widetilde{C}_{AA}(\omega)$ simulation', '$\widetilde{C}_{AA}(\omega)$ analytic'], loc=1)
-# plt.xlabel('$\omega$ in $1/\delta t$')
-# plt.ylabel('$\widetilde{C}_{AA}(\omega)$')
-# plt.ylim([0.1, 10])
-# plt.xlim([0.1, 10])
-# plt.yscale('log')
-# plt.xscale('log')
-# plt.show()
+plt.legend([p0, p1, p4, p2, p3], ['$1/\omega$', '$\widetilde{C}_{AA}(\omega)$', '$\widetilde{C}_{AB}(\omega)$','$\widetilde{C}_{AD}(\omega)$', '$\widetilde{C}_{DD}(\omega)$'], loc=1)
+plt.xlabel('$\omega$ in $1/\delta t$')
+plt.ylabel('$\widetilde{C}_{AA}(\omega)$')
+plt.ylim([0.001, 10000])
+plt.xlim([0.001, 10])
+plt.yscale('log')
+plt.xscale('log')
+plt.show()

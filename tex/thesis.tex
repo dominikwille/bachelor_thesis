@@ -142,7 +142,7 @@ so let the expectation value of the absorption state for a single particle be:
 The only non--trivial quantity to calculate can be defined via the single--ion correlation function $C_{AA}(t)$ which is the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$.
 \begin{align}
 C_{AA}(t) &= \langle n_A(0) n_A(t) \rangle / \langle n_A(0) \rangle \\
-\Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2
+\Rightarrow \langle N_A(0) N_A(t)\rangle &= N^2p_a^2 + Np_AC_{AA}(t) - Np_a^2 \myEqLabel{N_A}
 \end{align}
 \subsection{Analytic calculations}
 The analytic calculations are mostly inherited from \cite{netzpaper} and \cite{netzpaper2}. To understand the used properties in the simulation later on, the key principles should be explained briefly.
@@ -494,7 +494,7 @@ If the particle adsorbs it keeps adsorbed for an exponential distributed time as
 This directly implies that there will be high probability that the particle is at the position of a plate, which causes the very high values of $\rho(x)$ at $x = \pm 1$, see in \myFigRef{pic:probability_density}. On the other hand the probability that the particle is close to a plate but not adsorbed is significant smaller than that it is somewhere else between the plates. This maybe dues to the implementation of the boundary condition as well, because all movements that would crosses a plate end up on the position of the plate here. So trajectories that would include a reflection process at the boundaries drop out for adsorbing plates. 
 
 
-\subsubsection{Correlation functions}
+\subsubsection{Correlation functions}\label{correlation_functions}
 For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be adsorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it was adsorbed on plate $\mathrm{A}$ at time $t=0$.
 
 These correlation functions can easily be obtained from the langevin simulation by analyzing the trajectories of the particle. 
@@ -511,20 +511,22 @@ The correlation functions were obtained from a single simulation. For all correl
 
 Where $S_{i/j}(t) = 1$ if the particle has the state at the beginning/end of an interval and $S_{i/j}(t) = 0$ otherwise.
 
-\subsubsection{Parameters of the simulation}
-The run for the comparison with the analytic calculations was performed with the following parameters:
+\subsubsection{Parameters of the simulation}\label{parameters}
+The run for the comparison with the analytic calculations was performed with the following rescaled parameters:
 \begin{center}
 \begin{tabular}{c|c}
 Parameter & Value \\\hline
-$D$ & 0.1 \\
-$\delta t$ & 0.1 \\
-$\tau$ & 1.0 \\
-$p$ & 1.0 \\
-$H$ & 1.0
+$D$ & 0.1  [$\mathrm{length}^2\; \mathrm{time}^{-1}$] \\
+$\delta t$  & 0.1 [time] \\
+$\tau$ & 1.0 [time]\\
+$p$ & 1.0 [1]\\
+$H$ & 1.0 [length] 
 \end{tabular}
 \end{center}
 
-where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary adsorbs and $s$ is the plate distance. The initial position for this lagevin--simulation is not relevant for the correlation functions. 
+where $D$ the diffusion constant, $\delta t$ the step size, $\tau$ the exponential decay constant for the desorption probability, $p$ the probability that a particle at the boundary adsorbs and $s$ is the plate distance. Although the diffusion constant has 
+
+The initial position for this lagevin--simulation is not relevant for the correlation functions. 
 
 \subsubsection{Interpretation}\label{interpretation}
 
@@ -556,7 +558,7 @@ The Laplace transform correlation functions follow as:
 To get an idea of the accuracy of the Laplace transform of the fitted correlation functions also the error of the determined parameters $c_i$ and $b_i$ should considered here.
 
 \begin{align}
-\Delta\widetilde{C}(\omega) = \sqrt{\sum_{i=0}^\infty \left(\frac{\Delta c_i}{c_i} \right)^2 + \left( \frac{\Delta b_i}{(\omega - b_i)^2}\right)^2} \cdot \widetilde{C}(\omega)
+\Delta\widetilde{C}(\omega) = \sqrt{\sum_{i=0}^\infty \left(\frac{\Delta c_i}{c_i} \right)^2 + \left( \frac{\Delta b_i}{(\omega - b_i)^2}\right)^2} \cdot \widetilde{C}(\omega) \myEqLabel{error}
 \end{align}
 
 The comparison between that and the analytic result for $\widetilde{C}_{AA}(\omega)$ is shown on the log--log--plot below. The analytic laplace transform correlation function is given by \myEqRef{analytic_caa}:
@@ -571,9 +573,8 @@ The errorbars in the figure above are obtained from the variance of the fitting 
 
 The figure above makes clear that in the uncertainty of the fitting curve the results are identical. Note that for $\omega \rightarrow b_i$ The fitting function is not properly defined (See \myEqRef{laplace}). That means that the divergence at these values may only be caused by the fitting method.
 
-\newpage
 \subsection{Finite plates}
-
+To demonstrate the behavior of the correlation functions for a more realistic system, a simulation for an particle between two finite plates was implemented. To prevent the particle disappearing from the plates the system is limited in all directions with reflecting boundaries. 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=.4, z={(-.707,-.3)}]
@@ -594,7 +595,6 @@ The figure above makes clear that in the uncertainty of the fitting curve the re
     \draw[dashed] (0,0,-5.5) -- (0,-7,-5.5);
     \draw (6,0,-5.5) -- (6,-7,-5.5);
     \draw (6,0,2.5) -- (6,-7,2.5);
-    
     
     \draw[thick] (-5,10,2.5) -- (11,10,2.5);
     \draw[thick] (-5,10,-5.5) -- (11,10,-5.5);
@@ -621,15 +621,51 @@ The figure above makes clear that in the uncertainty of the fitting curve the re
     \draw[arrows=<->] (-0.4,0.2,2.5) -- (-0.4,2.8,2.5);
     \draw (0.2,1.5,2.5) node{$H$};
 \end{tikzpicture}
-\caption{Schematic structure of the finite plate system}
+\caption{Schematic structure of the finite plate system -- The plates which the particle can adsorb are marked as $A$ and $B$ }
 \end{figure}
+Above plate $A$ and below plate $B$ there are reflecting boundaries as well. The system can also be described as a slit or an pore in which the particle can adsorb. The only possible trajectory which goes from the left side to the right side of the system goes through this slit.
 
-\myImage{limited_correlation}{Correlation functions for a finite plate system}
+\subsubsection{Parameters of the simulation}
+The run for the comparison with the analytic calculations was performed with the following parameters:
+\begin{center}
+\begin{tabular}{c|c}
+Parameter & Value \\\hline
+$D$ & 1.0 [$\mathrm{length}^2\; \mathrm{time}^{-1}$]\\
+$\delta t$ & 0.1 [time]\\
+$\tau$ & 30 [time]\\
+$p$ & 1 [1]\\
+$H$ & 2 [length] \\
+$L$ & 15 [length] \\
+$l$ & 10 [length]
+\end{tabular}
+\end{center}
+See \mySecRef{parameters} for a definition of the parameters.
+
+The correlation functions are obtained with the same method as the correlation functions for infinite plates described in \mySecRef{correlation_functions}.
+\myImage{limited_correlation}{Correlation functions for a finite plate system -- The behavior does not differ much from the one for infinite plates}
+
+\subsubsection{Inerpretation}
+In general the behavior of the Correlation functions do not differ much from the ones for the infinite plate system. Differences are that The probability that an ion is adorbed on plate $B$ given it is adsorbed on plate $A$ at $t=0$ defined as $C_{AB}(t)$, has a maximum at $t \approx 250\, \delta t$ this maybe dues to the fact that if an particle is not adsorbed on a plate there is a probability that it is far away from any plate and therefore it wont adsorb with a high probability. This also explains the fact that $C_{AA}(t)$ and $C_{AB}(t)$ become almost equivalent for $t > 300\, \delta t$
+
+\subsubsection{Comparsion}
+As for infinite plates the correlation functions are fitted with functions defined in \myEqRef{fit}. This time $n$ was choosen as $4$ to get a good approximation for all four curves. The laplace transform and its error read as defined in \myEqRef{laplace} and \myEqRef{error}.
+
+As visualized in \myFigRef{pic:limited_correlation_laplace} the laplace transform of the correlation functions show very similar behavior compared to the ones of the infinite plates. For $\widetilde{C}_{AA}$ and $\widetilde{C}_{DD}$ there is a huge part proportional to $\sfrac{1}{\omega}$
+
+\myImage{limited_correlation_laplace}{Laplace transform Correlation functions for a finite plate system -- $\widetilde{C}_{AA}$ and $\widetilde{C}_{DD}$ show both a $\sfrac{1}{\omega}$ behavior}
+
+
 
 \newpage
 \section{Conclusion}
 
+The analysis of the planar systems show that the origin of the widely observed $\sfrac{1}{f}$--fluctuations of the ionic current can be reproduced with the \effect{absorbtion-desorption} theory.
 
+As already analytically obtained in \myEqRef{analytic_caa} the laplace transform of the correlation for an ion to be absorbed at time $t$ given it is absorbed at time $t=0$ for infinite plates shows a $\sfrac{1}{f}$--behavior, which has a direct effect on the number of free charge carriers as shown in \myEqRef{N_A}. The number of free charge carriers itself define the conductivity of the fluid and therefore influence the ionic current.
+
+Thie analytic expression in \myEqRef{analytic_caa} could be successfully reproduced with the \effect{Brownian-Dynamics-Simulation} as shown in \myFigRef{pic:compare_lac}. The extrapolation for a finite plates shows that this behavior also remains for realistic planar systems (\myFigRef{pic:limited_correlation_laplace}) as well. That means that the experimental observation of pinknoise in the ionic current of nanopores\myCite{pinknoise} could possibly have its origin in the dynamics of protons.
+
+Summarized Smeets' hypothesis that there is a link between low-frequency noise and surface charge fluctuations\myCite{paper0} can be confirmed.
 
 \newpage
 \section{Annex}
