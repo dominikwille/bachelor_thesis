@@ -85,9 +85,9 @@
 % \setcounter{page}{1}
 
 \section{Introduction}%
-Recent research on low--frequency ionic currents in nanocavities show fluctuations with $\sfrac{1}{f}$--power spectrums which is also known as pinknoise\myCite{pinknoise}. Smeets et al. made the hypothesis of a link between low-frequency noise and surface charge fluctuations\myCite{paper0}. The assumption in the \effect{absorption-desorption}-model is that charge carriers such as protons can adsorb on surfaces and therefore change the surface's potential. In this thesis, a \effect{Langevin-Simulation} for a proton combined with the absorption-desorption-model is used to demonstrate the probable origin of the widely observed $\sfrac{1}{f}$-fluctuations of ionic--currents.
+Recent research on low--frequency ionic currents in nanocavities show fluctuations with $\sfrac{1}{f}$--power spectrums. Such fluctuations are also known as pinknoise\myCite{pinknoise}. Smeets et al. made the hypothesis of a link between low-frequency noise and surface charge fluctuations\myCite{paper0}. These surface charge fluctions can be understand with the \effect{absorption-desorption}-model. The assumption in this model is that charge carriers such as protons can adsorb on surfaces and therefore change the surface's potential. In this thesis, a \effect{Langevin-Simulation} for a proton combined with the absorption-desorption-model is used to demonstrate the probable origin of the widely observed $\sfrac{1}{f}$-fluctuations of ionic--currents for planar geometries.
 
-No interaction between the ion and the two plates such as a coulomb-potential is taken to account. The particle is moreover simulated for the over-damped case. The simulations continue previous analytic calculations by \person{Roland Netz} which obtain correlation functions of the assorbtion-desorbtion-state for infinite cylindrical and infinite planar geometries\myCite{netzpaper}. To determine the correctness of the Langevin-Simulation they are compared to the analytic results for these limiting cases as well as for simple cases such as free particles. Afterwards the simulation is applied to an finite plate geometry which is similar to an nano--pore.
+No interaction between the ion and the two plates such as a coulomb-potential is taken to account. The particle is simulated for the over-damped case of the \effect{Brownian-Motion}. The simulations continue previous analytic calculations by \person{Roland Netz} which obtain correlation functions of the assorbtion-desorbtion-state for infinite cylindrical and infinite planar geometries\myCite{netzpaper}. To determine the correctness of the Langevin-Simulation they are compared to the analytic results for these limiting cases as well as for simple cases such as free particles. Afterwards the simulation is applied to an finite plate geometry which is similar to an nano--pore.
 
 Investigations of the cause of the ionic--current fluctuations could bring hints to extract physical, chemical or even geometrical information concerning the system, they are part of current investigations. Just now some of these fluctuations are the topic of current research\myCite{paper2}. 
 
@@ -115,7 +115,7 @@ Considered are be $N$ charge carriers such as ions or protons. between to Plates
     \draw[arrows=<->] (0,0.2,0) -- (0,2.8,0);
     \draw (-0.3,1.5,0) node{$H$};
 \end{tikzpicture}
-\caption{Schematic structure of the system -- The particles which are considered are between these two plates}
+\caption{Schematic structure of the system -- The particles which are considered here are located between these two plates}
 \end{figure}
 \subsection{Properties}
 The number of particles adsorbed on plate $A$ is given by:
@@ -124,7 +124,7 @@ The number of particles adsorbed on plate $A$ is given by:
 N_A(t) = \sum_{i=1}^N n_A^i(t)
 \end{align}
 
-Since experimental investigation measure fluctuations in the potential of nano--structures, especially the auto--correlation function of $N_A(t)$ is of essential importance.
+Since experimental investigation measure fluctuations in the ionic--current which may due to fluctuations of the number of free charge carriers, especially the auto--correlation function of $N_A(t)$ is of essential importance.
 
 \begin{align}
 \langle N_A(0) N_A(t)\rangle &= \sum_{i,j = 1}^N \langle n_A^i(0) n_A^j(t)\rangle\\
@@ -189,7 +189,7 @@ For a single surface $A$, one particle that is adsorbed at time $t=0$ can basica
   \node (15) [right=0.0cm of 14] {$+$ ...};
 
 \end{tikzpicture}
-\caption{Illustrated construction of $C_{AA}(t)$ -- Shown are the different trajectories in the state--space which produce the Probability that an particle that is adsorbed at time $t=0$ is adsorbed at time $t$}
+\caption{Illustrated construction of $C_{AA}(t)$ -- Shown are the different trajectories in the state--space which produce the probability that an particle that is adsorbed at time $t=0$ is adsorbed at time $t$}
 \label{fig:ways}
 \end{figure}
 $J_{AA}(t)$ is the probability for an ion to desorb at time $t=0$ and to return to the surface $A$ at time $t$ for the first time.
@@ -201,18 +201,18 @@ $Q_A(t)$ is the survival distribution for an ion to be adsorbed on the surface $
 Q_A(t) = \int_t^\infty P(t') \diff t'
 \end{align}
 
-As illustrated in \myFigRef{fig:ways} $C_{AA}(t)$ is the sum of different paths in the space of states. In other words the probability that a particle is adsorbed at time $t$ given it is adsorbed at time $t=0$ is the sum over the probabilities of all ways on which a particle is adsorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$.
+As illustrated in \myFigRef{fig:ways}, $C_{AA}(t)$ is the sum of all probabilities of paths in the space of states. In other words the probability that a particle is adsorbed at time $t$ ,given it is adsorbed at time $t=0$, is the sum over the probabilities of all trajectories on which a particle is adsorbed at time $t=0$ and on time $t$. The probability of one way on the other hand is the product of the probabilities of its parts $Q_A$, $P_A$, and $J_{AA}$. These symbols stand for parts, on which the particle keeps adsorbed, where the particle is adsorbed and desorbs afterwords and parts on which the particle is desorbed and adsorbs. 
 
 Generally all that states in $C_{AA}(t)$ of particles could remain for every time smaler than $t$. Therefore it is necessary to vary all these times. 
 
-The expression for $C_{AA}$ \myEqRef{def_Caa}  sums up all variations illustrated in \myFigRef{fig:ways} with general times $t_e$ for $Q(t)$, $t_j$ for $P_A(t)$ and $t_j'$ for $J_{AA}(t)$. In order to obtain the probability at time $t$ the \effect{Dirac-Delta-Function} pics out variants with $\sum_{j} (t_j+t_j') + t_e = t$.
+The expression for $C_{AA}$ \myEqRef{def_Caa}  sums up all variations illustrated in \myFigRef{fig:ways} with general times $t_e$ for $Q(t)$, $t_j$ for $P_A(t)$ and $t_j'$ for $J_{AA}(t)$. In order to obtain the probability at time $t$ the \effect{Dirac-Delta-Function} takes only variants with $\sum_{j} (t_j+t_j') + t_e = t$ into account.
 
 \begin{align}
 C_{AA}(t) = &\sum_{i=0}^\infty \Bigg\lbrace \int_0^\infty \diff t_e\, Q_A(t_e) \prod_{j=1}^i \left[ \int_0^\infty \diff t_j\, P_A(t_j) \int_0^\infty \diff t_j'\, J_{AA}(t_j')\right]\notag\\ 
 &\delta \left(\sum_{k=1}^i(t_k+t_k') + t_e - t \right) \Bigg\rbrace \myEqLabel{def_Caa}
 \end{align}
 
-This expression itself is very though to calculate. But there is common trick to derive the \effect{Laplace-transform} $\widetilde{C}_{AA}(\omega)$ of $C_{AA}(t)$.
+This expression itself is very difficult to calculate. But there is common trick to derive the \effect{Laplace-transform} $\widetilde{C}_{AA}(\omega)$ of $C_{AA}(t)$.
 
 \begin{align}
 \widetilde{C}_{AA}(\omega) &= \int_0^\infty e^{-\omega t'} \cdot C_{AA}(t') \diff t'
@@ -243,8 +243,6 @@ For instance $\overline{C}_{AA}(\omega)$, $\overline{C}_{BB}(\omega)$, which omi
 \overline{C}_{AA}(\omega) &= \frac{1}{1-\widetilde{P}_A(\omega) \cdot \widetilde{J}_{AA}(\omega)} \\
 \overline{C}_{BB}(\omega) &= \frac{1}{1-\widetilde{P}_B(\omega) \cdot \widetilde{J}_{BB}(\omega)} 
 \end{align}
-
-States which pass through one time are in the nominator, parts which pass through $n$--times are in the denominator. Parts which are performed equal times can be just multiplied in the laplace-transform.
 
 $\widetilde{C}_{AA}(\omega)$ can be constructed as:
 
@@ -277,7 +275,7 @@ the laplace-transform functions read as:
 
 $\widetilde{H} = \sqrt{\sfrac{\omega}{D}} H$ is the rescaled distance of the two plates. The resaceled phenomenological constants $\widetilde{k}_A = k_A / \sqrt{\omega D}$ and $\widetilde{k}_B = k_B / \sqrt{\omega D}$ are the constants of proportionality between the ion boundary flux and the ion boundary density.
 \subsubsection{Limiting case}
-The limiting case for $k_A = k_B = k \rightarrow \infty$ is of special interest. This case descriptively means that an ion adsorbs in every time if it reaches the boundary condition. To simplify the situation even more, the desorption probability on both surfaces should be the same $\tau_A = \tau_B = \tau$.
+The limiting case for $k_A = k_B = k \rightarrow \infty$ is of special interest. This case descriptively means that an ion adsorbs with probability 1 if it reaches the boundary condition. To simplify the situation even more, the desorption probability on both surfaces should be the same $\tau_A = \tau_B = \tau$.
 \begin{align}
 \widetilde{J}_{AA}(\omega) &= \frac{\widetilde{k}^2 \left(e^{2\widetilde{H}} - 1\right) + \widetilde{k}(...)}{\widetilde{k}^2 \left(e^{2\widetilde{H}} - 1\right) + \widetilde{k}(...) + (...)} \rightarrow 1\\
 \widetilde{J}_{AB}(\omega) &= \frac{\widetilde{k}(...) + (...)}{\widetilde{k}^2(...) + \widetilde{k}(...) + (...)} \rightarrow 0\\
@@ -295,7 +293,7 @@ The motion of a particle such as a proton in a fluid is primarily  caused by col
 \subsubsection{Langevin Equation}
 The principle of a Brownian-Dynamics-Simulation generally is to consider collisions with other particles as a random forces. And propergate the position of a particle over small time steps $\delta t$.\myCite{book}
 
-Although ions and especially protons, which should be described in the simulation, are not necessarily smaller than the fluid molecules which is the reason why the diffusion constant does not fulfill \person{Einsteins} formula\myCite{brownian}, the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. In this document a \effect{Langevin-Simulation} of a particle is used to determine correlations of the adsorption--desorption processes, which can be indirectly measured as conductivity and potential.
+Although ions and especially protons, which should be described in the simulation, are not necessarily smaller than the fluid molecules the general assumption that the motion is caused by random strokes is fulfilled for smaller particles as well. That is also the reason why the diffusion constant does not fulfill \person{Einsteins} formula in this case\myCite{brownian}. In this thesis a \effect{Langevin-Simulation} of a particle is used to determine correlations of the adsorption--desorption processes, which can be indirectly measured as conductivity and potential.
  
 An approach to describe situations with brownian motion was suggested by \person{Paul Langevin} who added the random force $\mathbf{Z}(t)$ in newtons equation of motion. This stochastic term represents the collision driven force. His equation, the Langevin equation reads:
 
@@ -435,15 +433,14 @@ Which is exactly the expression of a gaussian distributed 1--dimensional random 
 &= \frac{1}{\varepsilon\sqrt{2(n+1)\pi}}\, e^{-\sfrac{x^2}{2(n+1)\varepsilon^2}} \myEqAnnex{gauss_random_walk}
 \end{align}
 
+and since the calculated $\rho(x,n+1)$ is the same as $\rho(x,n)$ in \myEqRef{rho_gauss} the expression is proofed. $\checkmark$
 \subsubsection{Simple random walk vs. Gaussian random walk}
 
-For all relevant simulations a gaussian random walk was used. Even if the distribution density in \myEqRef{rho_binom} and \myEqRef{rho_gauss} becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. Moreover much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the simulation is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
+For all relevant simulations a gaussian random walk was used. Even if the distribution density in \myEqRef{rho_binom} and \myEqRef{rho_gauss} becomes equivalent for large numbers of steps the gauss distribution represents a much more natural motion of the particle. The simple random walk needs much smaller step sizes what means more steps in the simulation are necessary to allow small motions of the particle. And since performance of the calculation of a single step is not an issue the gaussian random walk is just superior the simple random walk. Below figures show example random walks between two plates at $x = \pm 1$.
 
 \myImage{fixed_pos}{Position of a particle performing a simple random walk -- The fixed step size causes a discretizised position of the particle}
 
 \myImage{gauss_pos}{Position of a particle perfoming a gaussian random walk -- The position of the particle is not discretizised as like in the nature}
-
-and since the calculated $\rho(x,n+1)$ is the same as $\rho(x,n)$ in \myEqRef{rho_gauss} the expression is proofed. $\checkmark$
 \subsubsection{Mean square distance}
 The expectation value for $x$ after $n$ steps $\langle x_n\rangle = 0$. What can be derived from:
 \begin{align}
@@ -457,6 +454,7 @@ But the \effect{Mean Square Distance} $\langle x_n^2\rangle$ (MSD) fulfills the 
 \newpage
 \section{Investigation}
 \subsection{Tests of the simulation}
+Before something is obtained out of the simulation its results needs to be checked for some limiting cases. To verify the correctness of the implementation.
 \subsubsection{MSD}
 A very simple test is to check if the simulation of a particle without any barriers has a linear growing MSD as a function of performed steps. \myFigRef{pic:mean_square} shows the average squared distance $x_n^2$ for different numbers of runs compared to the analytic expression \myEqRef{MSD_n}. The parameters were:
 \begin{center}
@@ -495,9 +493,9 @@ This directly implies that there will be high probability that the particle is a
 
 
 \subsubsection{Correlation functions}\label{correlation_functions}
-For a geometry with two plates there is a an analytic expression for the Correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ which represent the probability for an ion to be adsorbed at time $t$ on plate $\mathrm{A}/\mathrm{B}$ given that it was adsorbed on plate $\mathrm{A}$ at time $t=0$.
+For a geometry with two plates there is a an analytic expression for the laplace transform correlation function $\widetilde{C}_{XX}(\omega)$ which represent the probability for an ion to be adsorbed at time $t$ on plate $A/B$ given that it was adsorbed on plate $A$ at time $t=0$.
 
-These correlation functions can easily be obtained from the langevin simulation by analyzing the trajectories of the particle. 
+The correlation functions can easily be obtained from the langevin simulation by analyzing the trajectories of the particle. 
 
 Afterwards the values of the correlation function $C_{AA}(t)$ can be calculated as the number of time intervals with length $t$ where the ion is adsorbed on plate $\mathrm{A}$ at the beginning and at the end over the total number of intervals.
 
@@ -530,7 +528,7 @@ The initial position for this lagevin--simulation is not relevant for the correl
 
 \subsubsection{Interpretation}\label{interpretation}
 
-Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. Obviously $C_{AA}(t)$ starts from $1$ because by definition it is definitely adsorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is adsorbed on plate $A$ it is neither possible that it is adsorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the adsorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on a finite probability. This probability was called $p_A$ in \myEqRef{p_A}. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ at a finite probability as well. It is $1 - p_A - p_B$.
+Also the behavior of the correlation functions in \myFigRef{pic:caa_cab} is easily explainable. $C_{AA}(t)$ starts from $1$ because by definition it is definitely adsorbed at time $t=0$ on Plate $A$. $C_{AB}(t)$ and $C_{AD}(t)$ start from $0$ because if a particle is adsorbed on plate $A$ it is neither possible that it is adsorbed on plate $B$ nor it is desorbed. For $t \rightarrow \infty$ the adsorbed--desorbtion--state wont depend on the state at time $t = 0$ therefore the correlation functions $C_{AA}(t)$ and $C_{AB}(t)$ become stationary on a finite probability. This probability was called $p_A$ in \myEqRef{p_A}. Also the relation $C_{AD}(t) = 1 - C_{AA}(t) - C_{AB}(t)$ is fulfilled what implies that $C_{AD}(t)$ becomes stationary for $t \rightarrow \infty$ at a finite probability as well. It is $1 - p_A - p_B$.
 
 \subsubsection{Comparison}
 In order to compare these correlation functions with its analytic equivalents they need to be Laplace transformed. To obtain easy expressions for the Laplace transformed functions they are fitted with the functions of the following type:
@@ -645,25 +643,23 @@ The correlation functions are obtained with the same method as the correlation f
 \myImage{limited_correlation}{Correlation functions for a finite plate system -- The behavior does not differ much from the one for infinite plates}
 
 \subsubsection{Inerpretation}
-In general the behavior of the Correlation functions do not differ much from the ones for the infinite plate system. Differences are that The probability that an ion is adorbed on plate $B$ given it is adsorbed on plate $A$ at $t=0$ defined as $C_{AB}(t)$, has a maximum at $t \approx 250\, \delta t$ this maybe dues to the fact that if an particle is not adsorbed on a plate there is a probability that it is far away from any plate and therefore it wont adsorb with a high probability. This also explains the fact that $C_{AA}(t)$ and $C_{AB}(t)$ become almost equivalent for $t > 300\, \delta t$
+In general the behavior of the Correlation functions do not differ much from the ones for the infinite plate system. Differences are that The probability that an ion is adorbed on plate $B$ given it is adsorbed on plate $A$ at $t=0$ defined as $C_{AB}(t)$, has a maximum at $t \approx 250\, \delta t$ this maybe dues to the fact that if an particle is not adsorbed on a plate there is a probability that it is far away from any plate and therefore it wont adsorb with a high probability. This also explains the fact that $C_{AA}(t)$ and $C_{AB}(t)$ become almost equivalent for $t > 300\, \delta t$.
 
 \subsubsection{Comparsion}
 As for infinite plates the correlation functions are fitted with functions defined in \myEqRef{fit}. This time $n$ was choosen as $4$ to get a good approximation for all four curves. The laplace transform and its error read as defined in \myEqRef{laplace} and \myEqRef{error}.
 
-As visualized in \myFigRef{pic:limited_correlation_laplace} the laplace transform of the correlation functions show very similar behavior compared to the ones of the infinite plates. For $\widetilde{C}_{AA}$ and $\widetilde{C}_{DD}$ there is a huge part proportional to $\sfrac{1}{\omega}$
+As visualized in \myFigRef{pic:limited_correlation_laplace} the laplace transform of the correlation functions show very similar behavior compared to the ones of the infinite plates. For $\widetilde{C}_{AA}$ and $\widetilde{C}_{DD}$ there is a huge part proportional to $\sfrac{1}{\omega}$.
 
 \myImage{limited_correlation_laplace}{Laplace transform Correlation functions for a finite plate system -- $\widetilde{C}_{AA}$ and $\widetilde{C}_{DD}$ show both a $\sfrac{1}{\omega}$ behavior}
-
-
 
 \newpage
 \section{Conclusion}
 
 The analysis of the planar systems show that the origin of the widely observed $\sfrac{1}{f}$--fluctuations of the ionic current can be reproduced with the \effect{absorbtion-desorption} theory.
 
-As already analytically obtained in \myEqRef{analytic_caa} the laplace transform of the correlation for an ion to be absorbed at time $t$ given it is absorbed at time $t=0$ for infinite plates shows a $\sfrac{1}{f}$--behavior, which has a direct effect on the number of free charge carriers as shown in \myEqRef{N_A}. The number of free charge carriers itself define the conductivity of the fluid and therefore influence the ionic current.
+As already analytically obtained in \myEqRef{analytic_caa} the laplace transform of the single ion correlation for infinite plates shows a $\sfrac{1}{f}$--behavior. That has a direct effect on the number of free charge carriers as shown in \myEqRef{N_A}. The number of free charge carriers itself defines the conductivity of the fluid and therefore influence the ionic current.
 
-Thie analytic expression in \myEqRef{analytic_caa} could be successfully reproduced with the \effect{Brownian-Dynamics-Simulation} as shown in \myFigRef{pic:compare_lac}. The extrapolation for a finite plates shows that this behavior also remains for realistic planar systems (\myFigRef{pic:limited_correlation_laplace}) as well. That means that the experimental observation of pinknoise in the ionic current of nanopores\myCite{pinknoise} could possibly have its origin in the dynamics of protons.
+The analytic expression in \myEqRef{analytic_caa} could be successfully reproduced with the \effect{Brownian-Dynamics-Simulation} as shown in \myFigRef{pic:compare_lac}. The extrapolation for a finite plates shows that this behavior also remains for realistic planar systems (\myFigRef{pic:limited_correlation_laplace}). That means that the experimental observation of pinknoise in the ionic current of nanopores\myCite{pinknoise} could possibly have its origin in the dynamics of protons.
 
 Summarized Smeets' hypothesis that there is a link between low-frequency noise and surface charge fluctuations\myCite{paper0} can be confirmed.
 
